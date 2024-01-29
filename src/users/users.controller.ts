@@ -9,10 +9,22 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './users.service';
+import { CatsService } from './cats.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(protected userService: UserService) {}
+  constructor(
+    protected userService: UserService,
+    protected catsService: CatsService,
+  ) {}
+  @Post('cats')
+  addCat(@Body() createCatDto: inputModelCat) {
+    return this.catsService.create(createCatDto);
+  }
+  @Get('cats')
+  getCats() {
+    return this.catsService.findAll();
+  }
   @Get()
   getUsers(@Query() query: { term: string }) {
     return [
@@ -44,4 +56,10 @@ export class UsersController {
 type CreateUserType = {
   name: string;
   children: string;
+};
+type inputModelCat = {
+  name: string;
+  age: string;
+  breed: string;
+  tags: string[];
 };
