@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CatsService } from './cats.service';
+import { Types } from 'mongoose';
 
 @Controller('users')
 export class UsersController {
@@ -25,6 +26,18 @@ export class UsersController {
   getCats() {
     return this.catsService.findAll();
   }
+
+  // @Put('cats/:id')
+  // async updateCat(
+  //   @Param('id') id: Types.ObjectId,
+  //   @Body() dtoCat: inputModelCat,
+  // ) {
+  //   const cats = await this.catsService.findAll();
+  //   // const targetCat = cats.find((c) => c._id ===new Types.ObjectId(id))!;
+  //   targetCat.setAge(100);
+  //   return this.catsService.save(targetCat);
+  // }
+
   @Get()
   getUsers(@Query() query: { term: string }) {
     return [
@@ -58,6 +71,7 @@ type CreateUserType = {
   children: string;
 };
 type inputModelCat = {
+  // _id: ObjectId;
   name: string;
   age: string;
   breed: string;

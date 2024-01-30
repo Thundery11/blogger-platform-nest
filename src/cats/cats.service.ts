@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Cat } from './cats.schema';
+import { Cat, CatDocument } from './cats.schema';
 
 @Injectable()
 export class CatsService {
@@ -12,7 +12,10 @@ export class CatsService {
     return createdCat.save();
   }
 
-  async findAll(): Promise<Cat[]> {
+  async findAll(): Promise<CatDocument[]> {
     return this.catModel.find().exec();
+  }
+  async save(cat: CatDocument) {
+    await cat.save();
   }
 }

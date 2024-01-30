@@ -1,18 +1,21 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersController } from './users/users.controller';
-import { UserService } from './users/users.service';
-import { UsersRepository } from './users/users.repository';
+import { UsersController } from './cats/users.controller';
+import { UserService } from './cats/users.service';
+import { UsersRepository } from './cats/users.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Cat, CatSchema } from './users/cats.schema';
-import { CatsService } from './users/cats.service';
+import { Cat, CatSchema } from './cats/cats.schema';
+import { CatsService } from './cats/cats.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017', {
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_URL, {
       dbName: 'nest-cats',
     }),
+
     MongooseModule.forFeature([
       {
         name: Cat.name,
