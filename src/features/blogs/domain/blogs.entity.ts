@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
-export type BlogsDocument = HydratedDocument<Blogs>;
+
 @Schema()
 export class Blogs {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  id: ObjectId;
+  @Prop({ required: true })
+  id: string;
   @Prop({ required: true })
   name: string;
   @Prop({ required: true })
@@ -16,4 +16,6 @@ export class Blogs {
   @Prop({ required: true })
   isMembership: boolean;
 }
+export type BlogsDocument = HydratedDocument<Blogs>;
+
 export const BlogsSchema = SchemaFactory.createForClass(Blogs);

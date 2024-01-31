@@ -18,3 +18,16 @@ export class BlogsCreateModel {
   @Matches('^https://([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*/?$')
   websiteUrl: string;
 }
+// export class BlogsCreateType {
+//   id: Types.ObjectId;
+
+//   name: string;
+
+//   description: string;
+
+//   websiteUrl: string;
+
+//   createdAt: string;
+
+//   isMembership: boolean;
+// }

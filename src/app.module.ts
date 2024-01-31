@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersController } from './cats/users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { Blogs, BlogsSchema } from './features/blogs/domain/blogs.entity';
 import { BlogsController } from './features/blogs/api/blogs.controller';
 import { BlogsService } from './features/blogs/application/blogs.service';
 import { BlogsRepository } from './features/blogs/infrastructure/blogs.repository';
+import { BlogsQueryRepository } from './features/blogs/infrastructure/blogs.query-repository';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { BlogsRepository } from './features/blogs/infrastructure/blogs.repositor
       },
     ]),
   ],
-  controllers: [AppController, UsersController, BlogsController],
-  providers: [AppService, BlogsService, BlogsRepository],
+  controllers: [AppController, BlogsController],
+  providers: [AppService, BlogsService, BlogsRepository, BlogsQueryRepository],
 })
 export class AppModule {}
