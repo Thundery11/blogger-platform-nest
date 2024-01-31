@@ -2,28 +2,28 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersController } from './cats/users.controller';
-import { UserService } from './cats/users.service';
-import { UsersRepository } from './cats/users.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Cat, CatSchema } from './cats/cats.schema';
-import { CatsService } from './cats/cats.service';
 import { ConfigModule } from '@nestjs/config';
+import { Blogs, BlogsSchema } from './features/blogs/domain/blogs.entity';
+import { BlogsController } from './features/blogs/api/blogs.controller';
+import { BlogsService } from './features/blogs/application/blogs.service';
+import { BlogsRepository } from './features/blogs/infrastructure/blogs.repository';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URL, {
-      dbName: 'nest-cats',
+      dbName: 'blogger-platform-nest',
     }),
 
     MongooseModule.forFeature([
       {
-        name: Cat.name,
-        schema: CatSchema,
+        name: Blogs.name,
+        schema: BlogsSchema,
       },
     ]),
   ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UserService, UsersRepository, CatsService],
+  controllers: [AppController, UsersController, BlogsController],
+  providers: [AppService, BlogsService, BlogsRepository],
 })
 export class AppModule {}
