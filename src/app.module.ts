@@ -9,6 +9,10 @@ import { BlogsService } from './features/blogs/application/blogs.service';
 import { BlogsRepository } from './features/blogs/infrastructure/blogs.repository';
 import { BlogsQueryRepository } from './features/blogs/infrastructure/blogs.query-repository';
 import { TestingAllDataController } from './features/testingAllData/testingAllData';
+import { Posts, PostsSchema } from './features/posts/domain/posts.entity';
+import { PostsRepository } from './features/posts/infrastructure/posts.repository';
+import { PostsQueryRepository } from './features/posts/infrastructure/posts.query-repository';
+import { PostsService } from './features/posts/application/posts.service';
 
 @Module({
   imports: [
@@ -23,8 +27,22 @@ import { TestingAllDataController } from './features/testingAllData/testingAllDa
         schema: BlogsSchema,
       },
     ]),
+    MongooseModule.forFeature([
+      {
+        name: Posts.name,
+        schema: PostsSchema,
+      },
+    ]),
   ],
   controllers: [TestingAllDataController, AppController, BlogsController],
-  providers: [AppService, BlogsService, BlogsRepository, BlogsQueryRepository],
+  providers: [
+    AppService,
+    BlogsService,
+    BlogsRepository,
+    BlogsQueryRepository,
+    PostsRepository,
+    PostsQueryRepository,
+    PostsService,
+  ],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { IsString, Length, Matches, MaxLength } from 'class-validator';
+import { IsString, Matches, MaxLength } from 'class-validator';
 import { Trim } from '../../../../../infrastucture/decorators/transform/trim';
 
 export class BlogsCreateModel {
@@ -18,4 +18,3 @@ export class BlogsCreateModel {
   @Matches('^https://([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*/?$')
   websiteUrl: string;
 }
-//ss

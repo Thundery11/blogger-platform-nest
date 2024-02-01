@@ -1,17 +1,14 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   HttpCode,
-  HttpStatus,
   NotFoundException,
   Param,
   Post,
   Put,
   Query,
-  Res,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BlogsService } from '../application/blogs.service';
@@ -22,12 +19,18 @@ import {
   BlogsOutputModel,
 } from './models/output/blog.output.model';
 import { BlogsQueryParams } from './models/query/query.params';
+import { PostCreateModel } from 'src/features/posts/api/models/input/create-post.input.model';
+import { PostOutputModel } from 'src/features/posts/api/models/output/post-output.model';
+import { PostsService } from 'src/features/posts/application/posts.service';
+import { PostsQueryRepository } from 'src/features/posts/infrastructure/posts.query-repository';
 @ApiTags('Blogs')
 @Controller('blogs')
 export class BlogsController {
   constructor(
     private blogsService: BlogsService,
     private blogsQueryRepository: BlogsQueryRepository,
+    private postsService: PostsService,
+    private postsQueryRepository: PostsQueryRepository,
   ) {}
 
   @Post()
@@ -76,5 +79,21 @@ export class BlogsController {
       throw new NotFoundException();
     }
     return result;
+  }
+
+  @Post(':blogId/posts')
+  @HttpCode(201)
+  async createPostForSpecificBlog(
+    @Param('blogId') blogId: string,
+    @Body() postCreateModel: PostCreateModel,
+  ): Promise<PostOutputModel | null> {
+    const result = await this.blogsService.createPostForSpecificBlog(
+      postCreateModel,
+      blogId,
+    );
+    if (!result) {
+      throw new NotFoundException();
+    }
+    return await this.postsQueryRepository.getPostById(result._id);
   }
 }
