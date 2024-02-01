@@ -1,5 +1,5 @@
 import { IsString, Length, Matches, MaxLength } from 'class-validator';
-import { Trim } from 'src/infrastucture/decorators/transform/trim';
+import { Trim } from '../../../../../infrastucture/decorators/transform/trim';
 
 export class BlogsCreateModel {
   @Trim()
