@@ -8,6 +8,7 @@ import { BlogsController } from './features/blogs/api/blogs.controller';
 import { BlogsService } from './features/blogs/application/blogs.service';
 import { BlogsRepository } from './features/blogs/infrastructure/blogs.repository';
 import { BlogsQueryRepository } from './features/blogs/infrastructure/blogs.query-repository';
+import { TestingAllDataController } from './features/testingAllData/testingAllData';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { BlogsQueryRepository } from './features/blogs/infrastructure/blogs.quer
       },
     ]),
   ],
-  controllers: [AppController, BlogsController],
+  controllers: [TestingAllDataController, AppController, BlogsController],
   providers: [AppService, BlogsService, BlogsRepository, BlogsQueryRepository],
 })
 export class AppModule {}
