@@ -19,3 +19,27 @@ export const BlogsOutputMapper = (blog: BlogsDocument): BlogsOutputModel => {
   outputModel.isMembership = blog.isMembership;
   return outputModel;
 };
+
+export const allBlogsOutputMapper = (
+  blogs: BlogsOutputModel[],
+  pagesCount: number,
+  pageNumber: number,
+  pageSize: number,
+  countDocuments: number,
+) => {
+  const allBlogsOutput = {
+    pagesCount,
+    page: Number(pageNumber),
+    pageSize: Number(pageSize),
+    totalCount: countDocuments,
+    items: blogs,
+  };
+  return allBlogsOutput;
+};
+export class AllBlogsOutputModel {
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: BlogsOutputModel[];
+}

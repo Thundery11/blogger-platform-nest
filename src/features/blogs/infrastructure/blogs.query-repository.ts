@@ -16,4 +16,19 @@ export class BlogsQueryRepository {
     });
     return BlogsOutputMapper(blog);
   }
+  public async getAllBlogs(
+    query: object,
+    sortBy: string,
+    sortDirection: string,
+    pageSize: number,
+    skip: number,
+  ): Promise<BlogsOutputModel[]> {
+    const blogs = await this.blogsModel
+      .find(query, { _id: 0, __v: 0 })
+      .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+      .skip(skip)
+      .limit(Number(pageSize))
+      .lean();
+    return blogs;
+  }
 }
