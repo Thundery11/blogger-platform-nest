@@ -18,7 +18,7 @@ import {
   AllBlogsOutputModel,
   BlogsOutputModel,
 } from './models/output/blog.output.model';
-import { BlogsQueryParams } from './models/query/query.params';
+import { SortingQueryParams } from './models/query/query-for-sorting';
 import { PostsService } from '../../posts/application/posts.service';
 import { PostsQueryRepository } from '../../posts/infrastructure/posts.query-repository';
 import { PostCreateModel } from '../../posts/api/models/input/create-post.input.model';
@@ -54,7 +54,7 @@ export class BlogsController {
   @Get()
   @HttpCode(200)
   async findAllBlogs(
-    @Query() blogsQueryParams: BlogsQueryParams,
+    @Query() blogsQueryParams: SortingQueryParams,
   ): Promise<AllBlogsOutputModel> {
     return await this.blogsService.findAllBlogs(blogsQueryParams);
   }
@@ -96,5 +96,14 @@ export class BlogsController {
       throw new NotFoundException();
     }
     return await this.postsQueryRepository.getPostById(result._id);
+  }
+
+  @Get(':blogId/posts')
+  @HttpCode(200)
+  async findAllPostsforScpecificBlog(
+    @Param('blogId') blogid: string,
+    @Query() sortingQueryParams: SortingQueryParams,
+  ): Promise<PostOutputModel[]> {
+    return await this.postsService.findAllPosts(sortingQueryParams, blogid);
   }
 }

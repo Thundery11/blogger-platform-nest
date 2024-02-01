@@ -3,7 +3,7 @@ import { BlogsRepository } from '../infrastructure/blogs.repository';
 import { BlogsDocument } from '../domain/blogs.entity';
 import { Types } from 'mongoose';
 import { BlogsCreateModel } from '../api/models/input/create-blog.input.model';
-import { BlogsQueryParams } from '../api/models/query/query.params';
+import { SortingQueryParams } from '../api/models/query/query-for-sorting';
 import { AllBlogsOutputModel } from '../api/models/output/blog.output.model';
 import { BlogsQueryRepository } from '../infrastructure/blogs.query-repository';
 import { PostCreateModel } from '../../../features/posts/api/models/input/create-post.input.model';
@@ -37,7 +37,7 @@ export class BlogsService {
   }
 
   async findAllBlogs(
-    blogsQueryParams: BlogsQueryParams,
+    blogsQueryParams: SortingQueryParams,
   ): Promise<AllBlogsOutputModel> {
     const searchNameTerm = blogsQueryParams.searchNameTerm ?? '';
     const sortBy = blogsQueryParams.sortBy ?? 'createdAt';

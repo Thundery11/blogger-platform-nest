@@ -1,4 +1,4 @@
-export class BlogsQueryParams {
+export class SortingQueryParams {
   searchNameTerm?: string;
   sortBy: string;
   sortDirection: string;
