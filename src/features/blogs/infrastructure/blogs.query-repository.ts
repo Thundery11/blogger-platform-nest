@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blogs } from '../domain/blogs.entity';
 import { Model, ObjectId, Types } from 'mongoose';
@@ -16,19 +16,16 @@ export class BlogsQueryRepository {
     });
     return BlogsOutputMapper(blog);
   }
-  public async getAllBlogs(
-    query: object,
-    sortBy: string,
-    sortDirection: string,
-    pageSize: number,
-    skip: number,
-  ): Promise<BlogsOutputModel[]> {
-    const blogs = await this.blogsModel
-      .find(query, { _id: 0, __v: 0 })
-      .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
-      .skip(skip)
-      .limit(Number(pageSize))
-      .lean();
-    return blogs;
+  public async getCurrentBlogById(id: string): Promise<BlogsOutputModel> {
+    const blog = await this.blogsModel.findOne(
+      { id },
+      {
+        _v: false,
+      },
+    );
+    if (!blog) {
+      throw new NotFoundException();
+    }
+    return BlogsOutputMapper(blog);
   }
 }

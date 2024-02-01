@@ -62,4 +62,15 @@ export class BlogsService {
 
     return presentationAllblogs;
   }
+
+  async updateBlog(
+    id: string,
+    blogsUpdateModel: BlogsCreateModel,
+  ): Promise<boolean> {
+    return await this.blogsRepository.updateBlog(id, blogsUpdateModel);
+  }
+
+  async deleteBLog(id: string): Promise<boolean> {
+    return await this.blogsRepository.deleteBlog(id);
+  }
 }
