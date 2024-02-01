@@ -39,9 +39,24 @@ export class Posts {
   blogName: string;
   @Prop({ required: true })
   createdAt: string;
-  // @Prop()
-  // extendedLikesInfo: ExtendedLikesInfo;
 }
+// extendedLikesInfo :{
+//   @Prop({ required: true })
+//   likesCount: number;
+//   @Prop({ required: true })
+//   dislikesCount: number;
+//   @Prop({ required: true })
+//   myStatus: string;
+
+//   newestLikes : {
+//     @Prop()
+//     addedAt: string;
+//     @Prop()
+//     userId: string;
+//     @Prop()
+//     login: string;
+// }
+// }
 
 // extendedLikesInfo: {
 //   likesCount: { type: Number, required: true },

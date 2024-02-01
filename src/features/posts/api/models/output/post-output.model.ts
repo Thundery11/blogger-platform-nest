@@ -29,7 +29,7 @@ export class PostOutputModel {
     public blogId: string,
     public blogName: string,
     public createdAt: string,
-    // public extendedLikesInfo: ExtendedLikesInfo,
+    public extendedLikesInfo: ExtendedLikesInfo,
   ) {}
 }
 
@@ -42,7 +42,7 @@ export const postsOutputMapper = (post: PostsDocument): PostOutputModel => {
     post.blogId,
     post.blogName,
     post.createdAt,
-    // post.extendedLikesInfo,
+    ExtendedLikesInfo.getDefault(),
   );
   // outputModel.id = post.id;
   // outputModel.title = post.title;
