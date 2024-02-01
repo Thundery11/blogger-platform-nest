@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { applyAppSettings, setAppPipes } from './settings/apply.app.settings';
+// import { applyAppSettings, setAppPipes } from './settings/apply.app.settings';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {

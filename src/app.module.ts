@@ -12,7 +12,7 @@ import { BlogsQueryRepository } from './features/blogs/infrastructure/blogs.quer
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URL, {
+    MongooseModule.forRoot(process.env.MONGO_URL!, {
       dbName: 'blogger-platform-nest',
     }),
 
