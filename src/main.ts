@@ -8,14 +8,14 @@ async function bootstrap() {
   // applyAppSettings(app);
   // setAppPipes(app);
   app.enableCors();
-  const config = new DocumentBuilder()
-    .setTitle('blogger-platform')
-    .setDescription('The blogger-platform API description')
-    .setVersion('1.0')
-    .addTag('blogger-platform')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  // const config = new DocumentBuilder()
+  //   .setTitle('blogger-platform')
+  //   .setDescription('The blogger-platform API description')
+  //   .setVersion('1.0')
+  //   .addTag('blogger-platform')
+  //   .build();
+  // const document = SwaggerModule.createDocument(app, config);
+  // SwaggerModule.setup('api', app, document);
   await app.listen(3000);
 }
 bootstrap();
