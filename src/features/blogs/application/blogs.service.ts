@@ -14,7 +14,7 @@ import {
 } from 'src/features/posts/domain/posts.entity';
 import { PostsRepository } from 'src/features/posts/infrastructure/posts.repository';
 import { PostOutputModel } from 'src/features/posts/api/models/output/post-output.model';
-import { MyStatus } from 'src/common/enum-types/enumTypes';
+import { MyStatus } from '../../../common/enum-types/enumTypes';
 
 @Injectable()
 export class BlogsService {
