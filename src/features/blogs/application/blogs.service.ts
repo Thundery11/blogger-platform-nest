@@ -6,13 +6,13 @@ import { BlogsCreateModel } from '../api/models/input/create-blog.input.model';
 import { BlogsQueryParams } from '../api/models/query/query.params';
 import { AllBlogsOutputModel } from '../api/models/output/blog.output.model';
 import { BlogsQueryRepository } from '../infrastructure/blogs.query-repository';
-import { PostCreateModel } from 'src/features/posts/api/models/input/create-post.input.model';
+import { PostCreateModel } from '../../../features/posts/api/models/input/create-post.input.model';
 import {
   ExtendedLikesInfo,
   Posts,
   PostsDocument,
-} from 'src/features/posts/domain/posts.entity';
-import { PostsRepository } from 'src/features/posts/infrastructure/posts.repository';
+} from '../../../features/posts/domain/posts.entity';
+import { PostsRepository } from '../../../features/posts/infrastructure/posts.repository';
 import { PostOutputModel } from 'src/features/posts/api/models/output/post-output.model';
 
 @Injectable()
