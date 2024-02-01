@@ -14,6 +14,9 @@ export class BlogsQueryRepository {
     const blog = await this.blogsModel.findById(blogId, {
       _v: false,
     });
+    if (!blog) {
+      throw new NotFoundException();
+    }
     return BlogsOutputMapper(blog);
   }
   public async getCurrentBlogById(id: string): Promise<BlogsOutputModel> {
