@@ -14,7 +14,6 @@ import {
 } from 'src/features/posts/domain/posts.entity';
 import { PostsRepository } from 'src/features/posts/infrastructure/posts.repository';
 import { PostOutputModel } from 'src/features/posts/api/models/output/post-output.model';
-// import { MyStatus } from '../../../common/enum-types/enumTypes';
 
 @Injectable()
 export class BlogsService {
@@ -100,12 +99,6 @@ export class BlogsService {
     extendedLikesInfo.myStatus = 'None';
     extendedLikesInfo.newestLikes = [];
 
-    // const extendedLikesInfo = {
-    //   likesCount: 0,
-    //   dislikesCount: 0,
-    //   myStatus: MyStatus.None,
-    //   newestLikes: [],
-    // };
     const newPost = new Posts();
     newPost.id = id;
     newPost.title = title;
