@@ -19,10 +19,11 @@ import {
   BlogsOutputModel,
 } from './models/output/blog.output.model';
 import { BlogsQueryParams } from './models/query/query.params';
-import { PostCreateModel } from 'src/features/posts/api/models/input/create-post.input.model';
-import { PostOutputModel } from 'src/features/posts/api/models/output/post-output.model';
-import { PostsService } from 'src/features/posts/application/posts.service';
-import { PostsQueryRepository } from 'src/features/posts/infrastructure/posts.query-repository';
+import { PostsService } from '../../posts/application/posts.service';
+import { PostsQueryRepository } from '../../posts/infrastructure/posts.query-repository';
+import { PostCreateModel } from '../../posts/api/models/input/create-post.input.model';
+import { PostOutputModel } from '../../posts/api/models/output/post-output.model';
+
 @ApiTags('Blogs')
 @Controller('blogs')
 export class BlogsController {

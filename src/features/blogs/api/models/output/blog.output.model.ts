@@ -1,4 +1,4 @@
-import { BlogsDocument } from 'src/features/blogs/domain/blogs.entity';
+import { BlogsDocument } from '../../../domain/blogs.entity';
 
 export class BlogsOutputModel {
   id: string;

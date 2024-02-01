@@ -1,4 +1,4 @@
-import { PostsDocument } from 'src/features/posts/domain/posts.entity';
+import { PostsDocument } from '../../../domain/posts.entity';
 
 class NewestLikes {
   addedAt: string;

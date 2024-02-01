@@ -13,7 +13,6 @@ import {
   PostsDocument,
 } from '../../../features/posts/domain/posts.entity';
 import { PostsRepository } from '../../../features/posts/infrastructure/posts.repository';
-import { PostOutputModel } from 'src/features/posts/api/models/output/post-output.model';
 
 @Injectable()
 export class BlogsService {
