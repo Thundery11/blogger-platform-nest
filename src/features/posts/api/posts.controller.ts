@@ -18,11 +18,11 @@ export class PostsController {
 
   @Get(':id')
   @HttpCode(200)
-  async findPost(@Param('id') id: string): Promise<PostOutputModel> {
+  async findPost(@Param('id') id: string): Promise<PostOutputModel | null> {
     const result = await this.postsQueryRepository.getCurrentPostByid(id);
-    // if (!result) {
-    //   throw new NotFoundException();
-    // }
+    if (!result) {
+      throw new NotFoundException();
+    }
     return result;
   }
 }

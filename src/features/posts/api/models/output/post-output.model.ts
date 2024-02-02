@@ -32,8 +32,16 @@ export class PostOutputModel {
     public extendedLikesInfo: ExtendedLikesInfo,
   ) {}
 }
+export const postsOutputMapper = (post: PostsDocument | null) => {
+  if (!post) {
+    return null;
+  }
+  return postsOutputMapperFinally(post);
+};
 
-export const postsOutputMapper = (post: PostsDocument): PostOutputModel => {
+export const postsOutputMapperFinally = (
+  post: PostsDocument,
+): PostOutputModel => {
   console.log(post);
 
   const outputModel = new PostOutputModel(

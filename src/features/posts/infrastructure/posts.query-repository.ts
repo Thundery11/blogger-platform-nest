@@ -5,6 +5,7 @@ import { Model, Types } from 'mongoose';
 import {
   PostOutputModel,
   postsOutputMapper,
+  postsOutputMapperFinally,
 } from '../api/models/output/post-output.model';
 
 @Injectable()
@@ -19,14 +20,11 @@ export class PostsQueryRepository {
       throw new NotFoundException();
     }
 
-    return postsOutputMapper(post);
+    return postsOutputMapperFinally(post);
   }
-  public async getCurrentPostByid(id: string): Promise<PostOutputModel> {
+  public async getCurrentPostByid(id: string): Promise<PostOutputModel | null> {
     const post = await this.postsModel.findOne({ id }, { _v: false });
-    console.log('post', post);
-    if (!post) {
-      throw new NotFoundException();
-    }
+
     return postsOutputMapper(post);
   }
 }
