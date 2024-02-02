@@ -15,15 +15,18 @@ export class PostsRepository {
   public async countDocuments(query: object): Promise<number> {
     return await this.postsModel.countDocuments(query);
   }
+  async countAllDocumentsForCurrentBlog(blogId: string): Promise<number> {
+    return await this.postsModel.countDocuments({ blogId: blogId });
+  }
   public async getAllPosts(
-    query: object,
+    blogId: string,
     sortBy: string,
     sortDirection: string,
     pageSize: number,
     skip: number,
   ): Promise<PostOutputModel[]> {
     const posts = await this.postsModel
-      .find(query, { _id: 0, __v: 0 })
+      .find({ blogId }, { __v: 0, _id: 0 })
       .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(Number(pageSize))

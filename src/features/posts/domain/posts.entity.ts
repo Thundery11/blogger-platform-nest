@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 
 @Schema()
 class NewestLikes {
@@ -39,6 +39,8 @@ export class Posts {
   blogName: string;
   @Prop({ required: true })
   createdAt: string;
+  @Prop()
+  extendedLikesInfo: ExtendedLikesInfo;
 }
 // extendedLikesInfo :{
 //   @Prop({ required: true })

@@ -106,7 +106,7 @@ export class BlogsService {
     newPost.blogId = isBlogExist.id;
     newPost.blogName = isBlogExist.name;
     newPost.createdAt = createdAt;
-    // newPost.extendedLikesInfo = extendedLikesInfo;
+    newPost.extendedLikesInfo = extendedLikesInfo;
 
     // const newPost = {
     //   id,

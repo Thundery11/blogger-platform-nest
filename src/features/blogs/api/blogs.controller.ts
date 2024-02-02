@@ -22,7 +22,10 @@ import { SortingQueryParams } from './models/query/query-for-sorting';
 import { PostsService } from '../../posts/application/posts.service';
 import { PostsQueryRepository } from '../../posts/infrastructure/posts.query-repository';
 import { PostCreateModel } from '../../posts/api/models/input/create-post.input.model';
-import { PostOutputModel } from '../../posts/api/models/output/post-output.model';
+import {
+  AllPostsOutputModel,
+  PostOutputModel,
+} from '../../posts/api/models/output/post-output.model';
 
 @ApiTags('Blogs')
 @Controller('blogs')
@@ -103,7 +106,14 @@ export class BlogsController {
   async findAllPostsforScpecificBlog(
     @Param('blogId') blogid: string,
     @Query() sortingQueryParams: SortingQueryParams,
-  ): Promise<PostOutputModel[]> {
-    return await this.postsService.findAllPosts(sortingQueryParams, blogid);
+  ): Promise<AllPostsOutputModel | null> {
+    const result = await this.postsService.findAllPosts(
+      sortingQueryParams,
+      blogid,
+    );
+    if (result === null) {
+      throw new NotFoundException();
+    }
+    return result;
   }
 }

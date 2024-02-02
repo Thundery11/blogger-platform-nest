@@ -60,3 +60,11 @@ export const postsOutputMapper = (post: PostsDocument): PostOutputModel => {
 
   return outputModel;
 };
+
+export class AllPostsOutputModel {
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: PostOutputModel[];
+}
