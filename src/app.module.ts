@@ -35,7 +35,12 @@ import { PostsController } from './features/posts/api/posts.controller';
       },
     ]),
   ],
-  controllers: [TestingAllDataController, AppController, BlogsController],
+  controllers: [
+    TestingAllDataController,
+    AppController,
+    BlogsController,
+    PostsController,
+  ],
   providers: [
     AppService,
     BlogsService,
@@ -44,7 +49,6 @@ import { PostsController } from './features/posts/api/posts.controller';
     PostsRepository,
     PostsQueryRepository,
     PostsService,
-    PostsController,
   ],
 })
 export class AppModule {}
