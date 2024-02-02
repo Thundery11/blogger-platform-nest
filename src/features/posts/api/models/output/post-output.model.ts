@@ -34,6 +34,8 @@ export class PostOutputModel {
 }
 
 export const postsOutputMapper = (post: PostsDocument): PostOutputModel => {
+  console.log(post);
+
   const outputModel = new PostOutputModel(
     post.id,
     post.title,

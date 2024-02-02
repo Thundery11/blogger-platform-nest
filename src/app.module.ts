@@ -13,6 +13,7 @@ import { Posts, PostsSchema } from './features/posts/domain/posts.entity';
 import { PostsRepository } from './features/posts/infrastructure/posts.repository';
 import { PostsQueryRepository } from './features/posts/infrastructure/posts.query-repository';
 import { PostsService } from './features/posts/application/posts.service';
+import { PostsController } from './features/posts/api/posts.controller';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { PostsService } from './features/posts/application/posts.service';
     PostsRepository,
     PostsQueryRepository,
     PostsService,
+    PostsController,
   ],
 })
 export class AppModule {}

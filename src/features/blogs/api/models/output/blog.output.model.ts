@@ -8,6 +8,13 @@ export class BlogsOutputModel {
   createdAt: string;
   isMembership: boolean;
 }
+export class AllBlogsOutputModel {
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: BlogsOutputModel[];
+}
 
 export const BlogsOutputMapper = (blog: BlogsDocument): BlogsOutputModel => {
   const outputModel = new BlogsOutputModel();
@@ -36,10 +43,3 @@ export const allBlogsOutputMapper = (
   };
   return allBlogsOutput;
 };
-export class AllBlogsOutputModel {
-  pagesCount: number;
-  page: number;
-  pageSize: number;
-  totalCount: number;
-  items: BlogsOutputModel[];
-}

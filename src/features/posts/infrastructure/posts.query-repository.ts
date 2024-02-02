@@ -18,6 +18,15 @@ export class PostsQueryRepository {
     if (!post) {
       throw new NotFoundException();
     }
+
+    return postsOutputMapper(post);
+  }
+  public async getCurrentPostByid(id: string): Promise<PostOutputModel> {
+    const post = await this.postsModel.findOne({ id }, { _v: false });
+    console.log('post', post);
+    if (!post) {
+      throw new NotFoundException();
+    }
     return postsOutputMapper(post);
   }
 }
