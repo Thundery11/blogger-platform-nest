@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { PostUpdateModel } from '../api/models/input/create-post.input.model';
 
 @Schema()
 class NewestLikes {
@@ -41,6 +42,22 @@ export class Posts {
   createdAt: string;
   @Prop()
   extendedLikesInfo: ExtendedLikesInfo;
+
+  updatePost(postUpdateModel: PostUpdateModel) {
+    if (postUpdateModel.content.length > 1000) {
+      throw new Error('Your content is too long');
+    }
+    this.content = postUpdateModel.content;
+    if (postUpdateModel.shortDescription.length > 100) {
+      throw new Error('Your content is too long');
+    }
+    this.shortDescription = postUpdateModel.title;
+    if (postUpdateModel.title.length > 30) {
+      throw new Error('Your content is too long');
+    }
+    this.title = postUpdateModel.title;
+    this.blogId = postUpdateModel.blogId;
+  }
 }
 // extendedLikesInfo :{
 //   @Prop({ required: true })
@@ -75,3 +92,6 @@ export class Posts {
 
 export type PostsDocument = HydratedDocument<Posts>;
 export const PostsSchema = SchemaFactory.createForClass(Posts);
+PostsSchema.methods = {
+  updatePost: Posts.prototype.updatePost,
+};

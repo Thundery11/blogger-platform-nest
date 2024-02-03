@@ -58,4 +58,5 @@ export class PostsController {
     }
     return result;
   }
+  // const post = await this.postsQueryRepository.getCurrentPostByid(id)
 }

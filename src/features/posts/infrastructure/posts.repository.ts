@@ -41,4 +41,8 @@ export class PostsRepository {
     const result = await this.postsModel.updateOne({ id }, postUpdateModel);
     return result.matchedCount ? true : false;
   }
+
+  public async save(post: PostsDocument) {
+    await post.save();
+  }
 }
