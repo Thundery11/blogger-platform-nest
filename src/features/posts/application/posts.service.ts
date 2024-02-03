@@ -6,6 +6,17 @@ import {
   PostOutputModel,
 } from '../api/models/output/post-output.model';
 import { BlogsQueryRepository } from '../../blogs/infrastructure/blogs.query-repository';
+import {
+  PostCreateModel,
+  PostCreateModelWithBlogId,
+  PostUpdateModel,
+} from '../api/models/input/create-post.input.model';
+import {
+  ExtendedLikesInfo,
+  Posts,
+  PostsDocument,
+} from '../domain/posts.entity';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class PostsService {
@@ -52,5 +63,53 @@ export class PostsService {
     };
 
     return presentationalAllPosts;
+  }
+  async createPost(
+    postCreateModelWithBlogId: PostCreateModelWithBlogId,
+  ): Promise<PostsDocument | null> {
+    const { title, shortDescription, content, blogId } =
+      postCreateModelWithBlogId;
+
+    const isBlogExist =
+      await this.blogsQueryRepository.getCurrentBlogById(blogId);
+    if (!isBlogExist) {
+      return null;
+    }
+
+    const createdAt = new Date().toISOString();
+    const id = new Types.ObjectId().toString();
+
+    const extendedLikesInfo = new ExtendedLikesInfo();
+    extendedLikesInfo.likesCount = 0;
+    extendedLikesInfo.dislikesCount = 0;
+    extendedLikesInfo.myStatus = 'None';
+    extendedLikesInfo.newestLikes = [];
+
+    const newPost = new Posts();
+    newPost.id = id;
+    newPost.title = title;
+    newPost.shortDescription = shortDescription;
+    newPost.content = content;
+    newPost.blogId = isBlogExist.id;
+    newPost.blogName = isBlogExist.name;
+    newPost.createdAt = createdAt;
+    newPost.extendedLikesInfo = extendedLikesInfo;
+
+    // const newPost = {
+    //   id,
+    //   title,
+    //   shortDescription,
+    //   content,
+    //   blogId: isBlogExist.id,
+    //   blogName: isBlogExist.name,
+    //   createdAt,
+    // };
+    return this.postsRepository.createPost(newPost);
+  }
+  async updatePost(
+    id: string,
+    postUpdateModel: PostUpdateModel,
+  ): Promise<boolean> {
+    return await this.postsRepository.updatePost(id, postUpdateModel);
   }
 }

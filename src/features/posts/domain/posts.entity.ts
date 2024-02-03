@@ -22,7 +22,7 @@ export class ExtendedLikesInfo {
   @Prop()
   newestLikes: NewestLikes[];
 }
-
+//perepisat posmotret video dimycha mongo with nest
 @Schema()
 export class Posts {
   @Prop({ required: true })

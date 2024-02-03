@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Posts, PostsDocument } from '../domain/posts.entity';
 import { Model } from 'mongoose';
 import { PostOutputModel } from '../api/models/output/post-output.model';
+import { PostUpdateModel } from '../api/models/input/create-post.input.model';
 
 @Injectable()
 export class PostsRepository {
@@ -26,11 +27,18 @@ export class PostsRepository {
     skip: number,
   ): Promise<PostOutputModel[]> {
     const posts = await this.postsModel
-      .find({ blogId }, { __v: 0, _id: 0 })
+      .find({ blogId }, { __v: false, _id: false })
       .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(Number(pageSize))
       .lean();
     return posts;
+  }
+  public async updatePost(
+    id: string,
+    postUpdateModel: PostUpdateModel,
+  ): Promise<boolean> {
+    const result = await this.postsModel.updateOne({ id }, postUpdateModel);
+    return result.matchedCount ? true : false;
   }
 }
