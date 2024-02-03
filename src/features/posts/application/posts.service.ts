@@ -24,7 +24,7 @@ export class PostsService {
     private postsRepository: PostsRepository,
     private blogsQueryRepository: BlogsQueryRepository,
   ) {}
-  async findAllPosts(
+  async findAllPostsForCurrentBlog(
     sortingQueryParams: SortingQueryParams,
     blogId: string,
   ): Promise<AllPostsOutputModel | null> {
@@ -54,6 +54,7 @@ export class PostsService {
       pageSize,
       skip,
     );
+
     const presentationalAllPosts = {
       pagesCount,
       page: Number(pageNumber),

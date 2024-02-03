@@ -107,7 +107,7 @@ export class BlogsController {
     @Param('blogId') blogid: string,
     @Query() sortingQueryParams: SortingQueryParams,
   ): Promise<AllPostsOutputModel | null> {
-    const result = await this.postsService.findAllPosts(
+    const result = await this.postsService.findAllPostsForCurrentBlog(
       sortingQueryParams,
       blogid,
     );

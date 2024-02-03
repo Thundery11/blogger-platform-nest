@@ -14,6 +14,7 @@ import { PostsRepository } from './features/posts/infrastructure/posts.repositor
 import { PostsQueryRepository } from './features/posts/infrastructure/posts.query-repository';
 import { PostsService } from './features/posts/application/posts.service';
 import { PostsController } from './features/posts/api/posts.controller';
+import { Users, UsersSchema } from './features/users/domain/users.entity';
 
 @Module({
   imports: [
@@ -32,6 +33,12 @@ import { PostsController } from './features/posts/api/posts.controller';
       {
         name: Posts.name,
         schema: PostsSchema,
+      },
+    ]),
+    MongooseModule.forFeature([
+      {
+        name: Users.name,
+        schema: UsersSchema,
       },
     ]),
   ],
