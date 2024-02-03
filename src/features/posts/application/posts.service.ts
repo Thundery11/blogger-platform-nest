@@ -112,4 +112,7 @@ export class PostsService {
   ): Promise<boolean> {
     return await this.postsRepository.updatePost(id, postUpdateModel);
   }
+  async deletePost(id: string): Promise<boolean> {
+    return await this.postsRepository.deletePost(id);
+  }
 }

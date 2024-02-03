@@ -45,4 +45,8 @@ export class PostsRepository {
   public async save(post: PostsDocument) {
     await post.save();
   }
+  public async deletePost(id: string): Promise<boolean> {
+    const result = await this.postsModel.deleteOne({ id });
+    return result.deletedCount ? true : false;
+  }
 }

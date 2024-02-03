@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   NotFoundException,
@@ -59,4 +60,13 @@ export class PostsController {
     return result;
   }
   // const post = await this.postsQueryRepository.getCurrentPostByid(id)
+  @Delete(':id')
+  @HttpCode(204)
+  async deletePost(@Param('id') id: string): Promise<boolean> {
+    const result = await this.postsQueryRepository.getCurrentPostByid(id);
+    if (!result) {
+      throw new NotFoundException();
+    }
+    return await this.postsService.deletePost(id);
+  }
 }
