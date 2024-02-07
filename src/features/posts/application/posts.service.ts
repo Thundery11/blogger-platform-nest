@@ -29,7 +29,6 @@ export class PostsService {
     blogId: string,
   ): Promise<AllPostsOutputModel | null> {
     const {
-      searchNameTerm = '',
       sortBy = 'createdAt',
       sortDirection = 'desc',
       pageNumber = 1,

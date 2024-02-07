@@ -15,6 +15,10 @@ import { PostsQueryRepository } from './features/posts/infrastructure/posts.quer
 import { PostsService } from './features/posts/application/posts.service';
 import { PostsController } from './features/posts/api/posts.controller';
 import { Users, UsersSchema } from './features/users/domain/users.entity';
+import { UsersController } from './features/users/api/users.controller';
+import { UsersService } from './features/users/application/users.service';
+import { UsersRepository } from './features/users/infrastructure/users.repository';
+import { UsersQueryRepository } from './features/users/infrastructure/users-query.repository';
 
 @Module({
   imports: [
@@ -47,7 +51,9 @@ import { Users, UsersSchema } from './features/users/domain/users.entity';
     AppController,
     BlogsController,
     PostsController,
+    UsersController,
   ],
+
   providers: [
     AppService,
     BlogsService,
@@ -56,6 +62,9 @@ import { Users, UsersSchema } from './features/users/domain/users.entity';
     PostsRepository,
     PostsQueryRepository,
     PostsService,
+    UsersService,
+    UsersRepository,
+    UsersQueryRepository,
   ],
 })
 export class AppModule {}

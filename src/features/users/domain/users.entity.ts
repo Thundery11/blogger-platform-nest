@@ -10,6 +10,10 @@ export class Users {
   @Prop({ required: true })
   email: string;
   @Prop({ required: true })
+  passwordHash: string;
+  @Prop({ required: true })
+  passwordSalt: string;
+  @Prop({ required: true })
   createdAt: string;
 }
 
