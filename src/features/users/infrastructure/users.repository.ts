@@ -32,4 +32,8 @@ export class UsersRepository {
   public async countDocuments(): Promise<number> {
     return await this.usersModel.countDocuments({});
   }
+  public async deleteUser(userId: string): Promise<boolean> {
+    const result = await this.usersModel.deleteOne({ id: userId });
+    return result.deletedCount ? true : false;
+  }
 }

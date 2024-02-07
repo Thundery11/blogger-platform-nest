@@ -19,7 +19,10 @@ export class PostsRepository {
   async countAllDocumentsForCurrentBlog(blogId: string): Promise<number> {
     return await this.postsModel.countDocuments({ blogId: blogId });
   }
-  public async getAllPosts(
+  async countAllDocuments(): Promise<number> {
+    return await this.postsModel.countDocuments({});
+  }
+  public async getAllPostsForCurrentBlog(
     blogId: string,
     sortBy: string,
     sortDirection: string,
@@ -28,6 +31,20 @@ export class PostsRepository {
   ): Promise<PostOutputModel[]> {
     const posts = await this.postsModel
       .find({ blogId }, { __v: false, _id: false })
+      .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+      .skip(skip)
+      .limit(Number(pageSize))
+      .lean();
+    return posts;
+  }
+  public async getAllPosts(
+    sortBy: string,
+    sortDirection: string,
+    pageSize: number,
+    skip: number,
+  ): Promise<PostOutputModel[]> {
+    const posts = await this.postsModel
+      .find({}, { __v: false, _id: false })
       .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(Number(pageSize))

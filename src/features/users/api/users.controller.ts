@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   NotFoundException,
@@ -43,5 +44,11 @@ export class UsersController {
     @Query() sortingQueryParams: SortingQueryParamsForUsers,
   ): Promise<AllUsersOutputModel> {
     return await this.usersService.getAllUsers(sortingQueryParams);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  async deleteUser(@Param('id') userId: string): Promise<boolean> {
+    return await this.usersService.deleteUser(userId);
   }
 }

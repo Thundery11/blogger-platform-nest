@@ -46,8 +46,39 @@ export class PostsService {
       return null;
     }
 
-    const allPosts = await this.postsRepository.getAllPosts(
+    const allPosts = await this.postsRepository.getAllPostsForCurrentBlog(
       blogId,
+      sortBy,
+      sortDirection,
+      pageSize,
+      skip,
+    );
+
+    const presentationalAllPosts = {
+      pagesCount,
+      page: Number(pageNumber),
+      pageSize: Number(pageSize),
+      totalCount: countedDocuments,
+      items: allPosts,
+    };
+
+    return presentationalAllPosts;
+  }
+  async findAllPosts(
+    sortingQueryParams: SortingQueryParams,
+  ): Promise<AllPostsOutputModel> {
+    const {
+      sortBy = 'createdAt',
+      sortDirection = 'desc',
+      pageNumber = 1,
+      pageSize = 10,
+    } = sortingQueryParams;
+    // const query = {};
+    const skip = (pageNumber - 1) * pageSize;
+    const countedDocuments = await this.postsRepository.countAllDocuments();
+    const pagesCount: number = Math.ceil(countedDocuments / pageSize);
+
+    const allPosts = await this.postsRepository.getAllPosts(
       sortBy,
       sortDirection,
       pageSize,

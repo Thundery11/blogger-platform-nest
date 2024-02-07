@@ -64,6 +64,10 @@ export class UsersService {
     return presentationalUsers;
   }
 
+  async deleteUser(userId: string): Promise<boolean> {
+    return await this.usersRepository.deleteUser(userId);
+  }
+
   async _generateHash(password: string, salt: string) {
     const hash = await bcrypt.hash(password, salt);
     return hash;

@@ -8,15 +8,20 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from '../application/posts.service';
 import { PostsQueryRepository } from '../infrastructure/posts.query-repository';
-import { PostOutputModel } from './models/output/post-output.model';
+import {
+  AllPostsOutputModel,
+  PostOutputModel,
+} from './models/output/post-output.model';
 import {
   PostCreateModel,
   PostCreateModelWithBlogId,
   PostUpdateModel,
 } from './models/input/create-post.input.model';
+import { SortingQueryParamsForPosts } from './models/query/query-for-sorting';
 
 @Controller('posts')
 export class PostsController {
@@ -34,6 +39,23 @@ export class PostsController {
     }
     return result;
   }
+
+  @Get()
+  @HttpCode(200)
+  async findAllPosts(
+    @Query() sortingQueryPosts: SortingQueryParamsForPosts,
+    @Body() blogId: string,
+  ): Promise<AllPostsOutputModel | null> {
+    const result = await this.postsService.findAllPostsForCurrentBlog(
+      sortingQueryPosts,
+      blogId,
+    );
+    if (!result) {
+      throw new NotFoundException();
+    }
+    return result;
+  }
+
   @Post()
   @HttpCode(201)
   async createPost(
