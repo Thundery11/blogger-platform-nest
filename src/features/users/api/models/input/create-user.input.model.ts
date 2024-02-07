@@ -5,7 +5,7 @@ export class UserCreateModel {
   @Trim()
   @IsString()
   @Length(3, 10)
-  @Matches(/^[a-zA-Z0-9_-]*$/)
+  @Matches('^[a-zA-Z0-9_-]*$')
   login: string;
 
   @Trim()
@@ -15,6 +15,6 @@ export class UserCreateModel {
 
   @Trim()
   @IsString()
-  @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+  @Matches('^[w-.]+@([w-]+.)+[w-]{2,4}$')
   email: string;
 }

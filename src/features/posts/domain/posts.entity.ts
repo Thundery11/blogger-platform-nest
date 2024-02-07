@@ -2,31 +2,31 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { PostUpdateModel } from '../api/models/input/create-post.input.model';
 
-@Schema()
-class NewestLikes1 {
-  @Prop()
-  addedAt: string;
-  @Prop()
-  userId: string;
-  @Prop()
-  login: string;
-}
+// @Schema()
+// class NewestLikes1 {
+//   @Prop()
+//   addedAt: string;
+//   @Prop()
+//   userId: string;
+//   @Prop()
+//   login: string;
+// }
 class NewestLikes {
   addedAt: string;
   userId: string;
   login: string;
 }
-@Schema()
-export class ExtendedLikesInfo1 {
-  @Prop({ required: true })
-  likesCount: number;
-  @Prop({ required: true })
-  dislikesCount: number;
-  @Prop({ required: true })
-  myStatus: string;
-  @Prop()
-  newestLikes: NewestLikes[];
-}
+// @Schema()
+// export class ExtendedLikesInfo1 {
+//   @Prop({ required: true })
+//   likesCount: number;
+//   @Prop({ required: true })
+//   dislikesCount: number;
+//   @Prop({ required: true })
+//   myStatus: string;
+//   @Prop()
+//   newestLikes: NewestLikes[];
+// }
 
 export class ExtendedLikesInfo {
   likesCount: number;
