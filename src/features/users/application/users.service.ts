@@ -35,8 +35,8 @@ export class UsersService {
     sortingQueryParams: SortingQueryParamsForUsers,
   ): Promise<AllUsersOutputModel> {
     const {
-      sortBy = 'login',
-      sortDirection = 'asc',
+      sortBy = 'createdAt',
+      sortDirection = 'desc',
       pageNumber = 1,
       pageSize = 10,
       searchLoginTerm = '',
