@@ -39,12 +39,15 @@ export class UsersService {
       sortDirection = 'asc',
       pageNumber = 1,
       pageSize = 10,
-      searchLoginTerm = null,
-      searchEmailTerm = null,
+      searchLoginTerm = '',
+      searchEmailTerm = '',
     } = sortingQueryParams;
 
     const skip = (pageNumber - 1) * pageSize;
-    const countedDocuments = await this.usersRepository.countDocuments();
+    const countedDocuments = await this.usersRepository.countDocuments(
+      searchLoginTerm,
+      searchEmailTerm,
+    );
     const pagesCount: number = Math.ceil(countedDocuments / pageSize);
 
     const users = await this.usersRepository.getAllUsers(

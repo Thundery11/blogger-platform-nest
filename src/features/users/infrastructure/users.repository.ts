@@ -16,8 +16,8 @@ export class UsersRepository {
     sortDirection: string,
     pageSize: number,
     skip: number,
-    searchLoginTerm: string | null,
-    searchEmailTerm: string | null,
+    searchLoginTerm: string,
+    searchEmailTerm: string,
   ): Promise<UsersOutputModel[]> {
     const users = await this.usersModel
       .find(
@@ -36,8 +36,16 @@ export class UsersRepository {
     return users;
   }
 
-  public async countDocuments(): Promise<number> {
-    return await this.usersModel.countDocuments({});
+  public async countDocuments(
+    searchLoginTerm: string,
+    searchEmailTerm: string,
+  ): Promise<number> {
+    return await this.usersModel.countDocuments({
+      $or: [
+        { login: { $regex: searchLoginTerm, $options: 'i' } },
+        { email: { $regex: searchEmailTerm, $options: 'i' } },
+      ],
+    });
   }
   public async deleteUser(id: string): Promise<boolean> {
     const result = await this.usersModel.deleteOne({ id });
