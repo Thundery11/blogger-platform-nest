@@ -64,8 +64,8 @@ export class UsersService {
     return presentationalUsers;
   }
 
-  async deleteUser(userId: string): Promise<boolean> {
-    return await this.usersRepository.deleteUser(userId);
+  async deleteUser(id: string): Promise<boolean> {
+    return await this.usersRepository.deleteUser(id);
   }
 
   async _generateHash(password: string, salt: string) {

@@ -44,12 +44,8 @@ export class PostsController {
   @HttpCode(200)
   async findAllPosts(
     @Query() sortingQueryPosts: SortingQueryParamsForPosts,
-    @Body() blogId: string,
   ): Promise<AllPostsOutputModel | null> {
-    const result = await this.postsService.findAllPostsForCurrentBlog(
-      sortingQueryPosts,
-      blogId,
-    );
+    const result = await this.postsService.findAllPosts(sortingQueryPosts);
     if (!result) {
       throw new NotFoundException();
     }
