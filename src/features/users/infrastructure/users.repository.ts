@@ -16,10 +16,17 @@ export class UsersRepository {
     sortDirection: string,
     pageSize: number,
     skip: number,
+    searchLoginTerm: string | null,
+    searchEmailTerm: string | null,
   ): Promise<UsersOutputModel[]> {
     const users = await this.usersModel
       .find(
-        {},
+        {
+          $or: [
+            { login: { $regex: searchLoginTerm, $options: 'i' } },
+            { email: { $regex: searchEmailTerm, $options: 'i' } },
+          ],
+        },
         { __v: false, _id: false, passwordHash: false, passwordSalt: false },
       )
       .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })

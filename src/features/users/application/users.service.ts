@@ -4,11 +4,8 @@ import { Users, UsersDocument } from '../domain/users.entity';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { UserCreateModel } from '../api/models/input/create-user.input.model';
-import {
-  AllUsersOutputModel,
-  UsersOutputModel,
-} from '../api/models/output/user-output.model';
-import { SortingQueryParams } from '../../blogs/api/models/query/query-for-sorting';
+import { AllUsersOutputModel } from '../api/models/output/user-output.model';
+import { SortingQueryParamsForUsers } from '../api/models/query/query-for-sorting';
 
 @Injectable()
 export class UsersService {
@@ -35,13 +32,15 @@ export class UsersService {
   }
 
   async getAllUsers(
-    sortingQueryParams: SortingQueryParams,
+    sortingQueryParams: SortingQueryParamsForUsers,
   ): Promise<AllUsersOutputModel> {
     const {
-      sortBy = 'createdAt',
-      sortDirection = 'desc',
+      sortBy = 'login',
+      sortDirection = 'asc',
       pageNumber = 1,
       pageSize = 10,
+      searchLoginTerm = null,
+      searchEmailTerm = null,
     } = sortingQueryParams;
 
     const skip = (pageNumber - 1) * pageSize;
@@ -53,6 +52,8 @@ export class UsersService {
       sortDirection,
       pageSize,
       skip,
+      searchLoginTerm,
+      searchEmailTerm,
     );
     const presentationalUsers = {
       pagesCount,
