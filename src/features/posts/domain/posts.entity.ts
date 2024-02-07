@@ -3,7 +3,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { PostUpdateModel } from '../api/models/input/create-post.input.model';
 
 @Schema()
-class NewestLikes {
+class NewestLikes1 {
   @Prop()
   addedAt: string;
   @Prop()
@@ -11,9 +11,13 @@ class NewestLikes {
   @Prop()
   login: string;
 }
-
+class NewestLikes {
+  addedAt: string;
+  userId: string;
+  login: string;
+}
 @Schema()
-export class ExtendedLikesInfo {
+export class ExtendedLikesInfo1 {
   @Prop({ required: true })
   likesCount: number;
   @Prop({ required: true })
@@ -21,6 +25,13 @@ export class ExtendedLikesInfo {
   @Prop({ required: true })
   myStatus: string;
   @Prop()
+  newestLikes: NewestLikes[];
+}
+
+export class ExtendedLikesInfo {
+  likesCount: number;
+  dislikesCount: number;
+  myStatus: string;
   newestLikes: NewestLikes[];
 }
 //perepisat posmotret video dimycha mongo with nest
@@ -42,6 +53,7 @@ export class Posts {
   createdAt: string;
   @Prop()
   extendedLikesInfo: ExtendedLikesInfo;
+  // extendedLikesInfo: ExtendedLikesInfo;
 
   updatePost(postUpdateModel: PostUpdateModel) {
     if (postUpdateModel.content.length > 1000) {
