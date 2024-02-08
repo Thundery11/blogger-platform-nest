@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './infrastucture/exception-filters/exception.filter';
 // import { applyAppSettings, setAppPipes } from './settings/apply.app.settings';
 
 async function bootstrap() {
@@ -16,7 +17,25 @@ async function bootstrap() {
   //   .build();
   // const document = SwaggerModule.createDocument(app, config);
   // SwaggerModule.setup('api', app, document);
-  // app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      stopAtFirstError: false,
+      exceptionFactory: (errors) => {
+        const errorsForResponse: { message: string; field: string }[] = [];
+        errors.forEach((e) => {
+          const constraintsKeys = Object.keys(e.constraints!);
+          constraintsKeys.forEach((cKey) => {
+            errorsForResponse.push({
+              message: e.constraints![cKey],
+              field: e.property,
+            });
+          });
+        });
+        throw new BadRequestException(errorsForResponse);
+      },
+    }),
+  );
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 bootstrap();

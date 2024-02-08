@@ -11,11 +11,16 @@ import { PostUpdateModel } from '../api/models/input/create-post.input.model';
 //   @Prop()
 //   login: string;
 // }
+@Schema({ _id: false })
 class NewestLikes {
+  @Prop()
   addedAt: string;
+  @Prop()
   userId: string;
+  @Prop()
   login: string;
 }
+const NewestLikesSchema = SchemaFactory.createForClass(NewestLikes);
 // @Schema()
 // export class ExtendedLikesInfo1 {
 //   @Prop({ required: true })
@@ -27,14 +32,19 @@ class NewestLikes {
 //   @Prop()
 //   newestLikes: NewestLikes[];
 // }
-
+@Schema({ _id: false })
 export class ExtendedLikesInfo {
+  @Prop({ required: true })
   likesCount: number;
+  @Prop({ required: true })
   dislikesCount: number;
+  @Prop({ required: true })
   myStatus: string;
+  @Prop({ default: [] })
   newestLikes: NewestLikes[];
 }
-//perepisat posmotret video dimycha mongo with nest
+const ExtendedLikesInfoSchema = SchemaFactory.createForClass(ExtendedLikesInfo);
+
 @Schema()
 export class Posts {
   @Prop({ required: true })
@@ -51,7 +61,7 @@ export class Posts {
   blogName: string;
   @Prop({ required: true })
   createdAt: string;
-  @Prop()
+  @Prop({ required: true, type: ExtendedLikesInfoSchema })
   extendedLikesInfo: ExtendedLikesInfo;
   // extendedLikesInfo: ExtendedLikesInfo;
 
@@ -101,7 +111,6 @@ export class Posts {
 //     },
 //   ],
 // },
-
 export type PostsDocument = HydratedDocument<Posts>;
 export const PostsSchema = SchemaFactory.createForClass(Posts);
 PostsSchema.methods = {

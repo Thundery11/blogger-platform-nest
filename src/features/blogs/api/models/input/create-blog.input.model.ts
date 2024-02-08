@@ -4,17 +4,17 @@ import { Trim } from '../../../../../infrastucture/decorators/transform/trim';
 export class BlogsCreateModel {
   @Trim()
   @IsString()
-  @MaxLength(15, { message: 'Length not correct' })
+  @MaxLength(15)
   name: string;
 
   @Trim()
   @IsString()
-  @MaxLength(500, { message: 'Length not correct' })
+  @MaxLength(500)
   description: string;
 
   @Trim()
   @IsString()
-  @MaxLength(15, { message: 'Length not correct' })
+  @MaxLength(100)
   @Matches('^https://([a-zA-Z0-9_-]+.)+[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*/?$')
   websiteUrl: string;
 }
