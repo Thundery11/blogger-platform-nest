@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
-import { BlogsDocument } from '../domain/blogs.entity';
-import { Types } from 'mongoose';
+import { Blogs, BlogsDocument, BlogsModelType } from '../domain/blogs.entity';
+import { Model, Types } from 'mongoose';
 import { BlogsCreateModel } from '../api/models/input/create-blog.input.model';
 import { SortingQueryParams } from '../api/models/query/query-for-sorting';
 import { AllBlogsOutputModel } from '../api/models/output/blog.output.model';
@@ -13,6 +13,7 @@ import {
   PostsDocument,
 } from '../../../features/posts/domain/posts.entity';
 import { PostsRepository } from '../../../features/posts/infrastructure/posts.repository';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class BlogsService {
@@ -20,19 +21,20 @@ export class BlogsService {
     private blogsRepository: BlogsRepository,
     private blogsQueryRepository: BlogsQueryRepository,
     private postsRepository: PostsRepository,
+    @InjectModel(Blogs.name) private blogsModel: BlogsModelType,
   ) {}
 
   async createBlog(blogsCreateModel: BlogsCreateModel): Promise<BlogsDocument> {
-    const createdAt = new Date();
+    const createdAt = new Date().toISOString();
     const id = new Types.ObjectId().toString();
-    const newBlog = {
-      id: id,
-      name: blogsCreateModel.name,
-      description: blogsCreateModel.description,
-      websiteUrl: blogsCreateModel.websiteUrl,
-      createdAt: createdAt.toISOString(),
-      isMembership: false,
-    };
+    const isMembership = false;
+    const newBlog = this.blogsModel.createBlog(
+      blogsCreateModel,
+      createdAt,
+      id,
+      isMembership,
+    );
+
     return await this.blogsRepository.createBlog(newBlog);
   }
 
