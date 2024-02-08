@@ -6,8 +6,8 @@ export type BlogsModelType = Model<BlogsDocument> & typeof statics;
 
 @Schema()
 export class Blogs {
-  @Prop({ required: true })
-  id: string;
+  // @Prop()
+  // id: string;
   @Prop({ required: true })
   name: string;
   @Prop({ required: true })
@@ -21,11 +21,11 @@ export class Blogs {
   static createBlog(
     blogsCreateModel: BlogsCreateModel,
     createdAt: string,
-    id: string,
+
     isMembership: boolean,
-  ): Blogs {
+  ) {
     const blog = new this();
-    blog.id = id;
+
     blog.name = blogsCreateModel.name;
     blog.description = blogsCreateModel.description;
     blog.websiteUrl = blogsCreateModel.websiteUrl;

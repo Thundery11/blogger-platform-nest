@@ -17,6 +17,7 @@ import {
   PostsDocument,
 } from '../domain/posts.entity';
 import { Types } from 'mongoose';
+import { Type } from 'class-transformer';
 
 @Injectable()
 export class PostsService {
@@ -40,8 +41,9 @@ export class PostsService {
       await this.postsRepository.countAllDocumentsForCurrentBlog(blogId);
     const pagesCount: number = Math.ceil(countedDocuments / pageSize);
 
-    const isBlogExist =
-      await this.blogsQueryRepository.getCurrentBlogById(blogId);
+    const isBlogExist = await this.blogsQueryRepository.getBlogById(
+      new Types.ObjectId(blogId),
+    );
     if (!isBlogExist) {
       return null;
     }
@@ -101,8 +103,9 @@ export class PostsService {
     const { title, shortDescription, content, blogId } =
       postCreateModelWithBlogId;
 
-    const isBlogExist =
-      await this.blogsQueryRepository.getCurrentBlogById(blogId);
+    const isBlogExist = await this.blogsQueryRepository.getBlogById(
+      new Types.ObjectId(blogId),
+    );
     if (!isBlogExist) {
       return null;
     }

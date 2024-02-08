@@ -26,12 +26,10 @@ export class BlogsService {
 
   async createBlog(blogsCreateModel: BlogsCreateModel): Promise<BlogsDocument> {
     const createdAt = new Date().toISOString();
-    const id = new Types.ObjectId().toString();
     const isMembership = false;
     const newBlog = this.blogsModel.createBlog(
       blogsCreateModel,
       createdAt,
-      id,
       isMembership,
     );
 
@@ -84,8 +82,9 @@ export class BlogsService {
     postCreateModel: PostCreateModel,
     blogId: string,
   ): Promise<PostsDocument | null> {
-    const isBlogExist =
-      await this.blogsQueryRepository.getCurrentBlogById(blogId);
+    const isBlogExist = await this.blogsQueryRepository.getBlogById(
+      new Types.ObjectId(blogId),
+    );
     if (!isBlogExist) {
       return null;
     }

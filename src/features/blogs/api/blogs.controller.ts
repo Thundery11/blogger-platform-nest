@@ -26,6 +26,7 @@ import {
   AllPostsOutputModel,
   PostOutputModel,
 } from '../../posts/api/models/output/post-output.model';
+import { Types } from 'mongoose';
 
 @ApiTags('Blogs')
 @Controller('blogs')
@@ -49,7 +50,9 @@ export class BlogsController {
   @Get(':id')
   @HttpCode(200)
   async findBlog(@Param('id') id: string): Promise<BlogsOutputModel> {
-    const blog = await this.blogsQueryRepository.getCurrentBlogById(id);
+    const blog = await this.blogsQueryRepository.getBlogById(
+      new Types.ObjectId(id),
+    );
 
     return blog;
   }

@@ -19,16 +19,17 @@ export class BlogsQueryRepository {
     }
     return BlogsOutputMapper(blog);
   }
-  public async getCurrentBlogById(id: string): Promise<BlogsOutputModel> {
-    const blog = await this.blogsModel.findOne(
-      { id },
-      {
-        _v: false,
-      },
-    );
-    if (!blog) {
-      throw new NotFoundException();
-    }
-    return BlogsOutputMapper(blog);
-  }
+
+  // public async getCurrentBlogById(id: string): Promise<BlogsOutputModel> {
+  //   const blog = await this.blogsModel.findOne(
+  //     { id },
+  //     {
+  //       _v: false,
+  //     },
+  //   );
+  //   if (!blog) {
+  //     throw new NotFoundException();
+  //   }
+  //   return BlogsOutputMapper(blog);
+  // }
 }

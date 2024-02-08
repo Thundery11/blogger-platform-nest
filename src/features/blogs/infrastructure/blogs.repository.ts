@@ -2,7 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blogs, BlogsDocument } from '../domain/blogs.entity';
 import { Model } from 'mongoose';
-import { BlogsOutputModel } from '../api/models/output/blog.output.model';
+import {
+  BlogsOutputModel,
+  allBlogsOutputMapper,
+} from '../api/models/output/blog.output.model';
 import { BlogsCreateModel } from '../api/models/input/create-blog.input.model';
 
 @Injectable()
@@ -26,12 +29,11 @@ export class BlogsRepository {
     skip: number,
   ): Promise<BlogsOutputModel[]> {
     const blogs = await this.blogsModel
-      .find(query, { _id: 0, __v: 0 })
+      .find(query, { __v: 0 })
       .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
-      .limit(Number(pageSize))
-      .lean();
-    return blogs;
+      .limit(Number(pageSize));
+    return allBlogsOutputMapper(blogs);
   }
 
   public async updateBlog(

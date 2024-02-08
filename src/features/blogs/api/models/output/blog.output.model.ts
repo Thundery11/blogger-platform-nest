@@ -18,7 +18,7 @@ export class AllBlogsOutputModel {
 
 export const BlogsOutputMapper = (blog: BlogsDocument): BlogsOutputModel => {
   const outputModel = new BlogsOutputModel();
-  outputModel.id = blog.id;
+  outputModel.id = blog._id.toString();
   outputModel.name = blog.name;
   outputModel.description = blog.description;
   outputModel.websiteUrl = blog.websiteUrl;
@@ -27,19 +27,14 @@ export const BlogsOutputMapper = (blog: BlogsDocument): BlogsOutputModel => {
   return outputModel;
 };
 
-export const allBlogsOutputMapper = (
-  blogs: BlogsOutputModel[],
-  pagesCount: number,
-  pageNumber: number,
-  pageSize: number,
-  countDocuments: number,
-) => {
-  const allBlogsOutput = {
-    pagesCount,
-    page: Number(pageNumber),
-    pageSize: Number(pageSize),
-    totalCount: countDocuments,
-    items: blogs,
-  };
+export const allBlogsOutputMapper = (blogs: BlogsDocument[]) => {
+  const allBlogsOutput = blogs.map((blog) => ({
+    id: blog._id.toString(),
+    name: blog.name,
+    description: blog.description,
+    websiteUrl: blog.websiteUrl,
+    createdAt: blog.createdAt,
+    isMembership: blog.isMembership,
+  }));
   return allBlogsOutput;
 };
