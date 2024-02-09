@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BlogsService } from '../application/blogs.service';
@@ -27,8 +28,10 @@ import {
   PostOutputModel,
 } from '../../posts/api/models/output/post-output.model';
 import { Types } from 'mongoose';
+import { AuthGuard } from '../../../infrastucture/guards/auth.guard';
 
 @ApiTags('Blogs')
+// @UseGuards(AuthGuard)
 @Controller('blogs')
 export class BlogsController {
   constructor(
