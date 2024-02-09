@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Users, UsersDocument } from '../domain/users.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UsersOutputModel } from '../api/models/output/user-output.model';
+import {
+  UsersOutputModel,
+  allUsersOutputMapper,
+} from '../api/models/output/user-output.model';
 
 @Injectable()
 export class UsersRepository {
@@ -27,13 +30,13 @@ export class UsersRepository {
             { email: { $regex: searchEmailTerm, $options: 'i' } },
           ],
         },
-        { __v: false, _id: false, passwordHash: false, passwordSalt: false },
+        { __v: false, passwordHash: false, passwordSalt: false },
       )
       .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
-      .limit(Number(pageSize))
-      .lean();
-    return users;
+      .limit(Number(pageSize));
+
+    return allUsersOutputMapper(users);
   }
 
   public async countDocuments(

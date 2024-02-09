@@ -17,9 +17,21 @@ export class AllUsersOutputModel {
 
 export const usersOutputMapper = (user: UsersDocument): UsersOutputModel => {
   const outputModel = new UsersOutputModel();
-  outputModel.id = user.id;
+  outputModel.id = user._id.toString();
   outputModel.login = user.login;
   outputModel.email = user.email;
   outputModel.createdAt = user.createdAt;
   return outputModel;
+};
+
+export const allUsersOutputMapper = (
+  users: UsersDocument[],
+): UsersOutputModel[] => {
+  const allUsersOutput = users.map((user) => ({
+    id: user._id.toString(),
+    login: user.login,
+    email: user.email,
+    createdAt: user.createdAt,
+  }));
+  return allUsersOutput;
 };

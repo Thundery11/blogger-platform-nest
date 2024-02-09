@@ -27,7 +27,9 @@ export const BlogsOutputMapper = (blog: BlogsDocument): BlogsOutputModel => {
   return outputModel;
 };
 
-export const allBlogsOutputMapper = (blogs: BlogsDocument[]) => {
+export const allBlogsOutputMapper = (
+  blogs: BlogsDocument[],
+): BlogsOutputModel[] => {
   const allBlogsOutput = blogs.map((blog) => ({
     id: blog._id.toString(),
     name: blog.name,

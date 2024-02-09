@@ -6,8 +6,6 @@ export type BlogsModelType = Model<BlogsDocument> & typeof statics;
 
 @Schema()
 export class Blogs {
-  // @Prop()
-  // id: string;
   @Prop({ required: true })
   name: string;
   @Prop({ required: true })

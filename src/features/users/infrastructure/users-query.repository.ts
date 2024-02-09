@@ -13,7 +13,6 @@ export class UsersQueryRepository {
   async getUserById(usersId: Types.ObjectId): Promise<UsersOutputModel> {
     const user = await this.usersModel.findById(usersId, {
       _v: false,
-      _id: false,
     });
     if (!user) {
       throw new NotFoundException();

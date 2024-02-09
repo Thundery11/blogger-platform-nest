@@ -1,33 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { UsersRepository } from '../infrastructure/users.repository';
-import { Users, UsersDocument } from '../domain/users.entity';
+import { Users, UsersDocument, UsersModelType } from '../domain/users.entity';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { UserCreateModel } from '../api/models/input/create-user.input.model';
 import { AllUsersOutputModel } from '../api/models/output/user-output.model';
 import { SortingQueryParamsForUsers } from '../api/models/query/query-for-sorting';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    @InjectModel(Users.name) private usersModel: UsersModelType,
+  ) {}
 
   async createSuperadminUser(
     userCreateModel: UserCreateModel,
   ): Promise<UsersDocument> {
     const createdAt = new Date().toISOString();
-    const id = new Types.ObjectId().toString();
     const passwordSalt = await bcrypt.genSalt(10);
     const passwordHash = await this._generateHash(
       userCreateModel.password,
       passwordSalt,
     );
-    const user = new Users();
-    user.createdAt = createdAt;
-    user.email = userCreateModel.email;
-    user.id = id;
-    user.login = userCreateModel.login;
-    user.passwordHash = passwordHash;
-    user.passwordSalt = passwordSalt;
+    const user = this.usersModel.createUser(
+      userCreateModel,
+      createdAt,
+      passwordHash,
+      passwordSalt,
+    );
     return await this.usersRepository.createSuperadminUser(user);
   }
 
