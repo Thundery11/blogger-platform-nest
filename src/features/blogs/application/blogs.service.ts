@@ -100,7 +100,6 @@ export class BlogsService {
     extendedLikesInfo.newestLikes = [];
 
     const newPost = new Posts();
-    newPost.id = id;
     newPost.title = title;
     newPost.shortDescription = shortDescription;
     newPost.content = content;

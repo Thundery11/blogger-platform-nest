@@ -1,6 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { PostUpdateModel } from '../api/models/input/create-post.input.model';
+import {
+  PostCreateModel,
+  PostUpdateModel,
+} from '../api/models/input/create-post.input.model';
 
 // @Schema()
 // class NewestLikes1 {
@@ -48,8 +51,6 @@ const ExtendedLikesInfoSchema = SchemaFactory.createForClass(ExtendedLikesInfo);
 @Schema()
 export class Posts {
   @Prop({ required: true })
-  id: string;
-  @Prop({ required: true })
   title: string;
   @Prop({ required: true })
   shortDescription: string;
@@ -63,7 +64,8 @@ export class Posts {
   createdAt: string;
   @Prop({ required: true, type: ExtendedLikesInfoSchema })
   extendedLikesInfo: ExtendedLikesInfo;
-  // extendedLikesInfo: ExtendedLikesInfo;
+
+  static createPost(postCreateModel: PostCreateModel) {}
 
   updatePost(postUpdateModel: PostUpdateModel) {
     if (postUpdateModel.content.length > 1000) {
@@ -73,11 +75,12 @@ export class Posts {
     if (postUpdateModel.shortDescription.length > 100) {
       throw new Error('Your content is too long');
     }
-    this.shortDescription = postUpdateModel.title;
+    this.shortDescription = postUpdateModel.shortDescription;
     if (postUpdateModel.title.length > 30) {
       throw new Error('Your content is too long');
     }
     this.title = postUpdateModel.title;
+
     this.blogId = postUpdateModel.blogId;
   }
 }

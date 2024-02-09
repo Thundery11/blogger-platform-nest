@@ -15,7 +15,6 @@ export class PostsQueryRepository {
   public async getPostById(postId: Types.ObjectId): Promise<PostOutputModel> {
     const post = await this.postsModel.findById(postId, {
       _v: false,
-      _id: false,
     });
     if (!post) {
       throw new NotFoundException();

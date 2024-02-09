@@ -42,17 +42,17 @@ export class PostCreateModelWithBlogId {
 export class PostUpdateModel {
   @Trim()
   @IsString()
-  @MaxLength(30, { message: 'Length not correct' })
+  @MaxLength(30)
   title: string;
 
   @Trim()
   @IsString()
-  @MaxLength(100, { message: 'Length not correct' })
+  @MaxLength(100)
   shortDescription: string;
 
   @Trim()
   @IsString()
-  @MaxLength(1000, { message: 'Length not correct' })
+  @MaxLength(1000)
   content: string;
 
   @Trim()

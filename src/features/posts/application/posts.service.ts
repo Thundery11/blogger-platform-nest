@@ -111,8 +111,6 @@ export class PostsService {
     }
 
     const createdAt = new Date().toISOString();
-    const id = new Types.ObjectId().toString();
-
     const extendedLikesInfo = new ExtendedLikesInfo();
     extendedLikesInfo.likesCount = 0;
     extendedLikesInfo.dislikesCount = 0;
@@ -120,7 +118,6 @@ export class PostsService {
     extendedLikesInfo.newestLikes = [];
 
     const newPost = new Posts();
-    newPost.id = id;
     newPost.title = title;
     newPost.shortDescription = shortDescription;
     newPost.content = content;
@@ -144,7 +141,11 @@ export class PostsService {
     id: string,
     postUpdateModel: PostUpdateModel,
   ): Promise<boolean> {
-    return await this.postsRepository.updatePost(id, postUpdateModel);
+    const post = await this.postsRepository.getPostById(new Types.ObjectId(id));
+    post.updatePost(postUpdateModel);
+    await this.postsRepository.save(post);
+    return true;
+    // return await this.postsRepository.updatePost(id, postUpdateModel);
   }
   async deletePost(id: string): Promise<boolean> {
     return await this.postsRepository.deletePost(id);

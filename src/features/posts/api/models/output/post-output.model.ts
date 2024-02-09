@@ -45,7 +45,7 @@ export const postsOutputMapperFinally = (
   console.log(post);
 
   const outputModel = new PostOutputModel(
-    post.id,
+    (post.id = post._id.toString()),
     post.title,
     post.shortDescription,
     post.content,
@@ -54,19 +54,6 @@ export const postsOutputMapperFinally = (
     post.createdAt,
     ExtendedLikesInfo.getDefault(),
   );
-  // outputModel.id = post.id;
-  // outputModel.title = post.title;
-  // outputModel.shortDescription = post.shortDescription;
-  // outputModel.content = post.content;
-  // outputModel.blogId = post.blogId;
-  // outputModel.blogName = post.blogName;
-  // outputModel.createdAt = post.createdAt;
-  // outputModel.extendedLikesInfo.likesCount = post.extendedLikesInfo.likesCount;
-  // outputModel.extendedLikesInfo.dislikesCount =
-  //   post.extendedLikesInfo.dislikesCount;
-  // outputModel.extendedLikesInfo.myStatus = post.extendedLikesInfo.myStatus;
-  // outputModel.extendedLikesInfo.newestLikes =
-  //   post.extendedLikesInfo.newestLikes;
 
   return outputModel;
 };
@@ -78,3 +65,24 @@ export class AllPostsOutputModel {
   totalCount: number;
   items: PostOutputModel[];
 }
+
+export const allPostsOutputMapper = (
+  posts: PostsDocument[],
+): PostOutputModel[] => {
+  const allPostsOutput = posts.map((post) => ({
+    id: post._id.toString(),
+    title: post.title,
+    shortDescription: post.shortDescription,
+    content: post.content,
+    blogId: post.blogId,
+    blogName: post.blogName,
+    createdAt: post.createdAt,
+    extendedLikesInfo: {
+      likesCount: post.extendedLikesInfo.likesCount,
+      dislikesCount: post.extendedLikesInfo.dislikesCount,
+      myStatus: post.extendedLikesInfo.myStatus,
+      newestLikes: post.extendedLikesInfo.newestLikes,
+    },
+  }));
+  return allPostsOutput;
+};

@@ -22,6 +22,7 @@ import {
   PostUpdateModel,
 } from './models/input/create-post.input.model';
 import { SortingQueryParamsForPosts } from './models/query/query-for-sorting';
+import { Types } from 'mongoose';
 
 @Controller('posts')
 export class PostsController {
@@ -33,7 +34,9 @@ export class PostsController {
   @Get(':id')
   @HttpCode(200)
   async findPost(@Param('id') id: string): Promise<PostOutputModel | null> {
-    const result = await this.postsQueryRepository.getCurrentPostByid(id);
+    const result = await this.postsQueryRepository.getPostById(
+      new Types.ObjectId(id),
+    );
     if (!result) {
       throw new NotFoundException();
     }
