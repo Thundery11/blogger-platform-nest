@@ -1,78 +1,83 @@
-import { config } from 'dotenv';
+// import { config } from 'dotenv';
 
-config();
+// config();
 
-export type EnvironmentVariable = { [key: string]: string | undefined };
-export type EnvironmentsTypes =
-  | 'DEVELOPMENT'
-  | 'STAGING'
-  | 'PRODUCTION'
-  | 'TESTING';
-export const Environments = ['DEVELOPMENT', 'STAGING', 'PRODUCTION', 'TESTING'];
+// export type EnvironmentVariable = { [key: string]: string | undefined };
+// export type EnvironmentsTypes =
+//   | 'DEVELOPMENT'
+//   | 'STAGING'
+//   | 'PRODUCTION'
+//   | 'TESTING';
+// export const Environments = ['DEVELOPMENT', 'STAGING', 'PRODUCTION', 'TESTING'];
 
-export class EnvironmentSettings {
-  constructor(private env: EnvironmentsTypes) {}
+// export class EnvironmentSettings {
+//   constructor(private env: EnvironmentsTypes) {}
 
-  getEnv() {
-    return this.env;
-  }
+//   getEnv() {
+//     return this.env;
+//   }
 
-  isProduction() {
-    return this.env === 'PRODUCTION';
-  }
+//   isProduction() {
+//     return this.env === 'PRODUCTION';
+//   }
 
-  isStaging() {
-    return this.env === 'STAGING';
-  }
+//   isStaging() {
+//     return this.env === 'STAGING';
+//   }
 
-  isDevelopment() {
-    return this.env === 'DEVELOPMENT';
-  }
+//   isDevelopment() {
+//     return this.env === 'DEVELOPMENT';
+//   }
 
-  isTesting() {
-    return this.env === 'TESTING';
-  }
-}
+//   isTesting() {
+//     return this.env === 'TESTING';
+//   }
+// }
 
-class AppSettings {
-  constructor(
-    public env: EnvironmentSettings,
-    public api: APISettings,
-  ) {}
-}
+// class AppSettings {
+//   constructor(
+//     public env: EnvironmentSettings,
+//     public api: APISettings,
+//   ) {}
+// }
 
-class APISettings {
-  // Application
-  public readonly APP_PORT: number;
+// class APISettings {
+//   // Application
+//   public readonly APP_PORT: number;
 
-  // Database
-  public readonly MONGO_CONNECTION_URI: string;
+//   // Database
+//   public readonly MONGO_CONNECTION_URI: string;
 
-  constructor(private readonly envVariables: EnvironmentVariable) {
-    // Application
-    this.APP_PORT = this.getNumberOrDefault(envVariables.APP_PORT!, 7840);
+//   constructor(private readonly envVariables: EnvironmentVariable) {
+//     // Application
+//     this.APP_PORT = this.getNumberOrDefault(envVariables.APP_PORT!, 7840);
 
-    // Database
-    this.MONGO_CONNECTION_URI =
-      envVariables.MONGO_CONNECTION_URI ?? 'mongodb://localhost/nest';
-  }
+//     // Database
+//     this.MONGO_CONNECTION_URI =
+//       envVariables.MONGO_CONNECTION_URI ?? 'mongodb://localhost/nest';
+//   }
 
-  private getNumberOrDefault(value: string, defaultValue: number): number {
-    const parsedValue = Number(value);
+//   private getNumberOrDefault(value: string, defaultValue: number): number {
+//     const parsedValue = Number(value);
 
-    if (isNaN(parsedValue)) {
-      return defaultValue;
-    }
+//     if (isNaN(parsedValue)) {
+//       return defaultValue;
+//     }
 
-    return parsedValue;
-  }
-}
+//     return parsedValue;
+//   }
+// }
 
-const env = new EnvironmentSettings(
-  (Environments.includes(process.env.ENV!.trim())
-    ? process.env.ENV!.trim()
-    : 'DEVELOPMENT') as EnvironmentsTypes,
-);
+// const env = new EnvironmentSettings(
+//   (Environments.includes(process.env.ENV!.trim())
+//     ? process.env.ENV!.trim()
+//     : 'DEVELOPMENT') as EnvironmentsTypes,
+// );
 
-const api = new APISettings(process.env);
-export const appSettings = new AppSettings(env, api);
+// const api = new APISettings(process.env);
+// export const appSettings = new AppSettings(env, api);
+
+export const jwtConstants = {
+  JWT_SECRET: process.env.JWT_SECRET || '123',
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_SECRET || '234',
+};

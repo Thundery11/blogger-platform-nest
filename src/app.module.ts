@@ -19,10 +19,21 @@ import { UsersController } from './features/users/api/users.controller';
 import { UsersService } from './features/users/application/users.service';
 import { UsersRepository } from './features/users/infrastructure/users.repository';
 import { UsersQueryRepository } from './features/users/infrastructure/users-query.repository';
+import { AuthModule } from './features/auth/module/auth.module';
+import { UsersModule } from './features/users/module/users.module';
 
 @Module({
   imports: [
+    AuthModule,
+    UsersModule,
     ConfigModule.forRoot(),
+    //как правильно импортировать МОДЕЛИ? можно ли их импортировать в разные модули
+    MongooseModule.forFeature([
+      {
+        name: Users.name,
+        schema: UsersSchema,
+      },
+    ]),
     MongooseModule.forRoot(process.env.MONGO_URL!, {
       dbName: 'blogger-platform-nest',
     }),
@@ -39,19 +50,12 @@ import { UsersQueryRepository } from './features/users/infrastructure/users-quer
         schema: PostsSchema,
       },
     ]),
-    MongooseModule.forFeature([
-      {
-        name: Users.name,
-        schema: UsersSchema,
-      },
-    ]),
   ],
   controllers: [
     TestingAllDataController,
     AppController,
     BlogsController,
     PostsController,
-    UsersController,
   ],
 
   providers: [
@@ -62,9 +66,6 @@ import { UsersQueryRepository } from './features/users/infrastructure/users-quer
     PostsRepository,
     PostsQueryRepository,
     PostsService,
-    UsersService,
-    UsersRepository,
-    UsersQueryRepository,
   ],
 })
 export class AppModule {}

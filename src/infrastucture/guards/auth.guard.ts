@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { BlogsService } from '../../features/blogs/application/blogs.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(protected blogsServise: BlogsService) {}
+  constructor() {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
