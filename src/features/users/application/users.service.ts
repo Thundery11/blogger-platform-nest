@@ -69,7 +69,9 @@ export class UsersService {
     };
     return presentationalUsers;
   }
-
+  async findUserByLogin(login: string): Promise<UsersDocument | null> {
+    return await this.usersRepository.findUserByLogin(login);
+  }
   async deleteUser(id: string): Promise<boolean> {
     return await this.usersRepository.deleteUser(id);
   }

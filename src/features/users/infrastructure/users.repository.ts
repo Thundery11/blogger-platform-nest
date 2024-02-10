@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Users, UsersDocument } from '../domain/users.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   UsersOutputModel,
   allUsersOutputMapper,
@@ -53,5 +53,12 @@ export class UsersRepository {
   public async deleteUser(id: string): Promise<boolean> {
     const result = await this.usersModel.deleteOne({ id });
     return result.deletedCount ? true : false;
+  }
+  async findUserByLogin(login: string): Promise<UsersDocument | null> {
+    const user = await this.usersModel.findOne({ login });
+    if (!user) {
+      return null;
+    }
+    return user;
   }
 }
