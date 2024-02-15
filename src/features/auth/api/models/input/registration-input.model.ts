@@ -14,7 +14,6 @@ export class RegistrationInputModel {
   password: string;
 
   @Trim()
-  @IsEmail()
   @IsString()
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
   email: string;
