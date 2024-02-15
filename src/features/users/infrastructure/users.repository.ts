@@ -35,7 +35,7 @@ export class UsersRepository {
         },
         { __v: false, passwordHash: false, passwordSalt: false },
       )
-      .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+      .sort({ ['accountData.createdAt']: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(Number(pageSize));
 
