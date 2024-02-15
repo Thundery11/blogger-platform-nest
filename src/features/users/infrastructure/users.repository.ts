@@ -3,8 +3,11 @@ import { Users, UsersDocument } from '../domain/users.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
+  UserInfoAboutHimselfModel,
   UsersOutputModel,
   allUsersOutputMapper,
+  userInfoAboutHimselfMapper,
+  usersOutputMapper,
 } from '../api/models/output/user-output.model';
 
 @Injectable()
@@ -54,11 +57,28 @@ export class UsersRepository {
     const result = await this.usersModel.deleteOne({ id });
     return result.deletedCount ? true : false;
   }
-  async findUserByLogin(login: string): Promise<UsersDocument | null> {
-    const user = await this.usersModel.findOne({ login });
+  async findUserByLogin(loginOrEmail: string): Promise<UsersDocument | null> {
+    const user = await this.usersModel.findOne({
+      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
+    });
     if (!user) {
       return null;
     }
     return user;
+  }
+  async findUserById(
+    currentUserId: string,
+  ): Promise<UserInfoAboutHimselfModel | null> {
+    const user = await this.usersModel.findById(
+      new Types.ObjectId(currentUserId),
+      {
+        _v: false,
+      },
+    );
+    if (!user) {
+      return null;
+    }
+    console.log('user', user);
+    return userInfoAboutHimselfMapper(user);
   }
 }

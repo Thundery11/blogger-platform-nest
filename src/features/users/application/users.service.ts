@@ -4,7 +4,11 @@ import { Users, UsersDocument, UsersModelType } from '../domain/users.entity';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { UserCreateModel } from '../api/models/input/create-user.input.model';
-import { AllUsersOutputModel } from '../api/models/output/user-output.model';
+import {
+  AllUsersOutputModel,
+  UserInfoAboutHimselfModel,
+  UsersOutputModel,
+} from '../api/models/output/user-output.model';
 import { SortingQueryParamsForUsers } from '../api/models/query/query-for-sorting';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -69,8 +73,10 @@ export class UsersService {
     };
     return presentationalUsers;
   }
-  async findUserByLogin(login: string): Promise<UsersDocument | null> {
-    return await this.usersRepository.findUserByLogin(login);
+  async findUserByLoginOrEmail(
+    loginOrEmail: string,
+  ): Promise<UsersDocument | null> {
+    return await this.usersRepository.findUserByLogin(loginOrEmail);
   }
   async deleteUser(id: string): Promise<boolean> {
     return await this.usersRepository.deleteUser(id);
@@ -79,5 +85,10 @@ export class UsersService {
   async _generateHash(password: string, salt: string) {
     const hash = await bcrypt.hash(password, salt);
     return hash;
+  }
+  async findUserById(
+    currentUserId: string,
+  ): Promise<UserInfoAboutHimselfModel | null> {
+    return await this.usersRepository.findUserById(currentUserId);
   }
 }

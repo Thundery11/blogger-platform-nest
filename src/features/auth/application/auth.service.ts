@@ -6,6 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/application/users.service';
 import bcrypt from 'bcrypt';
+import { Types } from 'mongoose';
 @Injectable()
 export class AuthService {
   constructor(
@@ -13,22 +14,22 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string) {
-    const user = await this.usersService.findUserByLogin(username);
+  async validateUser(loginOrEmail: string, pass: string) {
+    const user = await this.usersService.findUserByLoginOrEmail(loginOrEmail);
     if (!user) {
       throw new NotFoundException();
     }
+    console.log(user);
     const password = bcrypt.compareSync(pass, user?.passwordHash);
     if (!password) {
       return null;
     }
 
-    const { passwordHash, ...result } = user;
-    return result;
+    return user;
   }
 
   async login(user: any) {
-    const payload = { username: user.login, sub: user.id };
+    const payload = { login: user.login, sub: user._id.toString() };
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

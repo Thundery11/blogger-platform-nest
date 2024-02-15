@@ -14,6 +14,11 @@ export class AllUsersOutputModel {
   totalCount: number;
   items: UsersOutputModel[];
 }
+export class UserInfoAboutHimselfModel {
+  email: string;
+  login: string;
+  userId?: string;
+}
 
 export const usersOutputMapper = (user: UsersDocument): UsersOutputModel => {
   const outputModel = new UsersOutputModel();
@@ -21,6 +26,15 @@ export const usersOutputMapper = (user: UsersDocument): UsersOutputModel => {
   outputModel.login = user.login;
   outputModel.email = user.email;
   outputModel.createdAt = user.createdAt;
+  return outputModel;
+};
+export const userInfoAboutHimselfMapper = (
+  user: UsersDocument,
+): UserInfoAboutHimselfModel => {
+  const outputModel = new UserInfoAboutHimselfModel();
+  outputModel.email = user.email;
+  outputModel.login = user.login;
+  outputModel.userId = user._id.toString();
   return outputModel;
 };
 

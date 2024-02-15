@@ -30,6 +30,12 @@ import { UsersModule } from './features/users/module/users.module';
     //как правильно импортировать МОДЕЛИ? можно ли их импортировать в разные модули
     MongooseModule.forFeature([
       {
+        name: Blogs.name,
+        schema: BlogsSchema,
+      },
+      { name: Posts.name, schema: PostsSchema },
+      //если убираю модель юзеров, падает приложение, почему???
+      {
         name: Users.name,
         schema: UsersSchema,
       },
@@ -37,19 +43,6 @@ import { UsersModule } from './features/users/module/users.module';
     MongooseModule.forRoot(process.env.MONGO_URL!, {
       dbName: 'blogger-platform-nest',
     }),
-
-    MongooseModule.forFeature([
-      {
-        name: Blogs.name,
-        schema: BlogsSchema,
-      },
-    ]),
-    MongooseModule.forFeature([
-      {
-        name: Posts.name,
-        schema: PostsSchema,
-      },
-    ]),
   ],
   controllers: [
     TestingAllDataController,
