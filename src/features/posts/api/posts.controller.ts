@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from '../application/posts.service';
 import { PostsQueryRepository } from '../infrastructure/posts.query-repository';
@@ -23,6 +24,7 @@ import {
 } from './models/input/create-post.input.model';
 import { SortingQueryParamsForPosts } from './models/query/query-for-sorting';
 import { Types } from 'mongoose';
+import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -55,6 +57,7 @@ export class PostsController {
     return result;
   }
 
+  @UseGuards(BasicAuthGuard)
   @Post()
   @HttpCode(201)
   async createPost(
@@ -68,6 +71,8 @@ export class PostsController {
     }
     return await this.postsQueryRepository.getPostById(result._id);
   }
+
+  @UseGuards(BasicAuthGuard)
   @Put(':id')
   @HttpCode(204)
   async updatePost(
@@ -81,6 +86,8 @@ export class PostsController {
     return result;
   }
   // const post = await this.postsQueryRepository.getCurrentPostByid(id)
+
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deletePost(@Param('id') id: string): Promise<boolean> {

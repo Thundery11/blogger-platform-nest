@@ -29,6 +29,7 @@ import {
 } from '../../posts/api/models/output/post-output.model';
 import { Types } from 'mongoose';
 import { AuthGuard } from '../../../infrastucture/guards/auth.guard';
+import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
 
 @ApiTags('Blogs')
 // @UseGuards(AuthGuard)
@@ -41,6 +42,7 @@ export class BlogsController {
     private postsQueryRepository: PostsQueryRepository,
   ) {}
 
+  @UseGuards(BasicAuthGuard)
   @Post()
   @HttpCode(201)
   async createBlog(
@@ -68,6 +70,7 @@ export class BlogsController {
     return await this.blogsService.findAllBlogs(blogsQueryParams);
   }
 
+  @UseGuards(BasicAuthGuard)
   @Put(':id')
   @HttpCode(204)
   async updateBlog(
@@ -81,6 +84,7 @@ export class BlogsController {
     return result;
   }
 
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string): Promise<boolean> {
@@ -91,6 +95,7 @@ export class BlogsController {
     return result;
   }
 
+  @UseGuards(BasicAuthGuard)
   @Post(':blogId/posts')
   @HttpCode(201)
   async createPostForSpecificBlog(
