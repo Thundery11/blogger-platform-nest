@@ -49,15 +49,15 @@ export class AuthController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async registration(@Body() registrationInputModel: RegistrationInputModel) {
     const user = await this.usersService.createUser(registrationInputModel);
-    if (!user) {
-      throw new BadRequestError({
-        errorsMessages: [
-          {
-            message: 'login or email exists',
-            field: 'login or email',
-          },
-        ],
-      });
-    }
+    // if (!user) {
+    //   throw new BadRequestError({
+    //     errorsMessages: [
+    //       {
+    //         message: 'login or email exists',
+    //         field: 'login or email',
+    //       },
+    //     ],
+    //   });
+    // }
   }
 }

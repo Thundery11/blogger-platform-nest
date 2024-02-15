@@ -29,8 +29,8 @@ export class UsersRepository {
       .find(
         {
           $or: [
-            { login: { $regex: searchLoginTerm, $options: 'i' } },
-            { email: { $regex: searchEmailTerm, $options: 'i' } },
+            { 'accountData.login': { $regex: searchLoginTerm, $options: 'i' } },
+            { 'accountData.email': { $regex: searchEmailTerm, $options: 'i' } },
           ],
         },
         { __v: false, passwordHash: false, passwordSalt: false },
@@ -48,8 +48,8 @@ export class UsersRepository {
   ): Promise<number> {
     return await this.usersModel.countDocuments({
       $or: [
-        { login: { $regex: searchLoginTerm, $options: 'i' } },
-        { email: { $regex: searchEmailTerm, $options: 'i' } },
+        { 'accountData.login': { $regex: searchLoginTerm, $options: 'i' } },
+        { 'accountData.email': { $regex: searchEmailTerm, $options: 'i' } },
       ],
     });
   }
@@ -61,7 +61,10 @@ export class UsersRepository {
   }
   async findUserByLogin(loginOrEmail: string): Promise<UsersDocument | null> {
     const user = await this.usersModel.findOne({
-      $or: [{ login: loginOrEmail }, { email: loginOrEmail }],
+      $or: [
+        { 'accountData.login': loginOrEmail },
+        { 'accountData.email': loginOrEmail },
+      ],
     });
     if (!user) {
       return null;

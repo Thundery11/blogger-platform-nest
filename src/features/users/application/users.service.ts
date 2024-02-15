@@ -14,6 +14,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { emailsManager } from '../../../infrastucture/managers/emails-manager';
+import { BadRequestError } from 'passport-headerapikey';
 
 @Injectable()
 export class UsersService {
@@ -73,13 +74,27 @@ export class UsersService {
       userCreateModel.login,
     );
     if (isLoginExists) {
-      return null;
+      throw new BadRequestError({
+        errorsMessages: [
+          {
+            message: 'login exists',
+            field: 'login',
+          },
+        ],
+      });
     }
     const isEmailExists = await this.usersRepository.findUserByLogin(
       userCreateModel.email,
     );
     if (isEmailExists) {
-      return null;
+      throw new BadRequestError({
+        errorsMessages: [
+          {
+            message: 'email exists',
+            field: 'email',
+          },
+        ],
+      });
     }
 
     const user = this.usersModel.createUser(
