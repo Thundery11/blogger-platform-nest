@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UserCreateModel } from './models/input/create-user.input.model';
 import { UsersService } from '../application/users.service';
@@ -18,6 +19,7 @@ import {
 import { UsersQueryRepository } from '../infrastructure/users-query.repository';
 import { AllPostsOutputModel } from '../../posts/api/models/output/post-output.model';
 import { SortingQueryParamsForUsers } from './models/query/query-for-sorting';
+import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -25,6 +27,8 @@ export class UsersController {
     private usersService: UsersService,
     private usersQueryRepository: UsersQueryRepository,
   ) {}
+
+  @UseGuards(BasicAuthGuard)
   @Post()
   @HttpCode(201)
   async createSuperadminUser(
@@ -38,6 +42,7 @@ export class UsersController {
     return await this.usersQueryRepository.getUserById(result._id);
   }
 
+  @UseGuards(BasicAuthGuard)
   @Get()
   @HttpCode(200)
   async getAllUsers(
@@ -46,6 +51,7 @@ export class UsersController {
     return await this.usersService.getAllUsers(sortingQueryParams);
   }
 
+  @UseGuards(BasicAuthGuard)
   @Delete(':id')
   @HttpCode(204)
   async deleteUser(@Param('id') id: string): Promise<boolean> {
