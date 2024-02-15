@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
   Post,
   Request,
   UnauthorizedException,
@@ -19,6 +20,7 @@ import { SignInModel } from './models/input/login-input.model';
 import { UserInfoAboutHimselfModel } from '../../users/api/models/output/user-output.model';
 import { RegistrationInputModel } from './models/input/registration-input.model';
 import { BadRequestError } from 'passport-headerapikey';
+import { EmailResendingInputModel } from './models/input/email-resending.model';
 
 @Controller('auth')
 export class AuthController {
@@ -53,5 +55,41 @@ export class AuthController {
     // if (!user) {
     //   throw new BadRequestException();
     // }
+  }
+  @Post('registration-email-resending')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async emailResending(
+    @Body() emailResendingInputModel: EmailResendingInputModel,
+  ) {
+    const user = await this.usersService.resendEmailConfirmationCode(
+      emailResendingInputModel,
+    );
+    if (!user) {
+      throw new BadRequestException({
+        message: [
+          {
+            message: 'something wrong with email resending',
+            field: 'email',
+          },
+        ],
+      });
+    }
+  }
+
+  @Post('registration-confirmation')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async emailConfirmation(@Body() code: string): Promise<boolean> {
+    const result = await this.authService.confirmEmail(code);
+    if (!result) {
+      throw new BadRequestException({
+        message: [
+          {
+            message: 'something wrong with email confirmation',
+            field: 'email',
+          },
+        ],
+      });
+    }
+    return true;
   }
 }

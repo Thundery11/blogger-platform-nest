@@ -84,4 +84,28 @@ export class UsersRepository {
     }
     return userInfoAboutHimselfMapper(user);
   }
+  async updateConfirmationCode(
+    id: string,
+    confirmationCode: string,
+  ): Promise<boolean> {
+    const result = await this.usersModel.updateOne(
+      { _id: new Types.ObjectId(id) },
+      { 'emailConfirmation.confirmationCode': confirmationCode },
+    );
+    return result.modifiedCount === 1;
+  }
+  async findUserByConfirmationCode(
+    code: string,
+  ): Promise<UsersDocument | null> {
+    return await this.usersModel.findOne({
+      'emailConfirmation.confirmationCode': code,
+    });
+  }
+  async updateConfirmation(id: string): Promise<boolean> {
+    const result = await this.usersModel.updateOne(
+      { _id: new Types.ObjectId(id) },
+      { 'emailConfirmation.isConfirmed': true },
+    );
+    return result.modifiedCount === 1;
+  }
 }

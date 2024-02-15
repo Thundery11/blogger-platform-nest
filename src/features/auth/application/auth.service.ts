@@ -7,11 +7,13 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/application/users.service';
 import bcrypt from 'bcrypt';
 import { Types } from 'mongoose';
+import { UsersRepository } from '../../users/infrastructure/users.repository';
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private usersRepository: UsersRepository,
   ) {}
 
   async validateUser(loginOrEmail: string, pass: string) {
@@ -33,5 +35,14 @@ export class AuthService {
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+  async confirmEmail(code: string): Promise<boolean> {
+    const user = await this.usersRepository.findUserByConfirmationCode(code);
+    if (!user) return false;
+    if (user.emailConfirmation.expirationDate < new Date()) return false;
+    if (user.emailConfirmation.confirmationCode !== code) return false;
+    if (user.emailConfirmation.isConfirmed === true) return false;
+    const result = await this.usersRepository.updateConfirmation(user.id);
+    return result;
   }
 }

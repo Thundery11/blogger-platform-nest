@@ -17,6 +17,6 @@ import { Users, UsersSchema } from '../domain/users.entity';
   ],
   controllers: [UsersController],
   providers: [UsersService, UsersRepository, UsersQueryRepository],
-  exports: [UsersService],
+  exports: [UsersService, UsersRepository],
 })
 export class UsersModule {}

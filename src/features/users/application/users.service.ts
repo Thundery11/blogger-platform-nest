@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { emailsManager } from '../../../infrastucture/managers/emails-manager';
 import { BadRequestError } from 'passport-headerapikey';
+import { EmailResendingInputModel } from '../../auth/api/models/input/email-resending.model';
 
 @Injectable()
 export class UsersService {
@@ -70,7 +71,7 @@ export class UsersService {
       passwordSalt,
       passwordHash,
     };
-
+    console.log(emailConfirmationAndInfo.confirmationCode);
     const isLoginExists = await this.usersRepository.findUserByLogin(
       userCreateModel.login,
     );
@@ -107,7 +108,34 @@ export class UsersService {
     await emailsManager.sendEmailConfirmationMessage(user);
     return await this.usersRepository.createSuperadminUser(user);
   }
-
+  async resendEmailConfirmationCode(
+    emailResendingInputModel: EmailResendingInputModel,
+  ): Promise<UsersDocument | null> {
+    const user = await this.usersRepository.findUserByLogin(
+      emailResendingInputModel.email,
+    );
+    if (!user) return null;
+    if (user.emailConfirmation.isConfirmed === true) return null;
+    if (user.emailConfirmation.isConfirmed === false) {
+      const newConfirmationCode = uuidv4();
+      const updateConfirmationCode =
+        await this.usersRepository.updateConfirmationCode(
+          user.id,
+          newConfirmationCode,
+        );
+      const updatedUser = await this.usersRepository.findUserByLogin(
+        emailResendingInputModel.email,
+      );
+      if (!updatedUser) return null;
+      try {
+        await emailsManager.sendEmailConfirmationMessage(updatedUser);
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    }
+    return user;
+  }
   async getAllUsers(
     sortingQueryParams: SortingQueryParamsForUsers,
   ): Promise<AllUsersOutputModel> {
