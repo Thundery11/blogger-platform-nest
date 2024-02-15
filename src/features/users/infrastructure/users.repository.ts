@@ -35,10 +35,10 @@ export class UsersRepository {
         },
         { __v: false, passwordHash: false, passwordSalt: false },
       )
-      .sort({ ['accountData.createdAt']: sortDirection === 'asc' ? 1 : -1 })
+      .sort({ [`accountData.${sortBy}`]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(Number(pageSize));
-
+    console.log(sortBy);
     return allUsersOutputMapper(users);
   }
 
