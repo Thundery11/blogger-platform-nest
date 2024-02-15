@@ -75,10 +75,9 @@ export class UsersService {
       userCreateModel.login,
     );
 
-    console.log(isLoginExists);
     if (isLoginExists) {
       throw new BadRequestException({
-        errorsMessages: [
+        message: [
           {
             message: 'login exists',
             field: 'login',
@@ -91,7 +90,7 @@ export class UsersService {
     );
     if (isEmailExists) {
       throw new BadRequestException({
-        errorsMessages: [
+        message: [
           {
             message: 'email exists',
             field: 'email',

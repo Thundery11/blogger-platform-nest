@@ -38,7 +38,6 @@ export class UsersRepository {
       .sort({ [`accountData.${sortBy}`]: sortDirection === 'asc' ? 1 : -1 })
       .skip(skip)
       .limit(Number(pageSize));
-    console.log(sortBy);
     return allUsersOutputMapper(users);
   }
 
@@ -66,7 +65,6 @@ export class UsersRepository {
         { 'accountData.email': loginOrEmail },
       ],
     });
-    console.log(user);
     if (!user) {
       return null;
     }
