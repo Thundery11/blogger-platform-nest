@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -50,14 +51,7 @@ export class AuthController {
   async registration(@Body() registrationInputModel: RegistrationInputModel) {
     const user = await this.usersService.createUser(registrationInputModel);
     // if (!user) {
-    //   throw new BadRequestError({
-    //     errorsMessages: [
-    //       {
-    //         message: 'login or email exists',
-    //         field: 'login or email',
-    //       },
-    //     ],
-    //   });
+    //   throw new BadRequestException();
     // }
   }
 }

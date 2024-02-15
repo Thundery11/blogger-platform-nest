@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from '../infrastructure/users.repository';
 import { Users, UsersDocument, UsersModelType } from '../domain/users.entity';
 import { Types } from 'mongoose';
@@ -70,11 +70,14 @@ export class UsersService {
       passwordSalt,
       passwordHash,
     };
+
     const isLoginExists = await this.usersRepository.findUserByLogin(
       userCreateModel.login,
     );
+
+    console.log(isLoginExists);
     if (isLoginExists) {
-      throw new BadRequestError({
+      throw new BadRequestException({
         errorsMessages: [
           {
             message: 'login exists',
@@ -87,7 +90,7 @@ export class UsersService {
       userCreateModel.email,
     );
     if (isEmailExists) {
-      throw new BadRequestError({
+      throw new BadRequestException({
         errorsMessages: [
           {
             message: 'email exists',

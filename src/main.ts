@@ -19,7 +19,7 @@ async function bootstrap() {
   // SwaggerModule.setup('api', app, document);
   app.useGlobalPipes(
     new ValidationPipe({
-      stopAtFirstError: false,
+      stopAtFirstError: true,
       transform: true,
       exceptionFactory: (errors) => {
         const errorsForResponse: { message: string; field: string }[] = [];

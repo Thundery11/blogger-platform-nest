@@ -66,6 +66,7 @@ export class UsersRepository {
         { 'accountData.email': loginOrEmail },
       ],
     });
+    console.log(user);
     if (!user) {
       return null;
     }
