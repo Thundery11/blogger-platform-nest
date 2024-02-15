@@ -17,7 +17,7 @@ export class AuthService {
   async validateUser(loginOrEmail: string, pass: string) {
     const user = await this.usersService.findUserByLoginOrEmail(loginOrEmail);
     if (!user) {
-      throw new NotFoundException();
+      return null;
     }
     console.log(user);
     const password = bcrypt.compareSync(pass, user?.passwordHash);
@@ -31,7 +31,7 @@ export class AuthService {
   async login(user: any) {
     const payload = { login: user.login, sub: user._id.toString() };
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }
