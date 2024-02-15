@@ -46,6 +46,7 @@ export class AuthController {
   }
 
   @Post('registration')
+  @HttpCode(HttpStatus.NO_CONTENT)
   async registration(@Body() registrationInputModel: RegistrationInputModel) {
     const user = await this.usersService.createUser(registrationInputModel);
     if (!user) {
