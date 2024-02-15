@@ -23,17 +23,17 @@ export class UserInfoAboutHimselfModel {
 export const usersOutputMapper = (user: UsersDocument): UsersOutputModel => {
   const outputModel = new UsersOutputModel();
   outputModel.id = user._id.toString();
-  outputModel.login = user.login;
-  outputModel.email = user.email;
-  outputModel.createdAt = user.createdAt;
+  outputModel.login = user.accountData.login;
+  outputModel.email = user.accountData.email;
+  outputModel.createdAt = user.accountData.createdAt;
   return outputModel;
 };
 export const userInfoAboutHimselfMapper = (
   user: UsersDocument,
 ): UserInfoAboutHimselfModel => {
   const outputModel = new UserInfoAboutHimselfModel();
-  outputModel.email = user.email;
-  outputModel.login = user.login;
+  outputModel.email = user.accountData.email;
+  outputModel.login = user.accountData.login;
   outputModel.userId = user._id.toString();
   return outputModel;
 };
@@ -43,9 +43,9 @@ export const allUsersOutputMapper = (
 ): UsersOutputModel[] => {
   const allUsersOutput = users.map((user) => ({
     id: user._id.toString(),
-    login: user.login,
-    email: user.email,
-    createdAt: user.createdAt,
+    login: user.accountData.login,
+    email: user.accountData.email,
+    createdAt: user.accountData.createdAt,
   }));
   return allUsersOutput;
 };

@@ -76,8 +76,3 @@
 
 // const api = new APISettings(process.env);
 // export const appSettings = new AppSettings(env, api);
-
-export const jwtConstants = {
-  JWT_SECRET: process.env.JWT_SECRET || '123',
-  REFRESH_TOKEN_SECRET: process.env.REFRESH_SECRET || '234',
-};

@@ -11,6 +11,9 @@ import {
 } from '../api/models/output/user-output.model';
 import { SortingQueryParamsForUsers } from '../api/models/query/query-for-sorting';
 import { InjectModel } from '@nestjs/mongoose';
+import { v4 as uuidv4 } from 'uuid';
+import { add } from 'date-fns';
+import { emailsManager } from '../../../infrastucture/managers/emails-manager';
 
 @Injectable()
 export class UsersService {
@@ -28,12 +31,63 @@ export class UsersService {
       userCreateModel.password,
       passwordSalt,
     );
+    const emailConfirmationAndInfo = {
+      confirmationCode: uuidv4(),
+      expirationDate: add(new Date(), {
+        hours: 3,
+        minutes: 3,
+      }),
+      isConfirmed: false,
+      createdAt,
+      passwordSalt,
+      passwordHash,
+    };
     const user = this.usersModel.createUser(
       userCreateModel,
-      createdAt,
-      passwordHash,
+      emailConfirmationAndInfo,
+    );
+    return await this.usersRepository.createSuperadminUser(user);
+  }
+
+  async createUser(
+    userCreateModel: UserCreateModel,
+  ): Promise<UsersDocument | null> {
+    const createdAt = new Date().toISOString();
+    const passwordSalt = await bcrypt.genSalt(10);
+    const passwordHash = await this._generateHash(
+      userCreateModel.password,
       passwordSalt,
     );
+    const emailConfirmationAndInfo = {
+      confirmationCode: uuidv4(),
+      expirationDate: add(new Date(), {
+        hours: 3,
+        minutes: 3,
+      }),
+      isConfirmed: false,
+      createdAt,
+      passwordSalt,
+      passwordHash,
+    };
+    const isLoginExists = await this.usersRepository.findUserByLogin(
+      userCreateModel.login,
+    );
+    if (isLoginExists) {
+      return null;
+    }
+    const isEmailExists = await this.usersRepository.findUserByLogin(
+      userCreateModel.email,
+    );
+    if (isEmailExists) {
+      return null;
+    }
+
+    const user = this.usersModel.createUser(
+      userCreateModel,
+      emailConfirmationAndInfo,
+    );
+
+    await emailsManager.sendEmailConfirmationMessage(user);
     return await this.usersRepository.createSuperadminUser(user);
   }
 

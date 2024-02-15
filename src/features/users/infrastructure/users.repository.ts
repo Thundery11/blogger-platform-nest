@@ -54,7 +54,9 @@ export class UsersRepository {
     });
   }
   public async deleteUser(id: string): Promise<boolean> {
-    const result = await this.usersModel.deleteOne({ id });
+    const result = await this.usersModel.deleteOne({
+      _id: new Types.ObjectId(id),
+    });
     return result.deletedCount ? true : false;
   }
   async findUserByLogin(loginOrEmail: string): Promise<UsersDocument | null> {
@@ -78,7 +80,6 @@ export class UsersRepository {
     if (!user) {
       return null;
     }
-    console.log('user', user);
     return userInfoAboutHimselfMapper(user);
   }
 }

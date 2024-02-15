@@ -16,6 +16,8 @@ import { CurrentUserId } from '../decorators/current-user-id-param.decorator';
 import { UsersService } from '../../users/application/users.service';
 import { SignInModel } from './models/input/login-input.model';
 import { UserInfoAboutHimselfModel } from '../../users/api/models/output/user-output.model';
+import { RegistrationInputModel } from './models/input/registration-input.model';
+import { BadRequestError } from 'passport-headerapikey';
 
 @Controller('auth')
 export class AuthController {
@@ -41,5 +43,20 @@ export class AuthController {
       throw new UnauthorizedException();
     }
     return user;
+  }
+
+  @Post('registration')
+  async registration(@Body() registrationInputModel: RegistrationInputModel) {
+    const user = await this.usersService.createUser(registrationInputModel);
+    if (!user) {
+      throw new BadRequestError({
+        errorsMessages: [
+          {
+            message: 'login or email exists',
+            field: 'login or email',
+          },
+        ],
+      });
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { IsEmail, IsString, Length, Matches } from 'class-validator';
 import { Trim } from '../../../../../infrastucture/decorators/transform/trim';
 
-export class UserCreateModel {
+export class RegistrationInputModel {
   @Trim()
   @IsString()
   @Length(3, 10)
