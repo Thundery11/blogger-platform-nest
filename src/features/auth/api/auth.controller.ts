@@ -85,7 +85,7 @@ export class AuthController {
         message: [
           {
             message: 'something wrong with email confirmation',
-            field: 'email',
+            field: 'code',
           },
         ],
       });
