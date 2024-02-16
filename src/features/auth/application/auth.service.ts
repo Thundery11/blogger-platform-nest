@@ -42,7 +42,9 @@ export class AuthService {
     if (user.emailConfirmation.expirationDate < new Date()) return false;
     if (user.emailConfirmation.confirmationCode !== code) return false;
     if (user.emailConfirmation.isConfirmed === true) return false;
-    const result = await this.usersRepository.updateConfirmation(user.id);
+    const result = await this.usersRepository.updateConfirmation(
+      user._id.toString(),
+    );
     return result;
   }
 }

@@ -21,6 +21,7 @@ import { UserInfoAboutHimselfModel } from '../../users/api/models/output/user-ou
 import { RegistrationInputModel } from './models/input/registration-input.model';
 import { BadRequestError } from 'passport-headerapikey';
 import { EmailResendingInputModel } from './models/input/email-resending.model';
+import { ConfirmationCodeInputModel } from './models/input/confirmation-code-input.model';
 
 @Controller('auth')
 export class AuthController {
@@ -51,10 +52,7 @@ export class AuthController {
   @Post('registration')
   @HttpCode(HttpStatus.NO_CONTENT)
   async registration(@Body() registrationInputModel: RegistrationInputModel) {
-    const user = await this.usersService.createUser(registrationInputModel);
-    // if (!user) {
-    //   throw new BadRequestException();
-    // }
+    await this.usersService.createUser(registrationInputModel);
   }
   @Post('registration-email-resending')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -78,8 +76,10 @@ export class AuthController {
 
   @Post('registration-confirmation')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async emailConfirmation(@Body() code: string): Promise<boolean> {
-    const result = await this.authService.confirmEmail(code);
+  async emailConfirmation(
+    @Body() confirmationCode: ConfirmationCodeInputModel,
+  ): Promise<boolean> {
+    const result = await this.authService.confirmEmail(confirmationCode.code);
     if (!result) {
       throw new BadRequestException({
         message: [

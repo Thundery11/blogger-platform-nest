@@ -71,7 +71,10 @@ export class UsersService {
       passwordSalt,
       passwordHash,
     };
-    console.log(emailConfirmationAndInfo.confirmationCode);
+    console.log(
+      'Confirmation code: ',
+      emailConfirmationAndInfo.confirmationCode,
+    );
     const isLoginExists = await this.usersRepository.findUserByLogin(
       userCreateModel.login,
     );
