@@ -54,6 +54,7 @@ export class AuthController {
   async registration(@Body() registrationInputModel: RegistrationInputModel) {
     await this.usersService.createUser(registrationInputModel);
   }
+
   @Post('registration-email-resending')
   @HttpCode(HttpStatus.NO_CONTENT)
   async emailResending(

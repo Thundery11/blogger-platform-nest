@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
 import { Blogs, BlogsDocument, BlogsModelType } from '../domain/blogs.entity';
-import { Model, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { BlogsCreateModel } from '../api/models/input/create-blog.input.model';
 import { SortingQueryParams } from '../api/models/query/query-for-sorting';
 import { AllBlogsOutputModel } from '../api/models/output/blog.output.model';
@@ -108,15 +108,6 @@ export class BlogsService {
     newPost.createdAt = createdAt;
     newPost.extendedLikesInfo = extendedLikesInfo;
 
-    // const newPost = {
-    //   id,
-    //   title,
-    //   shortDescription,
-    //   content,
-    //   blogId: isBlogExist.id,
-    //   blogName: isBlogExist.name,
-    //   createdAt,
-    // };
     return this.postsRepository.createPost(newPost);
   }
 }

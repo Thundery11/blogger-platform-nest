@@ -8,9 +8,11 @@ import { JwtStrategy } from '../strategies/jwt.strategy';
 import { AuthController } from '../api/auth.controller';
 import { BasicStrategy } from '../strategies/basic.strategy';
 import { jwtConstants } from '../constants/constants';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
+    CqrsModule,
     UsersModule,
     PassportModule,
     JwtModule.register({

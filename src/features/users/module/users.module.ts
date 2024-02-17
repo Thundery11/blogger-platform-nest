@@ -7,9 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from '../domain/users.entity';
 import { EmailsManager } from '../../../infrastucture/managers/emails-manager';
 import { EmailAdapter } from '../../../infrastucture/adapters/email-adapter';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
+    CqrsModule,
     MongooseModule.forFeature([
       {
         name: Users.name,

@@ -28,14 +28,17 @@ import {
   PostOutputModel,
 } from '../../posts/api/models/output/post-output.model';
 import { Types } from 'mongoose';
-import { AuthGuard } from '../../../infrastucture/guards/auth.guard';
 import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateBlogCommand } from '../application/use-cases/create-blog-use-case';
+import { FindAllBlogsCommand } from '../application/use-cases/find-all-blogs-use-case';
 
 @ApiTags('Blogs')
 // @UseGuards(AuthGuard)
 @Controller('blogs')
 export class BlogsController {
   constructor(
+    private commandBus: CommandBus,
     private blogsService: BlogsService,
     private blogsQueryRepository: BlogsQueryRepository,
     private postsService: PostsService,
@@ -48,7 +51,9 @@ export class BlogsController {
   async createBlog(
     @Body() blogsCreateModel: BlogsCreateModel,
   ): Promise<BlogsOutputModel> {
-    const result = await this.blogsService.createBlog(blogsCreateModel);
+    const result = await this.commandBus.execute(
+      new CreateBlogCommand(blogsCreateModel),
+    );
     return await this.blogsQueryRepository.getBlogById(result._id);
   }
 
@@ -67,7 +72,9 @@ export class BlogsController {
   async findAllBlogs(
     @Query() blogsQueryParams: SortingQueryParams,
   ): Promise<AllBlogsOutputModel> {
-    return await this.blogsService.findAllBlogs(blogsQueryParams);
+    return await this.commandBus.execute(
+      new FindAllBlogsCommand(blogsQueryParams),
+    );
   }
 
   @UseGuards(BasicAuthGuard)

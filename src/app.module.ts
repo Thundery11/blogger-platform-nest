@@ -20,11 +20,16 @@ import { PostsController } from './features/posts/api/posts.controller';
 import { Users, UsersSchema } from './features/users/domain/users.entity';
 import { AuthModule } from './features/auth/module/auth.module';
 import { UsersModule } from './features/users/module/users.module';
+import { CreateBlogUseCase } from './features/blogs/application/use-cases/create-blog-use-case';
+import { CqrsModule } from '@nestjs/cqrs';
+import { FindAllBlogsUseCase } from './features/blogs/application/use-cases/find-all-blogs-use-case';
 
+const useCases = [CreateBlogUseCase, FindAllBlogsUseCase];
 @Module({
   imports: [
     AuthModule,
     UsersModule,
+    CqrsModule,
 
     //как правильно импортировать МОДЕЛИ? можно ли их импортировать в разные модули
     MongooseModule.forFeature([
@@ -58,6 +63,7 @@ import { UsersModule } from './features/users/module/users.module';
     PostsRepository,
     PostsQueryRepository,
     PostsService,
+    ...useCases,
   ],
 })
 export class AppModule {}
