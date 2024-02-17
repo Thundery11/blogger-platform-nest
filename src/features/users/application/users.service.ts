@@ -1,20 +1,17 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersRepository } from '../infrastructure/users.repository';
 import { Users, UsersDocument, UsersModelType } from '../domain/users.entity';
-import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { UserCreateModel } from '../api/models/input/create-user.input.model';
 import {
   AllUsersOutputModel,
   UserInfoAboutHimselfModel,
-  UsersOutputModel,
 } from '../api/models/output/user-output.model';
 import { SortingQueryParamsForUsers } from '../api/models/query/query-for-sorting';
 import { InjectModel } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { emailsManager } from '../../../infrastucture/managers/emails-manager';
-import { BadRequestError } from 'passport-headerapikey';
 import { EmailResendingInputModel } from '../../auth/api/models/input/email-resending.model';
 
 @Injectable()

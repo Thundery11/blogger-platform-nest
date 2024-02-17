@@ -1,8 +1,11 @@
+//add below two lines before all other imports to correct parsing of process.env in all modules
+import { ConfigModule } from '@nestjs/config';
+ConfigModule.forRoot();
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
 import { Blogs, BlogsSchema } from './features/blogs/domain/blogs.entity';
 import { BlogsController } from './features/blogs/api/blogs.controller';
 import { BlogsService } from './features/blogs/application/blogs.service';
@@ -15,10 +18,6 @@ import { PostsQueryRepository } from './features/posts/infrastructure/posts.quer
 import { PostsService } from './features/posts/application/posts.service';
 import { PostsController } from './features/posts/api/posts.controller';
 import { Users, UsersSchema } from './features/users/domain/users.entity';
-import { UsersController } from './features/users/api/users.controller';
-import { UsersService } from './features/users/application/users.service';
-import { UsersRepository } from './features/users/infrastructure/users.repository';
-import { UsersQueryRepository } from './features/users/infrastructure/users-query.repository';
 import { AuthModule } from './features/auth/module/auth.module';
 import { UsersModule } from './features/users/module/users.module';
 
@@ -26,7 +25,7 @@ import { UsersModule } from './features/users/module/users.module';
   imports: [
     AuthModule,
     UsersModule,
-    ConfigModule.forRoot(),
+
     //как правильно импортировать МОДЕЛИ? можно ли их импортировать в разные модули
     MongooseModule.forFeature([
       {

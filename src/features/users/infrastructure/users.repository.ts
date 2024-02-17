@@ -7,7 +7,6 @@ import {
   UsersOutputModel,
   allUsersOutputMapper,
   userInfoAboutHimselfMapper,
-  usersOutputMapper,
 } from '../api/models/output/user-output.model';
 
 @Injectable()
