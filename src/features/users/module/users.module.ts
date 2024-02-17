@@ -5,6 +5,8 @@ import { UsersQueryRepository } from '../infrastructure/users-query.repository';
 import { UsersController } from '../api/users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Users, UsersSchema } from '../domain/users.entity';
+import { EmailsManager } from '../../../infrastucture/managers/emails-manager';
+import { EmailAdapter } from '../../../infrastucture/adapters/email-adapter';
 
 @Module({
   imports: [
@@ -16,7 +18,13 @@ import { Users, UsersSchema } from '../domain/users.entity';
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UsersRepository, UsersQueryRepository],
+  providers: [
+    UsersService,
+    UsersRepository,
+    UsersQueryRepository,
+    EmailsManager,
+    EmailAdapter,
+  ],
   exports: [UsersService, UsersRepository],
 })
 export class UsersModule {}

@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import nodemailer from 'nodemailer';
-export const emailAdapter = {
+@Injectable()
+export class EmailAdapter {
   async sendEmail(email: string, message: string) {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -16,5 +18,5 @@ export const emailAdapter = {
     });
 
     return info;
-  },
-};
+  }
+}

@@ -11,13 +11,14 @@ import { SortingQueryParamsForUsers } from '../api/models/query/query-for-sortin
 import { InjectModel } from '@nestjs/mongoose';
 import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
-import { emailsManager } from '../../../infrastucture/managers/emails-manager';
 import { EmailResendingInputModel } from '../../auth/api/models/input/email-resending.model';
+import { EmailsManager } from '../../../infrastucture/managers/emails-manager';
 
 @Injectable()
 export class UsersService {
   constructor(
     private usersRepository: UsersRepository,
+    private emailsManager: EmailsManager,
     @InjectModel(Users.name) private usersModel: UsersModelType,
   ) {}
 
@@ -105,7 +106,7 @@ export class UsersService {
       emailConfirmationAndInfo,
     );
 
-    await emailsManager.sendEmailConfirmationMessage(user);
+    await this.emailsManager.sendEmailConfirmationMessage(user);
     return await this.usersRepository.createSuperadminUser(user);
   }
   async resendEmailConfirmationCode(
@@ -128,7 +129,7 @@ export class UsersService {
       );
       if (!updatedUser) return null;
       try {
-        await emailsManager.sendEmailConfirmationMessage(updatedUser);
+        await this.emailsManager.sendEmailConfirmationMessage(updatedUser);
       } catch (error) {
         console.error(error);
         return null;
