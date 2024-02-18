@@ -33,6 +33,9 @@ import { CommandBus } from '@nestjs/cqrs';
 import { CreateBlogCommand } from '../application/use-cases/create-blog-use-case';
 import { FindAllBlogsCommand } from '../application/use-cases/find-all-blogs-use-case';
 import { UpdateBlogCommand } from '../application/use-cases/update-blog-use-case';
+import { DeleteBlogCommand } from '../application/use-cases/delete-blog-use-case';
+import { CreatePostForSpecificBlogCommand } from '../application/create-post-for-specific-blog-use-case';
+import { FindAllPostsForCurrentBlogCommand } from '../../posts/application/use-cases/find-all-posts-for-current-blog-use-case';
 
 @ApiTags('Blogs')
 // @UseGuards(AuthGuard)
@@ -98,7 +101,7 @@ export class BlogsController {
   @Delete(':id')
   @HttpCode(204)
   async deleteBlog(@Param('id') id: string): Promise<boolean> {
-    const result = await this.blogsService.deleteBLog(id);
+    const result = await this.commandBus.execute(new DeleteBlogCommand(id));
     if (!result) {
       throw new NotFoundException();
     }
@@ -112,9 +115,8 @@ export class BlogsController {
     @Param('blogId') blogId: string,
     @Body() postCreateModel: PostCreateModel,
   ): Promise<PostOutputModel | null> {
-    const result = await this.blogsService.createPostForSpecificBlog(
-      postCreateModel,
-      blogId,
+    const result = await this.commandBus.execute(
+      new CreatePostForSpecificBlogCommand(postCreateModel, blogId),
     );
     if (!result) {
       throw new NotFoundException();
@@ -128,9 +130,8 @@ export class BlogsController {
     @Param('blogId') blogid: string,
     @Query() sortingQueryParams: SortingQueryParams,
   ): Promise<AllPostsOutputModel | null> {
-    const result = await this.postsService.findAllPostsForCurrentBlog(
-      sortingQueryParams,
-      blogid,
+    const result = await this.commandBus.execute(
+      new FindAllPostsForCurrentBlogCommand(sortingQueryParams, blogid),
     );
     if (result === null) {
       throw new NotFoundException();

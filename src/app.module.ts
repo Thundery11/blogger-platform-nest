@@ -24,8 +24,18 @@ import { CreateBlogUseCase } from './features/blogs/application/use-cases/create
 import { CqrsModule } from '@nestjs/cqrs';
 import { FindAllBlogsUseCase } from './features/blogs/application/use-cases/find-all-blogs-use-case';
 import { UpdateBlogUseCase } from './features/blogs/application/use-cases/update-blog-use-case';
+import { DeleteBlogUseCase } from './features/blogs/application/use-cases/delete-blog-use-case';
+import { CreatePostForSpecificBlogUseCase } from './features/blogs/application/create-post-for-specific-blog-use-case';
+import { FindAllPostsForCurrentBlogUseCase } from './features/posts/application/use-cases/find-all-posts-for-current-blog-use-case';
 
-const useCases = [CreateBlogUseCase, FindAllBlogsUseCase, UpdateBlogUseCase];
+const useCases = [
+  CreateBlogUseCase,
+  FindAllBlogsUseCase,
+  UpdateBlogUseCase,
+  DeleteBlogUseCase,
+  CreatePostForSpecificBlogUseCase,
+  FindAllPostsForCurrentBlogUseCase,
+];
 @Module({
   imports: [
     AuthModule,

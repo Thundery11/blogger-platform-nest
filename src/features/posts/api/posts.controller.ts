@@ -25,10 +25,12 @@ import {
 import { SortingQueryParamsForPosts } from './models/query/query-for-sorting';
 import { Types } from 'mongoose';
 import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
+import { CommandBus } from '@nestjs/cqrs';
 
 @Controller('posts')
 export class PostsController {
   constructor(
+    private commandBus: CommandBus,
     private postsService: PostsService,
     private postsQueryRepository: PostsQueryRepository,
   ) {}
@@ -85,7 +87,6 @@ export class PostsController {
     }
     return result;
   }
-  // const post = await this.postsQueryRepository.getCurrentPostByid(id)
 
   @UseGuards(BasicAuthGuard)
   @Delete(':id')

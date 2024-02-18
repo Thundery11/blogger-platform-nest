@@ -11,6 +11,7 @@ import { PostUpdateModel } from '../api/models/input/create-post.input.model';
 @Injectable()
 export class PostsRepository {
   constructor(@InjectModel(Posts.name) private postsModel: Model<Posts>) {}
+
   public async createPost(newPost: Posts): Promise<PostsDocument> {
     const createdPost = new this.postsModel(newPost);
 
