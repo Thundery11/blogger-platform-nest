@@ -23,8 +23,9 @@ import { UsersModule } from './features/users/module/users.module';
 import { CreateBlogUseCase } from './features/blogs/application/use-cases/create-blog-use-case';
 import { CqrsModule } from '@nestjs/cqrs';
 import { FindAllBlogsUseCase } from './features/blogs/application/use-cases/find-all-blogs-use-case';
+import { UpdateBlogUseCase } from './features/blogs/application/use-cases/update-blog-use-case';
 
-const useCases = [CreateBlogUseCase, FindAllBlogsUseCase];
+const useCases = [CreateBlogUseCase, FindAllBlogsUseCase, UpdateBlogUseCase];
 @Module({
   imports: [
     AuthModule,

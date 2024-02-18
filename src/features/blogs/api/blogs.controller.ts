@@ -32,6 +32,7 @@ import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateBlogCommand } from '../application/use-cases/create-blog-use-case';
 import { FindAllBlogsCommand } from '../application/use-cases/find-all-blogs-use-case';
+import { UpdateBlogCommand } from '../application/use-cases/update-blog-use-case';
 
 @ApiTags('Blogs')
 // @UseGuards(AuthGuard)
@@ -84,7 +85,9 @@ export class BlogsController {
     @Param('id') id: string,
     @Body() blogsUpdateModel: BlogsCreateModel,
   ): Promise<boolean> {
-    const result = await this.blogsService.updateBlog(id, blogsUpdateModel);
+    const result = await this.commandBus.execute(
+      new UpdateBlogCommand(blogsUpdateModel, id),
+    );
     if (!result) {
       throw new NotFoundException();
     }

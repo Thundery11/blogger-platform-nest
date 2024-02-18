@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blogs, BlogsDocument } from '../domain/blogs.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import {
   BlogsOutputModel,
   allBlogsOutputMapper,
@@ -40,14 +40,18 @@ export class BlogsRepository {
     id: string,
     blogsUpdateModel: BlogsCreateModel,
   ): Promise<boolean> {
-    const result = await this.blogsModel.updateOne({ id }, blogsUpdateModel);
-    console.log(result);
+    const result = await this.blogsModel.updateOne(
+      { _id: new Types.ObjectId(id) },
+      blogsUpdateModel,
+    );
 
     return result.matchedCount === 1 ? true : false;
   }
 
   public async deleteBlog(id: string): Promise<boolean> {
-    const result = await this.blogsModel.deleteOne({ id });
+    const result = await this.blogsModel.deleteOne({
+      _id: new Types.ObjectId(id),
+    });
 
     return result.deletedCount ? true : false;
   }
