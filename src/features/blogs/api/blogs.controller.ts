@@ -34,7 +34,7 @@ import { CreateBlogCommand } from '../application/use-cases/create-blog-use-case
 import { FindAllBlogsCommand } from '../application/use-cases/find-all-blogs-use-case';
 import { UpdateBlogCommand } from '../application/use-cases/update-blog-use-case';
 import { DeleteBlogCommand } from '../application/use-cases/delete-blog-use-case';
-import { CreatePostForSpecificBlogCommand } from '../application/create-post-for-specific-blog-use-case';
+import { CreatePostForSpecificBlogCommand } from '../application/use-cases/create-post-for-specific-blog-use-case';
 import { FindAllPostsForCurrentBlogCommand } from '../../posts/application/use-cases/find-all-posts-for-current-blog-use-case';
 
 @ApiTags('Blogs')

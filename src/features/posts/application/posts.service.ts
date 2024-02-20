@@ -97,48 +97,48 @@ export class PostsService {
 
   //   return presentationalAllPosts;
   // }
-  async createPost(
-    postCreateModelWithBlogId: PostCreateModelWithBlogId,
-  ): Promise<PostsDocument | null> {
-    const { title, shortDescription, content, blogId } =
-      postCreateModelWithBlogId;
+  // async createPost(
+  //   postCreateModelWithBlogId: PostCreateModelWithBlogId,
+  // ): Promise<PostsDocument | null> {
+  //   const { title, shortDescription, content, blogId } =
+  //     postCreateModelWithBlogId;
 
-    const isBlogExist = await this.blogsQueryRepository.getBlogById(
-      new Types.ObjectId(blogId),
-    );
-    if (!isBlogExist) {
-      return null;
-    }
+  //   const isBlogExist = await this.blogsQueryRepository.getBlogById(
+  //     new Types.ObjectId(blogId),
+  //   );
+  //   if (!isBlogExist) {
+  //     return null;
+  //   }
 
-    const createdAt = new Date().toISOString();
-    const extendedLikesInfo = new ExtendedLikesInfo();
-    extendedLikesInfo.likesCount = 0;
-    extendedLikesInfo.dislikesCount = 0;
-    extendedLikesInfo.myStatus = 'None';
-    extendedLikesInfo.newestLikes = [];
+  //   const createdAt = new Date().toISOString();
+  //   const extendedLikesInfo = new ExtendedLikesInfo();
+  //   extendedLikesInfo.likesCount = 0;
+  //   extendedLikesInfo.dislikesCount = 0;
+  //   extendedLikesInfo.myStatus = 'None';
+  //   extendedLikesInfo.newestLikes = [];
 
-    const newPost = new Posts();
-    newPost.title = title;
-    newPost.shortDescription = shortDescription;
-    newPost.content = content;
-    newPost.blogId = isBlogExist.id;
-    newPost.blogName = isBlogExist.name;
-    newPost.createdAt = createdAt;
-    newPost.extendedLikesInfo = extendedLikesInfo;
+  //   const newPost = new Posts();
+  //   newPost.title = title;
+  //   newPost.shortDescription = shortDescription;
+  //   newPost.content = content;
+  //   newPost.blogId = isBlogExist.id;
+  //   newPost.blogName = isBlogExist.name;
+  //   newPost.createdAt = createdAt;
+  //   newPost.extendedLikesInfo = extendedLikesInfo;
 
-    return this.postsRepository.createPost(newPost);
-  }
-  async updatePost(
-    id: string,
-    postUpdateModel: PostUpdateModel,
-  ): Promise<boolean> {
-    const post = await this.postsRepository.getPostById(new Types.ObjectId(id));
-    post.updatePost(postUpdateModel);
-    await this.postsRepository.save(post);
-    return true;
-    // return await this.postsRepository.updatePost(id, postUpdateModel);
-  }
-  async deletePost(id: string): Promise<boolean> {
-    return await this.postsRepository.deletePost(id);
-  }
+  //   return this.postsRepository.createPost(newPost);
+  // }
+  // async updatePost(
+  //   id: string,
+  //   postUpdateModel: PostUpdateModel,
+  // ): Promise<boolean> {
+  //   const post = await this.postsRepository.getPostById(new Types.ObjectId(id));
+  //   post.updatePost(postUpdateModel);
+  //   await this.postsRepository.save(post);
+  //   return true;
+  // }
+
+  // async deletePost(id: string): Promise<boolean> {
+  //   return await this.postsRepository.deletePost(id);
+  // }
 }

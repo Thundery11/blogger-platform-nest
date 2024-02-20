@@ -1,12 +1,12 @@
 import { Types } from 'mongoose';
-import { PostsRepository } from '../../posts/infrastructure/posts.repository';
-import { BlogsQueryRepository } from '../infrastructure/blogs.query-repository';
+import { PostsRepository } from '../../../posts/infrastructure/posts.repository';
+import { BlogsQueryRepository } from '../../infrastructure/blogs.query-repository';
 import {
   ExtendedLikesInfo,
   Posts,
   PostsDocument,
-} from '../../posts/domain/posts.entity';
-import { PostCreateModel } from '../../posts/api/models/input/create-post.input.model';
+} from '../../../posts/domain/posts.entity';
+import { PostCreateModel } from '../../../posts/api/models/input/create-post.input.model';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 
 export class CreatePostForSpecificBlogCommand {
@@ -36,7 +36,6 @@ export class CreatePostForSpecificBlogUseCase
 
     const { title, shortDescription, content } = postCreateModel;
     const createdAt = new Date().toISOString();
-    const id = new Types.ObjectId().toString();
 
     const extendedLikesInfo = new ExtendedLikesInfo();
     extendedLikesInfo.likesCount = 0;

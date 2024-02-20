@@ -28,6 +28,8 @@ import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
 import { FindAllPostsCommand } from '../application/use-cases/find-all-posts-use-case';
 import { CreatePostCommand } from '../application/use-cases/create-post-use-case';
+import { UpdatePostCommand } from '../application/use-cases/update-post-use-case';
+import { DeletePostCommand } from '../application/delete-post-use-case';
 
 @Controller('posts')
 export class PostsController {
@@ -85,7 +87,9 @@ export class PostsController {
     @Param('id') id: string,
     @Body() postUpdateModel: PostUpdateModel,
   ): Promise<boolean> {
-    const result = await this.postsService.updatePost(id, postUpdateModel);
+    const result = await this.commandBus.execute(
+      new UpdatePostCommand(postUpdateModel, id),
+    );
     if (!result) {
       throw new NotFoundException();
     }
@@ -100,6 +104,6 @@ export class PostsController {
     if (!result) {
       throw new NotFoundException();
     }
-    return await this.postsService.deletePost(id);
+    return await this.commandBus.execute(new DeletePostCommand(id));
   }
 }

@@ -25,10 +25,12 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { FindAllBlogsUseCase } from './features/blogs/application/use-cases/find-all-blogs-use-case';
 import { UpdateBlogUseCase } from './features/blogs/application/use-cases/update-blog-use-case';
 import { DeleteBlogUseCase } from './features/blogs/application/use-cases/delete-blog-use-case';
-import { CreatePostForSpecificBlogUseCase } from './features/blogs/application/create-post-for-specific-blog-use-case';
+import { CreatePostForSpecificBlogUseCase } from './features/blogs/application/use-cases/create-post-for-specific-blog-use-case';
 import { FindAllPostsForCurrentBlogUseCase } from './features/posts/application/use-cases/find-all-posts-for-current-blog-use-case';
 import { FindAllPostsUseCase } from './features/posts/application/use-cases/find-all-posts-use-case';
 import { CreatePostUseCase } from './features/posts/application/use-cases/create-post-use-case';
+import { UpdatePostUseCase } from './features/posts/application/use-cases/update-post-use-case';
+import { DeletePostUseCase } from './features/posts/application/delete-post-use-case';
 
 const useCases = [
   CreateBlogUseCase,
@@ -39,6 +41,8 @@ const useCases = [
   FindAllPostsForCurrentBlogUseCase,
   FindAllPostsUseCase,
   CreatePostUseCase,
+  UpdatePostUseCase,
+  DeletePostUseCase,
 ];
 @Module({
   imports: [
