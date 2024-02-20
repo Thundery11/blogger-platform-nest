@@ -26,6 +26,8 @@ import { SortingQueryParamsForPosts } from './models/query/query-for-sorting';
 import { Types } from 'mongoose';
 import { BasicAuthGuard } from '../../auth/guards/basic-auth.guard';
 import { CommandBus } from '@nestjs/cqrs';
+import { FindAllPostsCommand } from '../application/use-cases/find-all-posts-use-case';
+import { CreatePostCommand } from '../application/use-cases/create-post-use-case';
 
 @Controller('posts')
 export class PostsController {
@@ -52,7 +54,9 @@ export class PostsController {
   async findAllPosts(
     @Query() sortingQueryPosts: SortingQueryParamsForPosts,
   ): Promise<AllPostsOutputModel | null> {
-    const result = await this.postsService.findAllPosts(sortingQueryPosts);
+    const result = await this.commandBus.execute(
+      new FindAllPostsCommand(sortingQueryPosts),
+    );
     if (!result) {
       throw new NotFoundException();
     }
@@ -65,8 +69,8 @@ export class PostsController {
   async createPost(
     @Body() postCreateModelWithBlogId: PostCreateModelWithBlogId,
   ): Promise<PostOutputModel> {
-    const result = await this.postsService.createPost(
-      postCreateModelWithBlogId,
+    const result = await this.commandBus.execute(
+      new CreatePostCommand(postCreateModelWithBlogId),
     );
     if (!result) {
       throw new NotFoundException();

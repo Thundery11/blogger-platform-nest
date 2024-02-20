@@ -27,6 +27,8 @@ import { UpdateBlogUseCase } from './features/blogs/application/use-cases/update
 import { DeleteBlogUseCase } from './features/blogs/application/use-cases/delete-blog-use-case';
 import { CreatePostForSpecificBlogUseCase } from './features/blogs/application/create-post-for-specific-blog-use-case';
 import { FindAllPostsForCurrentBlogUseCase } from './features/posts/application/use-cases/find-all-posts-for-current-blog-use-case';
+import { FindAllPostsUseCase } from './features/posts/application/use-cases/find-all-posts-use-case';
+import { CreatePostUseCase } from './features/posts/application/use-cases/create-post-use-case';
 
 const useCases = [
   CreateBlogUseCase,
@@ -35,6 +37,8 @@ const useCases = [
   DeleteBlogUseCase,
   CreatePostForSpecificBlogUseCase,
   FindAllPostsForCurrentBlogUseCase,
+  FindAllPostsUseCase,
+  CreatePostUseCase,
 ];
 @Module({
   imports: [

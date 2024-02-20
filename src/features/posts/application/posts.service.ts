@@ -25,78 +25,78 @@ export class PostsService {
     private postsRepository: PostsRepository,
     private blogsQueryRepository: BlogsQueryRepository,
   ) {}
-  async findAllPostsForCurrentBlog(
-    sortingQueryParams: SortingQueryParams,
-    blogId: string,
-  ): Promise<AllPostsOutputModel | null> {
-    const {
-      sortBy = 'createdAt',
-      sortDirection = 'desc',
-      pageNumber = 1,
-      pageSize = 10,
-    } = sortingQueryParams;
-    // const query = {};
-    const skip = (pageNumber - 1) * pageSize;
-    const countedDocuments =
-      await this.postsRepository.countAllDocumentsForCurrentBlog(blogId);
-    const pagesCount: number = Math.ceil(countedDocuments / pageSize);
+  // async findAllPostsForCurrentBlog(
+  //   sortingQueryParams: SortingQueryParams,
+  //   blogId: string,
+  // ): Promise<AllPostsOutputModel | null> {
+  //   const {
+  //     sortBy = 'createdAt',
+  //     sortDirection = 'desc',
+  //     pageNumber = 1,
+  //     pageSize = 10,
+  //   } = sortingQueryParams;
+  //   // const query = {};
+  //   const skip = (pageNumber - 1) * pageSize;
+  //   const countedDocuments =
+  //     await this.postsRepository.countAllDocumentsForCurrentBlog(blogId);
+  //   const pagesCount: number = Math.ceil(countedDocuments / pageSize);
 
-    const isBlogExist = await this.blogsQueryRepository.getBlogById(
-      new Types.ObjectId(blogId),
-    );
-    if (!isBlogExist) {
-      return null;
-    }
+  //   const isBlogExist = await this.blogsQueryRepository.getBlogById(
+  //     new Types.ObjectId(blogId),
+  //   );
+  //   if (!isBlogExist) {
+  //     return null;
+  //   }
 
-    const allPosts = await this.postsRepository.getAllPostsForCurrentBlog(
-      blogId,
-      sortBy,
-      sortDirection,
-      pageSize,
-      skip,
-    );
+  //   const allPosts = await this.postsRepository.getAllPostsForCurrentBlog(
+  //     blogId,
+  //     sortBy,
+  //     sortDirection,
+  //     pageSize,
+  //     skip,
+  //   );
 
-    const presentationalAllPosts = {
-      pagesCount,
-      page: Number(pageNumber),
-      pageSize: Number(pageSize),
-      totalCount: countedDocuments,
-      items: allPosts,
-    };
+  //   const presentationalAllPosts = {
+  //     pagesCount,
+  //     page: Number(pageNumber),
+  //     pageSize: Number(pageSize),
+  //     totalCount: countedDocuments,
+  //     items: allPosts,
+  //   };
 
-    return presentationalAllPosts;
-  }
-  async findAllPosts(
-    sortingQueryParams: SortingQueryParams,
-  ): Promise<AllPostsOutputModel> {
-    const {
-      sortBy = 'createdAt',
-      sortDirection = 'desc',
-      pageNumber = 1,
-      pageSize = 10,
-    } = sortingQueryParams;
-    // const query = {};
-    const skip = (pageNumber - 1) * pageSize;
-    const countedDocuments = await this.postsRepository.countAllDocuments();
-    const pagesCount: number = Math.ceil(countedDocuments / pageSize);
+  //   return presentationalAllPosts;
+  // }
+  // async findAllPosts(
+  //   sortingQueryParams: SortingQueryParams,
+  // ): Promise<AllPostsOutputModel> {
+  //   const {
+  //     sortBy = 'createdAt',
+  //     sortDirection = 'desc',
+  //     pageNumber = 1,
+  //     pageSize = 10,
+  //   } = sortingQueryParams;
+  //   // const query = {};
+  //   const skip = (pageNumber - 1) * pageSize;
+  //   const countedDocuments = await this.postsRepository.countAllDocuments();
+  //   const pagesCount: number = Math.ceil(countedDocuments / pageSize);
 
-    const allPosts = await this.postsRepository.getAllPosts(
-      sortBy,
-      sortDirection,
-      pageSize,
-      skip,
-    );
+  //   const allPosts = await this.postsRepository.getAllPosts(
+  //     sortBy,
+  //     sortDirection,
+  //     pageSize,
+  //     skip,
+  //   );
 
-    const presentationalAllPosts = {
-      pagesCount,
-      page: Number(pageNumber),
-      pageSize: Number(pageSize),
-      totalCount: countedDocuments,
-      items: allPosts,
-    };
+  //   const presentationalAllPosts = {
+  //     pagesCount,
+  //     page: Number(pageNumber),
+  //     pageSize: Number(pageSize),
+  //     totalCount: countedDocuments,
+  //     items: allPosts,
+  //   };
 
-    return presentationalAllPosts;
-  }
+  //   return presentationalAllPosts;
+  // }
   async createPost(
     postCreateModelWithBlogId: PostCreateModelWithBlogId,
   ): Promise<PostsDocument | null> {
@@ -126,15 +126,6 @@ export class PostsService {
     newPost.createdAt = createdAt;
     newPost.extendedLikesInfo = extendedLikesInfo;
 
-    // const newPost = {
-    //   id,
-    //   title,
-    //   shortDescription,
-    //   content,
-    //   blogId: isBlogExist.id,
-    //   blogName: isBlogExist.name,
-    //   createdAt,
-    // };
     return this.postsRepository.createPost(newPost);
   }
   async updatePost(
