@@ -4,11 +4,13 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { PostsService } from '../application/posts.service';
@@ -30,6 +32,15 @@ import { FindAllPostsCommand } from '../application/use-cases/find-all-posts-use
 import { CreatePostCommand } from '../application/use-cases/create-post-use-case';
 import { UpdatePostCommand } from '../application/use-cases/update-post-use-case';
 import { DeletePostCommand } from '../application/delete-post-use-case';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { CreateCommentInputModel } from '../../comments/api/models/input/comments-input.model';
+import { CreateCommentForSpecificPostCommand } from '../../comments/application/use-cases/create-comment-for-specific-post-use-case';
+import { Request } from 'express';
+import { CurrentUserId } from '../../auth/decorators/current-user-id-param.decorator';
+import { UsersQueryRepository } from '../../users/infrastructure/users-query.repository';
+import { UserData } from '../../users/api/models/input/create-user.input.model';
+import { CommentsQueryRepository } from '../../comments/infrastructure/comments.query.repository';
+import { CommentsOutputModel } from '../../comments/api/models/output/comments-model.output';
 
 @Controller('posts')
 export class PostsController {
@@ -37,6 +48,8 @@ export class PostsController {
     private commandBus: CommandBus,
     private postsService: PostsService,
     private postsQueryRepository: PostsQueryRepository,
+    private usersQueryRepository: UsersQueryRepository,
+    private commentsQueryRepository: CommentsQueryRepository,
   ) {}
 
   @Get(':id')
@@ -105,5 +118,37 @@ export class PostsController {
       throw new NotFoundException();
     }
     return await this.commandBus.execute(new DeletePostCommand(id));
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':postId/comments')
+  @HttpCode(HttpStatus.CREATED)
+  async createCommentForSpecificPost(
+    @Param('postId') postId: string,
+    @Body() createCommentModel: CreateCommentInputModel,
+    @CurrentUserId() currentUserId,
+  ): Promise<CommentsOutputModel | null> {
+    const userId = currentUserId;
+    const user = await this.usersQueryRepository.getUserById(
+      new Types.ObjectId(userId),
+    );
+    const userLogin = user.login;
+    console.log('USer Login: ', user);
+    const userData: UserData = { userId, userLogin };
+    const result = await this.commandBus.execute(
+      new CreateCommentForSpecificPostCommand(
+        createCommentModel,
+        userData,
+        postId,
+      ),
+    );
+    console.log('New Comment: ', result);
+    const comment = await this.commentsQueryRepository.getCommentById(
+      result._id,
+    );
+    if (!comment) {
+      throw new NotFoundException();
+    }
+    return comment;
   }
 }

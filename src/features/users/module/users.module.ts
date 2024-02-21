@@ -27,6 +27,6 @@ import { CqrsModule } from '@nestjs/cqrs';
     EmailsManager,
     EmailAdapter,
   ],
-  exports: [UsersService, UsersRepository],
+  exports: [UsersService, UsersRepository, UsersQueryRepository],
 })
 export class UsersModule {}

@@ -31,6 +31,17 @@ import { FindAllPostsUseCase } from './features/posts/application/use-cases/find
 import { CreatePostUseCase } from './features/posts/application/use-cases/create-post-use-case';
 import { UpdatePostUseCase } from './features/posts/application/use-cases/update-post-use-case';
 import { DeletePostUseCase } from './features/posts/application/delete-post-use-case';
+import {
+  LikesDbModel,
+  LikesDbSchema,
+} from './features/likes/domain/likes.entity';
+import {
+  Comments,
+  CommentsSchema,
+} from './features/comments/domain/comments.entity';
+import { CreateCommentForSpecificPostUseCase } from './features/comments/application/use-cases/create-comment-for-specific-post-use-case';
+import { CommentsRepository } from './features/comments/infrastructure/comments.repository';
+import { CommentsQueryRepository } from './features/comments/infrastructure/comments.query.repository';
 
 const useCases = [
   CreateBlogUseCase,
@@ -43,6 +54,7 @@ const useCases = [
   CreatePostUseCase,
   UpdatePostUseCase,
   DeletePostUseCase,
+  CreateCommentForSpecificPostUseCase,
 ];
 @Module({
   imports: [
@@ -61,6 +73,14 @@ const useCases = [
       {
         name: Users.name,
         schema: UsersSchema,
+      },
+      {
+        name: Comments.name,
+        schema: CommentsSchema,
+      },
+      {
+        name: LikesDbModel.name,
+        schema: LikesDbSchema,
       },
     ]),
     MongooseModule.forRoot(process.env.MONGO_URL!, {
@@ -82,6 +102,8 @@ const useCases = [
     PostsRepository,
     PostsQueryRepository,
     PostsService,
+    CommentsRepository,
+    CommentsQueryRepository,
     ...useCases,
   ],
 })

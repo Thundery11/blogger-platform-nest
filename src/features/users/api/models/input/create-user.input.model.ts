@@ -18,3 +18,8 @@ export class UserCreateModel {
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
   email: string;
 }
+
+export class UserData {
+  userId: string;
+  userLogin: string;
+}
