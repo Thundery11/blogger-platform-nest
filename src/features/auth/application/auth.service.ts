@@ -36,6 +36,10 @@ export class AuthService {
       accessToken: await this.jwtService.signAsync(payload),
     };
   }
+  async createRefreshToken(user: any) {
+    const payload = { sub: user._id.toString() };
+    return await this.jwtService.signAsync(payload);
+  }
   async confirmEmail(code: string): Promise<boolean> {
     const user = await this.usersRepository.findUserByConfirmationCode(code);
     if (!user) return false;

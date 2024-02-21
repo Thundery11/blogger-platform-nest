@@ -8,6 +8,7 @@ import {
   NotFoundException,
   Post,
   Request,
+  Res,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +23,7 @@ import { RegistrationInputModel } from './models/input/registration-input.model'
 import { BadRequestError } from 'passport-headerapikey';
 import { EmailResendingInputModel } from './models/input/email-resending.model';
 import { ConfirmationCodeInputModel } from './models/input/confirmation-code-input.model';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -33,8 +35,13 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Request() req, @Res() response: Response) {
+    const refreshToken = await this.authService.createRefreshToken(req.user);
+    const accessToken = await this.authService.login(req.user);
+    console.log('refresh token : ', refreshToken);
+    return response
+      .cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
+      .send(accessToken);
   }
 
   @UseGuards(JwtAuthGuard)
