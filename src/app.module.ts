@@ -51,6 +51,7 @@ import { FindCommentUseCase } from './features/comments/application/use-cases/fi
 import { UpdateCommentUseCase } from './features/comments/application/use-cases/update-comment-use-case';
 import { DeleteCommentUseCase } from './features/comments/application/use-cases/delete-comment-use-case';
 import { UpdateCommentsLikeStatusUseCase } from './features/comments/application/use-cases/update-like-status-use-case';
+import { FindAllCommentsUseCase } from './features/posts/application/use-cases/find-all-comments-use-case';
 
 const useCases = [
   CreateBlogUseCase,
@@ -68,6 +69,7 @@ const useCases = [
   UpdateCommentUseCase,
   DeleteCommentUseCase,
   UpdateCommentsLikeStatusUseCase,
+  FindAllCommentsUseCase,
 ];
 @Module({
   imports: [

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpCode,
   HttpStatus,
   NotFoundException,
@@ -41,6 +42,8 @@ import { UsersQueryRepository } from '../../users/infrastructure/users-query.rep
 import { UserData } from '../../users/api/models/input/create-user.input.model';
 import { CommentsQueryRepository } from '../../comments/infrastructure/comments.query.repository';
 import { CommentsOutputModel } from '../../comments/api/models/output/comments-model.output';
+import { FindAllCommentsCommand } from '../application/use-cases/find-all-comments-use-case';
+import { AuthService } from '../../auth/application/auth.service';
 
 @Controller('posts')
 export class PostsController {
@@ -50,6 +53,7 @@ export class PostsController {
     private postsQueryRepository: PostsQueryRepository,
     private usersQueryRepository: UsersQueryRepository,
     private commentsQueryRepository: CommentsQueryRepository,
+    private authService: AuthService,
   ) {}
 
   @Get(':id')
@@ -76,6 +80,30 @@ export class PostsController {
       throw new NotFoundException();
     }
     return result;
+  }
+
+  @Get(':postId/comments')
+  @HttpCode(HttpStatus.OK)
+  async findAllComments(
+    @Query() sortingQueryParams: SortingQueryParamsForPosts,
+    @Param('postId') postId: string,
+    @Headers() headers,
+  ) {
+    let userId: string | null;
+    if (!headers.authorization) {
+      userId = null;
+    } else {
+      const token = headers.authorization.split(' ')[1];
+      userId = await this.authService.getUserByToken(token);
+    }
+    console.log('userId: ', userId);
+    const allComments = await this.commandBus.execute(
+      new FindAllCommentsCommand(sortingQueryParams, postId, userId),
+    );
+    if (!allComments) {
+      throw new NotFoundException();
+    }
+    return allComments;
   }
 
   @UseGuards(BasicAuthGuard)
@@ -141,7 +169,6 @@ export class PostsController {
         postId,
       ),
     );
-    console.log('New Comment: ', result);
     const comment = await this.commentsQueryRepository.getCommentById(
       result._id,
     );

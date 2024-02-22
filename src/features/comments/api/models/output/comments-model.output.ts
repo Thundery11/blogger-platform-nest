@@ -46,19 +46,22 @@ export const commentsOutputQueryMapper = (
   return outputModel;
 };
 
-export const commentsOutputMapper = (
-  comment: CommentsDocument,
-): CommentsOutputModel => {
-  const commentatorInfo = new CommentatorInfo(
-    comment.commentatorInfo.userId,
-    comment.commentatorInfo.userLogin,
-  );
-  const outputModel = new CommentsOutputModel(
-    (comment.id = comment._id.toString()),
-    comment.content,
-    commentatorInfo,
-    comment.createdAt,
-    LikesInfo.getDefault(),
-  );
-  return outputModel;
+export const AllCommentsOutputMapper = (
+  comments: CommentsDocument[],
+): CommentsOutputModel[] => {
+  const allCommentsOutput = comments.map((comment) => ({
+    id: comment._id.toString(),
+    content: comment.content,
+    commentatorInfo: {
+      userId: comment.commentatorInfo.userId,
+      userLogin: comment.commentatorInfo.userLogin,
+    },
+    createdAt: comment.createdAt,
+    likesInfo: {
+      likesCount: comment.likesInfo.likesCount,
+      dislikesCount: comment.likesInfo.dislikesCount,
+      myStatus: comment.likesInfo.myStatus,
+    },
+  }));
+  return allCommentsOutput;
 };

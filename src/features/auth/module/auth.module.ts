@@ -18,7 +18,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     JwtModule.register({
       global: true,
       secret: jwtConstants.JWT_SECRET,
-      signOptions: { expiresIn: '10m' },
+      signOptions: { expiresIn: '1000m' },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, BasicStrategy],

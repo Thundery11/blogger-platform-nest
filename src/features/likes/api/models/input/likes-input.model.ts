@@ -1,3 +1,4 @@
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { MyStatus } from '../../../domain/likes.entity';
 
 export class LikesDbType {
@@ -19,6 +20,8 @@ export class LastLikedType {
 }
 
 export class LikeStatus {
+  @IsEnum(MyStatus)
+  @IsNotEmpty()
   likeStatus: MyStatus;
 }
 

@@ -49,6 +49,7 @@ export class CreateCommentForSpecificPostUseCase
     commentatorInfo.userLogin = command.userData.userLogin;
 
     const newComment = new Comments();
+    newComment.postId = command.postId;
     newComment.content = command.createCommentModel.content;
     newComment.commentatorInfo = commentatorInfo;
     newComment.createdAt = createdAt;

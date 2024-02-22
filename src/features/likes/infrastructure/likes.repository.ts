@@ -66,18 +66,16 @@ export class LikesRepository {
     });
   }
 
-  async whatIsMyStatus(
-    userId: string,
-    _parentId: string,
-  ): Promise<WhatIsMyStatus | null> {
+  async whatIsMyStatus(userId: string, _parentId: string): Promise<string> {
     const whatIsMyStatus = await this.likesModel.findOne({
       userId: userId,
       parentId: _parentId,
     });
     if (!whatIsMyStatus) {
-      return null;
+      return 'None';
     }
-    return whatIsMyStatusMapper(whatIsMyStatus);
+
+    return whatIsMyStatusMapper(whatIsMyStatus).myStatus;
   }
 
   async lastLiked(lastLiked: LastLikedType): Promise<boolean> {

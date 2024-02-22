@@ -3,6 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Comments, CommentsDocument } from '../domain/comments.entity';
 import { Model, Types } from 'mongoose';
 import { CreateCommentInputModel } from '../api/models/input/comments-input.model';
+import {
+  AllCommentsOutputMapper,
+  CommentsOutputModel,
+} from '../api/models/output/comments-model.output';
 
 @Injectable()
 export class CommentsRepository {
@@ -39,5 +43,21 @@ export class CommentsRepository {
       _id: new Types.ObjectId(commentId),
     });
     return result.deletedCount ? true : false;
+  }
+
+  async getComments(
+    sortBy: string,
+    sortDirection: string,
+    pageSize: number,
+    skip: number,
+    postId: string,
+  ): Promise<CommentsOutputModel[]> {
+    const comments = await this.commentsModel
+      .find({ postId: postId }, { id: 0, __v: 0 })
+      .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+      .skip(skip)
+      .limit(Number(pageSize));
+    console.log('repoComments: ', comments);
+    return AllCommentsOutputMapper(comments);
   }
 }

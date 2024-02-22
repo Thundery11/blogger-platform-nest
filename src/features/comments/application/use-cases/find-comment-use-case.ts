@@ -35,16 +35,16 @@ export class FindCommentUseCase implements ICommandHandler<FindCommentCommand> {
           command.userId,
           command.commentId,
         )
-      : null;
+      : 'None';
 
     if (!comment) return null;
 
     comment.likesInfo.dislikesCount = dislikesCount;
     comment.likesInfo.likesCount = likesCount;
-    if (reaction === null) {
+    if (reaction === 'None') {
       comment.likesInfo.myStatus = MyStatus.None;
     } else {
-      comment.likesInfo.myStatus = reaction?.myStatus;
+      comment.likesInfo.myStatus = reaction;
     }
     return comment;
   }

@@ -8,6 +8,7 @@ export const whatIsMyStatusMapper = (
 ): WhatIsMyStatus => {
   const outputModel = new WhatIsMyStatus();
   outputModel.myStatus = whatIsMyStatus.myStatus;
+  console.log('likeStatus: ', outputModel);
   return outputModel;
 };
 

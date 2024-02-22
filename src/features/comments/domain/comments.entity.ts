@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 
 @Schema({ _id: false })
 export class CommentatorInfo {
@@ -23,6 +23,8 @@ const LikesInfoSchema = SchemaFactory.createForClass(LikesInfo);
 
 @Schema()
 export class Comments {
+  @Prop({ required: true })
+  postId: string;
   @Prop({ required: true })
   content: string;
   @Prop({ required: true, type: CommentatorInfoSchema })
