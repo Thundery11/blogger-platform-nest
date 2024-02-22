@@ -17,3 +17,15 @@ export class LastLikedType {
     public postId: string,
   ) {}
 }
+
+export class LikeStatus {
+  likeStatus: MyStatus;
+}
+
+export class UpdateLikeDto {
+  constructor(
+    public commentId: string,
+    public currentUserId: string,
+    public likeStatus: MyStatus,
+  ) {}
+}

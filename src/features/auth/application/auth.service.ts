@@ -55,8 +55,11 @@ export class AuthService {
 
   async getUserByToken(token: string) {
     try {
-      const result = this.jwtService.verify(token);
-      return result.userId;
+      const result = this.jwtService.verify(token, {
+        secret: jwtConstants.JWT_SECRET,
+      });
+
+      return result.sub;
     } catch (error) {
       console.error(error);
       return null;

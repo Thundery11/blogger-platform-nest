@@ -48,6 +48,9 @@ import { LikesRepository } from './features/likes/infrastructure/likes.repositor
 import { LikesService } from './features/likes/application/likes.service';
 import { CommentsController } from './features/comments/api/comments.controller';
 import { FindCommentUseCase } from './features/comments/application/use-cases/find-comment-use-case';
+import { UpdateCommentUseCase } from './features/comments/application/use-cases/update-comment-use-case';
+import { DeleteCommentUseCase } from './features/comments/application/use-cases/delete-comment-use-case';
+import { UpdateCommentsLikeStatusUseCase } from './features/comments/application/use-cases/update-like-status-use-case';
 
 const useCases = [
   CreateBlogUseCase,
@@ -62,6 +65,9 @@ const useCases = [
   DeletePostUseCase,
   CreateCommentForSpecificPostUseCase,
   FindCommentUseCase,
+  UpdateCommentUseCase,
+  DeleteCommentUseCase,
+  UpdateCommentsLikeStatusUseCase,
 ];
 @Module({
   imports: [

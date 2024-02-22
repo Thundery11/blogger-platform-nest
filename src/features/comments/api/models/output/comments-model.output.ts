@@ -45,3 +45,20 @@ export const commentsOutputQueryMapper = (
   );
   return outputModel;
 };
+
+export const commentsOutputMapper = (
+  comment: CommentsDocument,
+): CommentsOutputModel => {
+  const commentatorInfo = new CommentatorInfo(
+    comment.commentatorInfo.userId,
+    comment.commentatorInfo.userLogin,
+  );
+  const outputModel = new CommentsOutputModel(
+    (comment.id = comment._id.toString()),
+    comment.content,
+    commentatorInfo,
+    comment.createdAt,
+    LikesInfo.getDefault(),
+  );
+  return outputModel;
+};
