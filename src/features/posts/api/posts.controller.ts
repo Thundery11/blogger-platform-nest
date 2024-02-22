@@ -133,7 +133,6 @@ export class PostsController {
       new Types.ObjectId(userId),
     );
     const userLogin = user.login;
-    console.log('USer Login: ', user);
     const userData: UserData = { userId, userLogin };
     const result = await this.commandBus.execute(
       new CreateCommentForSpecificPostCommand(

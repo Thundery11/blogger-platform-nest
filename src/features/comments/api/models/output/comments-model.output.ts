@@ -29,7 +29,7 @@ export class CommentsOutputModel {
   ) {}
 }
 
-export const commentsOutputMapper = (
+export const commentsOutputQueryMapper = (
   comment: CommentsDocument,
 ): CommentsOutputModel => {
   const commentatorInfo = new CommentatorInfo(

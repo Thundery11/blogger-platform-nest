@@ -8,6 +8,7 @@ import { UsersService } from '../../users/application/users.service';
 import bcrypt from 'bcrypt';
 import { Types } from 'mongoose';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
+import { jwtConstants } from '../constants/constants';
 @Injectable()
 export class AuthService {
   constructor(
@@ -50,5 +51,15 @@ export class AuthService {
       user._id.toString(),
     );
     return result;
+  }
+
+  async getUserByToken(token: string) {
+    try {
+      const result = this.jwtService.verify(token);
+      return result.userId;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 }

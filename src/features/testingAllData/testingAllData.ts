@@ -4,6 +4,7 @@ import { Blogs } from '../blogs/domain/blogs.entity';
 import { Model } from 'mongoose';
 import { Posts } from '../posts/domain/posts.entity';
 import { Users } from '../users/domain/users.entity';
+import { Comments } from '../comments/domain/comments.entity';
 
 @Controller('testing/all-data')
 export class TestingAllDataController {
@@ -11,6 +12,7 @@ export class TestingAllDataController {
     @InjectModel(Blogs.name) private blogsModel: Model<Blogs>,
     @InjectModel(Posts.name) private postsModel: Model<Posts>,
     @InjectModel(Users.name) private usersModel: Model<Users>,
+    @InjectModel(Comments.name) private commentsModel: Model<Comments>,
   ) {}
 
   @Delete()
@@ -19,5 +21,6 @@ export class TestingAllDataController {
     await this.postsModel.deleteMany({});
     await this.blogsModel.deleteMany({});
     await this.usersModel.deleteMany({});
+    await this.commentsModel.deleteMany({});
   }
 }

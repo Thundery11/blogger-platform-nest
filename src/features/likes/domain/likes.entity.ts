@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export enum MyStatus {
   None = 'None',
@@ -42,4 +43,20 @@ export class LikesDbModel {
   @Prop({ required: true })
   myStatus: MyStatus;
 }
+
+export type LikesDocument = HydratedDocument<LikesDbModel>;
 export const LikesDbSchema = SchemaFactory.createForClass(LikesDbModel);
+
+@Schema()
+export class LastLikedDbModel {
+  @Prop({ required: true })
+  addetAt: string;
+  @Prop({ required: true })
+  userId: string;
+  @Prop({ required: true })
+  login: string;
+  @Prop({ required: true })
+  postId: string;
+}
+export const LastLikedDbSchema = SchemaFactory.createForClass(LastLikedDbModel);
+export type LastLikedDocument = HydratedDocument<LastLikedDbModel>;

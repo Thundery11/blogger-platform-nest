@@ -32,6 +32,8 @@ import { CreatePostUseCase } from './features/posts/application/use-cases/create
 import { UpdatePostUseCase } from './features/posts/application/use-cases/update-post-use-case';
 import { DeletePostUseCase } from './features/posts/application/delete-post-use-case';
 import {
+  LastLikedDbModel,
+  LastLikedDbSchema,
   LikesDbModel,
   LikesDbSchema,
 } from './features/likes/domain/likes.entity';
@@ -42,6 +44,10 @@ import {
 import { CreateCommentForSpecificPostUseCase } from './features/comments/application/use-cases/create-comment-for-specific-post-use-case';
 import { CommentsRepository } from './features/comments/infrastructure/comments.repository';
 import { CommentsQueryRepository } from './features/comments/infrastructure/comments.query.repository';
+import { LikesRepository } from './features/likes/infrastructure/likes.repository';
+import { LikesService } from './features/likes/application/likes.service';
+import { CommentsController } from './features/comments/api/comments.controller';
+import { FindCommentUseCase } from './features/comments/application/use-cases/find-comment-use-case';
 
 const useCases = [
   CreateBlogUseCase,
@@ -55,6 +61,7 @@ const useCases = [
   UpdatePostUseCase,
   DeletePostUseCase,
   CreateCommentForSpecificPostUseCase,
+  FindCommentUseCase,
 ];
 @Module({
   imports: [
@@ -82,6 +89,10 @@ const useCases = [
         name: LikesDbModel.name,
         schema: LikesDbSchema,
       },
+      {
+        name: LastLikedDbModel.name,
+        schema: LastLikedDbSchema,
+      },
     ]),
     MongooseModule.forRoot(process.env.MONGO_URL!, {
       dbName: 'blogger-platform-nest',
@@ -92,6 +103,7 @@ const useCases = [
     AppController,
     BlogsController,
     PostsController,
+    CommentsController,
   ],
 
   providers: [
@@ -104,6 +116,9 @@ const useCases = [
     PostsService,
     CommentsRepository,
     CommentsQueryRepository,
+    LikesRepository,
+    LikesService,
+
     ...useCases,
   ],
 })
