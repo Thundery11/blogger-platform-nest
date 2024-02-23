@@ -1,5 +1,9 @@
 // import { config } from 'dotenv';
 
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import cookieParser from 'cookie-parser';
+import { HttpExceptionFilter } from '../infrastucture/exception-filters/exception.filter';
+
 // config();
 
 // export type EnvironmentVariable = { [key: string]: string | undefined };
@@ -76,3 +80,28 @@
 
 // const api = new APISettings(process.env);
 // export const appSettings = new AppSettings(env, api);
+
+export const appSettings = (app) => {
+  app.enableCors();
+  app.use(cookieParser());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      stopAtFirstError: true,
+      transform: true,
+      exceptionFactory: (errors) => {
+        const errorsForResponse: { message: string; field: string }[] = [];
+        errors.forEach((e) => {
+          const constraintsKeys = Object.keys(e.constraints!);
+          constraintsKeys.forEach((cKey) => {
+            errorsForResponse.push({
+              message: e.constraints![cKey],
+              field: e.property,
+            });
+          });
+        });
+        throw new BadRequestException(errorsForResponse);
+      },
+    }),
+  );
+  app.useGlobalFilters(new HttpExceptionFilter());
+};
