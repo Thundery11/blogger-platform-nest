@@ -36,7 +36,6 @@ import { DeletePostCommand } from '../application/delete-post-use-case';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CreateCommentInputModel } from '../../comments/api/models/input/comments-input.model';
 import { CreateCommentForSpecificPostCommand } from '../../comments/application/use-cases/create-comment-for-specific-post-use-case';
-import { Request } from 'express';
 import { CurrentUserId } from '../../auth/decorators/current-user-id-param.decorator';
 import { UsersQueryRepository } from '../../users/infrastructure/users-query.repository';
 import { UserData } from '../../users/api/models/input/create-user.input.model';
