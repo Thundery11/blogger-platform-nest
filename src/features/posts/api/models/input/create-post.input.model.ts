@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, Validate } from 'class-validator';
 import { Trim } from '../../../../../infrastucture/decorators/transform/trim';
+import { IsBlogAlreadyExist } from '../../../../../infrastucture/decorators/validate/is-blog-exist-decorator';
 
 export class PostCreateModel {
   @Trim()
@@ -42,6 +43,7 @@ export class PostCreateModelWithBlogId {
 
   @Trim()
   @IsString()
+  @IsBlogAlreadyExist()
   blogId: string;
 }
 
@@ -64,7 +66,8 @@ export class PostUpdateModel {
   @IsNotEmpty()
   content: string;
 
-  @Trim()
   @IsString()
+  // @Validate(IsBlogExistConstraint)
+  @IsBlogAlreadyExist('blogId doesnt exist')
   blogId: string;
 }

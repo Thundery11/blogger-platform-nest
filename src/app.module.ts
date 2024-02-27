@@ -52,6 +52,7 @@ import { UpdateCommentUseCase } from './features/comments/application/use-cases/
 import { DeleteCommentUseCase } from './features/comments/application/use-cases/delete-comment-use-case';
 import { UpdateCommentsLikeStatusUseCase } from './features/comments/application/use-cases/update-like-status-use-case';
 import { FindAllCommentsUseCase } from './features/posts/application/use-cases/find-all-comments-use-case';
+import { IsBlogExistConstraint } from './infrastucture/decorators/validate/is-blog-exist-decorator';
 
 const useCases = [
   CreateBlogUseCase,
@@ -126,6 +127,7 @@ const useCases = [
     CommentsQueryRepository,
     LikesRepository,
     LikesService,
+    IsBlogExistConstraint,
 
     ...useCases,
   ],

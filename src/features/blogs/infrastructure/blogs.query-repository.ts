@@ -10,12 +10,15 @@ import {
 @Injectable()
 export class BlogsQueryRepository {
   constructor(@InjectModel(Blogs.name) private blogsModel: Model<Blogs>) {}
-  public async getBlogById(blogId: Types.ObjectId): Promise<BlogsOutputModel> {
+  public async getBlogById(
+    blogId: Types.ObjectId,
+  ): Promise<BlogsOutputModel | null> {
     const blog = await this.blogsModel.findById(blogId, {
       _v: false,
     });
     if (!blog) {
-      throw new NotFoundException();
+      // throw new NotFoundException();
+      return null;
     }
     return BlogsOutputMapper(blog);
   }

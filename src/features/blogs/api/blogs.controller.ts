@@ -58,7 +58,11 @@ export class BlogsController {
     const result = await this.commandBus.execute(
       new CreateBlogCommand(blogsCreateModel),
     );
-    return await this.blogsQueryRepository.getBlogById(result._id);
+    const blog = await this.blogsQueryRepository.getBlogById(result._id);
+    if (!blog) {
+      throw new NotFoundException();
+    }
+    return blog;
   }
 
   @Get(':id')
@@ -67,7 +71,9 @@ export class BlogsController {
     const blog = await this.blogsQueryRepository.getBlogById(
       new Types.ObjectId(id),
     );
-
+    if (!blog) {
+      throw new NotFoundException();
+    }
     return blog;
   }
 

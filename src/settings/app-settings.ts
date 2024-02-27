@@ -3,6 +3,8 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import { HttpExceptionFilter } from '../infrastucture/exception-filters/exception.filter';
+import { useContainer } from 'class-validator';
+import { AppModule } from '../app.module';
 
 // config();
 
@@ -84,11 +86,13 @@ import { HttpExceptionFilter } from '../infrastucture/exception-filters/exceptio
 export const appSettings = (app) => {
   app.enableCors();
   app.use(cookieParser());
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.useGlobalPipes(
     new ValidationPipe({
       stopAtFirstError: true,
       transform: true,
       exceptionFactory: (errors) => {
+        console.log(errors);
         const errorsForResponse: { message: string; field: string }[] = [];
         errors.forEach((e) => {
           const constraintsKeys = Object.keys(e.constraints!);
