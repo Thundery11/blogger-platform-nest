@@ -54,8 +54,8 @@ export class UpdateLikeStatusForPostsUseCase
           command.updatePostLikesDto.postId,
         );
         console.log('lastLiked', lastLiked);
-        return true;
       }
+      return true;
     }
     const result = await this.likesService.updateLike(
       command.updatePostLikesDto.currentUserId,

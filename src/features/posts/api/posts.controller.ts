@@ -170,7 +170,9 @@ export class PostsController {
   @Delete(':id')
   @HttpCode(204)
   async deletePost(@Param('id') id: string): Promise<boolean> {
-    const result = await this.postsQueryRepository.getCurrentPostByid(id);
+    const result = await this.postsQueryRepository.getPostById(
+      new Types.ObjectId(id),
+    );
     if (!result) {
       throw new NotFoundException();
     }

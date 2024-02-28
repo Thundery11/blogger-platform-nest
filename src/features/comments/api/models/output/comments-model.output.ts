@@ -28,6 +28,13 @@ export class CommentsOutputModel {
     public likesInfo: LikesInfo,
   ) {}
 }
+export class AllCommentsOutputModel {
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: CommentsOutputModel[];
+}
 
 export const commentsOutputQueryMapper = (
   comment: CommentsDocument,

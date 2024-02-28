@@ -60,4 +60,7 @@ export class CommentsRepository {
     console.log('repoComments: ', comments);
     return AllCommentsOutputMapper(comments);
   }
+  async countAllDocumentsForCurrentPost(postId: string): Promise<number> {
+    return await this.commentsModel.countDocuments({ postId: postId });
+  }
 }
