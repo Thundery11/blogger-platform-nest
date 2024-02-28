@@ -25,7 +25,6 @@ import { CurrentUserId } from '../../auth/decorators/current-user-id-param.decor
 import { CreateCommentInputModel } from './models/input/comments-input.model';
 import { CommentsQueryRepository } from '../infrastructure/comments.query.repository';
 import { Types } from 'mongoose';
-import { UpdateBlogCommand } from '../../blogs/application/use-cases/update-blog-use-case';
 import { UpdateCommentCommand } from '../application/use-cases/update-comment-use-case';
 import { DeleteCommentCommand } from '../application/use-cases/delete-comment-use-case';
 import {
@@ -139,31 +138,5 @@ export class CommentsController {
       throw new NotFoundException();
     }
     return true;
-    // const comment = await this.commentsQueryRepository.getCommentById(
-    //   new Types.ObjectId(commentId),
-    // );
-    // if (!comment) {
-    //   throw new NotFoundException();
-    // }
-    // const isLikeExist = await this.likesService.isLikeExist(
-    //   currentUserId,
-    //   commentId,
-    // );
-    // if (!isLikeExist) {
-    //   return await this.likesService.addLike(
-    //     currentUserId,
-    //     commentId,
-    //     likeStatus.likeStatus,
-    //   );
-    // }
-    // const result = await this.likesService.updateLike(
-    //   currentUserId,
-    //   commentId,
-    //   likeStatus.likeStatus,
-    // );
-    // if (!result) {
-    //   throw new NotFoundException();
-    // }
-    // return result;
   }
 }

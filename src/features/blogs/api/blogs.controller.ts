@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpCode,
   NotFoundException,
   Param,
@@ -36,6 +37,7 @@ import { UpdateBlogCommand } from '../application/use-cases/update-blog-use-case
 import { DeleteBlogCommand } from '../application/use-cases/delete-blog-use-case';
 import { CreatePostForSpecificBlogCommand } from '../application/use-cases/create-post-for-specific-blog-use-case';
 import { FindAllPostsForCurrentBlogCommand } from '../../posts/application/use-cases/find-all-posts-for-current-blog-use-case';
+import { AuthService } from '../../auth/application/auth.service';
 
 @ApiTags('Blogs')
 // @UseGuards(AuthGuard)
@@ -47,6 +49,7 @@ export class BlogsController {
     private blogsQueryRepository: BlogsQueryRepository,
     private postsService: PostsService,
     private postsQueryRepository: PostsQueryRepository,
+    private authService: AuthService,
   ) {}
 
   @UseGuards(BasicAuthGuard)
@@ -133,11 +136,19 @@ export class BlogsController {
   @Get(':blogId/posts')
   @HttpCode(200)
   async findAllPostsforScpecificBlog(
+    @Headers() headers,
     @Param('blogId') blogid: string,
     @Query() sortingQueryParams: SortingQueryParams,
   ): Promise<AllPostsOutputModel | null> {
+    let userId: string | null;
+    if (!headers.authorization) {
+      userId = null;
+    } else {
+      const token = headers.authorization.split(' ')[1];
+      userId = await this.authService.getUserByToken(token);
+    }
     const result = await this.commandBus.execute(
-      new FindAllPostsForCurrentBlogCommand(sortingQueryParams, blogid),
+      new FindAllPostsForCurrentBlogCommand(sortingQueryParams, blogid, userId),
     );
     if (result === null) {
       throw new NotFoundException();

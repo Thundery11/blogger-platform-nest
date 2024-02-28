@@ -49,6 +49,7 @@ import {
   UpdateLikeForPostsDto,
 } from '../../likes/api/models/input/likes-input.model';
 import { UpdateLikeStatusForPostsCommand } from '../application/use-cases/update-like-status-for-posts-use-case';
+import { FindPostCommand } from '../application/use-cases/find-post-use-case';
 
 @Controller('posts')
 export class PostsController {
@@ -63,23 +64,46 @@ export class PostsController {
 
   @Get(':id')
   @HttpCode(200)
-  async findPost(@Param('id') id: string): Promise<PostOutputModel | null> {
-    const result = await this.postsQueryRepository.getPostById(
-      new Types.ObjectId(id),
+  async findPost(
+    @Param('id') postId: string,
+    @Headers() headers,
+  ): Promise<PostOutputModel | null> {
+    if (!headers.authorization) {
+      const userId = null;
+      const post = await this.commandBus.execute(
+        new FindPostCommand(userId, postId),
+      );
+      if (!post) {
+        throw new NotFoundException();
+      }
+      return post;
+    }
+    const token = headers.authorization.split(' ')[1];
+    const userId = await this.authService.getUserByToken(token);
+    const post = await this.commandBus.execute(
+      new FindPostCommand(userId, postId),
     );
-    if (!result) {
+    if (!post) {
       throw new NotFoundException();
     }
-    return result;
+    return post;
   }
 
   @Get()
   @HttpCode(200)
   async findAllPosts(
     @Query() sortingQueryPosts: SortingQueryParamsForPosts,
+    @Headers() headers,
   ): Promise<AllPostsOutputModel | null> {
+    let userId: string | null;
+    if (!headers.authorization) {
+      userId = null;
+    } else {
+      const token = headers.authorization.split(' ')[1];
+      userId = await this.authService.getUserByToken(token);
+    }
     const result = await this.commandBus.execute(
-      new FindAllPostsCommand(sortingQueryPosts),
+      new FindAllPostsCommand(sortingQueryPosts, userId),
     );
     if (!result) {
       throw new NotFoundException();
