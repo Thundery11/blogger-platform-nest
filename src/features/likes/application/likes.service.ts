@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MyStatus } from '../domain/likes.entity';
+import { LastLikedDocument, MyStatus } from '../domain/likes.entity';
 import {
   LastLikedType,
   LikesDbType,
@@ -48,14 +48,20 @@ export class LikesService {
     return true;
   }
 
-  async lastLiked(userId: string, login: string, postId: string) {
-    const addetdAt = new Date().toISOString();
-    const lastLiked = new LastLikedType(addetdAt, userId, login, postId);
+  async lastLiked(
+    userId: string,
+    login: string,
+    postId: string,
+  ): Promise<LastLikedDocument | null> {
+    const addedAt = new Date().toISOString();
+    const lastLiked = new LastLikedType(addedAt, userId, login, postId);
+    console.log(lastLiked, 'LASTLIKED');
     const reaciton = await this.likesRepository.isItFirstLike(userId, postId);
-    console.log(reaciton);
+    console.log('reaciton', reaciton);
     if (!reaciton) {
-      await this.likesRepository.lastLiked(lastLiked);
+      return await this.likesRepository.lastLiked(lastLiked);
     }
+    return null;
   }
   async deleteLastLiked(userId: string, postId: string): Promise<boolean> {
     return await this.likesRepository.deleteLastLiked(userId, postId);

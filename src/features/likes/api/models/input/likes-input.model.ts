@@ -32,3 +32,10 @@ export class UpdateLikeDto {
     public likeStatus: MyStatus,
   ) {}
 }
+export class UpdateLikeForPostsDto {
+  constructor(
+    public postId: string,
+    public currentUserId: string,
+    public likeStatusModel: MyStatus,
+  ) {}
+}

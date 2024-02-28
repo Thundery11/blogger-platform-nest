@@ -78,10 +78,10 @@ export class LikesRepository {
     return whatIsMyStatusMapper(whatIsMyStatus).myStatus;
   }
 
-  async lastLiked(lastLiked: LastLikedType): Promise<boolean> {
+  async lastLiked(lastLiked: LastLikedType): Promise<LastLikedDocument> {
     const lastLikedEntity = new this.lastLikedModel(lastLiked);
     lastLikedEntity.save();
-    return true;
+    return lastLikedEntity;
   }
   async deleteLastLiked(userId: string, postId: string): Promise<boolean> {
     const result = await this.lastLikedModel.deleteOne({

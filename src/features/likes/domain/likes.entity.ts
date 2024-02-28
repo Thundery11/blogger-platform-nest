@@ -50,7 +50,7 @@ export const LikesDbSchema = SchemaFactory.createForClass(LikesDbModel);
 @Schema()
 export class LastLikedDbModel {
   @Prop({ required: true })
-  addetAt: string;
+  addedAt: string;
   @Prop({ required: true })
   userId: string;
   @Prop({ required: true })

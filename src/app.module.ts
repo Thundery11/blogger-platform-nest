@@ -53,6 +53,7 @@ import { DeleteCommentUseCase } from './features/comments/application/use-cases/
 import { UpdateCommentsLikeStatusUseCase } from './features/comments/application/use-cases/update-like-status-use-case';
 import { FindAllCommentsUseCase } from './features/posts/application/use-cases/find-all-comments-use-case';
 import { IsBlogExistConstraint } from './infrastucture/decorators/validate/is-blog-exist-decorator';
+import { UpdateLikeStatusForPostsUseCase } from './features/posts/application/use-cases/update-like-status-for-posts-use-case';
 
 const useCases = [
   CreateBlogUseCase,
@@ -71,6 +72,7 @@ const useCases = [
   DeleteCommentUseCase,
   UpdateCommentsLikeStatusUseCase,
   FindAllCommentsUseCase,
+  UpdateLikeStatusForPostsUseCase,
 ];
 @Module({
   imports: [

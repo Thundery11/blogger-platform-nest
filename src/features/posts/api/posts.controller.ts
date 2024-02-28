@@ -43,6 +43,12 @@ import { CommentsQueryRepository } from '../../comments/infrastructure/comments.
 import { CommentsOutputModel } from '../../comments/api/models/output/comments-model.output';
 import { FindAllCommentsCommand } from '../application/use-cases/find-all-comments-use-case';
 import { AuthService } from '../../auth/application/auth.service';
+import {
+  LikeStatus,
+  UpdateLikeDto,
+  UpdateLikeForPostsDto,
+} from '../../likes/api/models/input/likes-input.model';
+import { UpdateLikeStatusForPostsCommand } from '../application/use-cases/update-like-status-for-posts-use-case';
 
 @Controller('posts')
 export class PostsController {
@@ -175,5 +181,28 @@ export class PostsController {
       throw new NotFoundException();
     }
     return comment;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':postId/like-status')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async likeStatus(
+    @CurrentUserId() currentUserId: string,
+    @Param('postId') postId: string,
+    @Body() likeStatusModel: LikeStatus,
+  ): Promise<boolean> {
+    const updatePostLikesDto = new UpdateLikeForPostsDto(
+      postId,
+      currentUserId,
+      likeStatusModel.likeStatus,
+    );
+    const updatedLikeStatus = await this.commandBus.execute(
+      new UpdateLikeStatusForPostsCommand(updatePostLikesDto),
+    );
+    if (!updatedLikeStatus) {
+      throw new NotFoundException();
+    }
+
+    return true;
   }
 }
