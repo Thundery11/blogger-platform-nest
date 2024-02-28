@@ -170,13 +170,11 @@ export class PostsController {
   @Delete(':id')
   @HttpCode(204)
   async deletePost(@Param('id') id: string): Promise<boolean> {
-    const result = await this.postsQueryRepository.getPostById(
-      new Types.ObjectId(id),
-    );
+    const result = await this.commandBus.execute(new DeletePostCommand(id));
     if (!result) {
       throw new NotFoundException();
     }
-    return await this.commandBus.execute(new DeletePostCommand(id));
+    return result;
   }
 
   @UseGuards(JwtAuthGuard)

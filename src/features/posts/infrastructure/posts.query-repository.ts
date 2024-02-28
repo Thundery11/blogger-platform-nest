@@ -22,9 +22,4 @@ export class PostsQueryRepository {
 
     return postsOutputMapperFinally(post);
   }
-  public async getCurrentPostByid(id: string): Promise<PostOutputModel | null> {
-    const post = await this.postsModel.findOne({ id }, { _v: false });
-
-    return postsOutputMapper(post);
-  }
 }
