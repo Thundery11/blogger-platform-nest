@@ -17,6 +17,8 @@ import {
   SecurityDevices,
   SecurityDevicesSchema,
 } from '../../security-devices/domain/security-devices-entity';
+import { SecurityDevicesRepository } from '../../security-devices/infrastructure/security-devices.repository';
+import { SecurityDevicesService } from '../../security-devices/application/security-devices.service';
 
 const useCases = [LoginUserUseCase];
 @Module({
@@ -42,9 +44,12 @@ const useCases = [LoginUserUseCase];
       },
     ]),
   ],
+
   providers: [
     AuthService,
     LocalStrategy,
+    SecurityDevicesRepository,
+    SecurityDevicesService,
     ...useCases,
     JwtStrategy,
     BasicStrategy,

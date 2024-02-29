@@ -27,6 +27,7 @@ import { Response } from 'express';
 import { SkipThrottle } from '@nestjs/throttler';
 import { CommandBus } from '@nestjs/cqrs';
 import { LoginUserCommand } from '../application/use-cases/login-user-use-case';
+import { LoginUserWithDeviceDto } from './models/input/login-user-with-device-dto';
 
 @Controller('auth')
 export class AuthController {
@@ -44,9 +45,11 @@ export class AuthController {
     if (!ip) {
       throw new NotFoundException({ message: 'unknown ip adress' });
     }
+    const title = req.headers['user-agent'] || 'Mozilla';
     const user = req.user;
+    const loginUserWithDeviceDto = new LoginUserWithDeviceDto(user, ip, title);
     const accesAndRefreshTokens = await this.commandBus.execute(
-      new LoginUserCommand(user, ip),
+      new LoginUserCommand(loginUserWithDeviceDto),
     );
 
     return response
