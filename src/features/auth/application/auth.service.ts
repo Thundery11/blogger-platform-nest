@@ -8,7 +8,8 @@ import { UsersService } from '../../users/application/users.service';
 import bcrypt from 'bcrypt';
 import { Types } from 'mongoose';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
-import { jwtConstants } from '../constants/constants';
+import { jwtConstants, tokensLivesConstants } from '../constants/constants';
+import { v4 as uuidv4, v4 } from 'uuid';
 @Injectable()
 export class AuthService {
   constructor(
@@ -33,13 +34,28 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { login: user.login, sub: user._id.toString() };
+
     return {
-      accessToken: await this.jwtService.signAsync(payload),
+      accessToken: await this.jwtService.signAsync(payload, {
+        secret: jwtConstants.JWT_SECRET,
+        expiresIn: tokensLivesConstants['10sec'],
+      }),
     };
   }
-  async createRefreshToken(user: any) {
-    const payload = { sub: user._id.toString() };
-    return await this.jwtService.signAsync(payload);
+  async createRefreshToken(user: any, deviceId: string) {
+    const payload = { sub: user._id.toString(), deviceId: deviceId };
+    return await this.jwtService.signAsync(payload, {
+      secret: jwtConstants.REFRESH_TOKEN_SECRET,
+      expiresIn: tokensLivesConstants['20sec'],
+    });
+  }
+
+  async verifyRefreshToken(refreshToken: string) {
+    const result = await this.jwtService.verifyAsync(refreshToken, {
+      secret: jwtConstants.REFRESH_TOKEN_SECRET,
+    });
+    console.log(result);
+    return result;
   }
   async confirmEmail(code: string): Promise<boolean> {
     const user = await this.usersRepository.findUserByConfirmationCode(code);

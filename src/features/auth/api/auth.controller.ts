@@ -25,10 +25,13 @@ import { EmailResendingInputModel } from './models/input/email-resending.model';
 import { ConfirmationCodeInputModel } from './models/input/confirmation-code-input.model';
 import { Response } from 'express';
 import { SkipThrottle } from '@nestjs/throttler';
+import { CommandBus } from '@nestjs/cqrs';
+import { LoginUserCommand } from '../application/use-cases/login-user-use-case';
 
 @Controller('auth')
 export class AuthController {
   constructor(
+    private commandBus: CommandBus,
     private authService: AuthService,
     private usersService: UsersService,
   ) {}
@@ -37,12 +40,21 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Request() req, @Res() response: Response) {
-    const refreshToken = await this.authService.createRefreshToken(req.user);
-    const accessToken = await this.authService.login(req.user);
-    console.log('refresh token : ', refreshToken);
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    if (!ip) {
+      throw new NotFoundException({ message: 'unknown ip adress' });
+    }
+    const user = req.user;
+    const accesAndRefreshTokens = await this.commandBus.execute(
+      new LoginUserCommand(user, ip),
+    );
+
     return response
-      .cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
-      .send(accessToken);
+      .cookie('refreshToken', accesAndRefreshTokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+      })
+      .send(accesAndRefreshTokens.accessToken);
   }
 
   @UseGuards(JwtAuthGuard)

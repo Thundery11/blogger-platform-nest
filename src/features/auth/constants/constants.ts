@@ -6,3 +6,10 @@ export const basicConstants = {
   userName: process.env.SA_LOGIN || 'admin',
   password: process.env.SA_PASSWORD || 'qwerty',
 };
+
+export const tokensLivesConstants = {
+  '10sec': '10s',
+  '20sec': '20s',
+  '1hour': '1h',
+  '2hours': '2h',
+};

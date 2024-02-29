@@ -7,11 +7,18 @@ import { LocalStrategy } from '../strategies/local.strategy';
 import { JwtStrategy } from '../strategies/jwt.strategy';
 import { AuthController } from '../api/auth.controller';
 import { BasicStrategy } from '../strategies/basic.strategy';
-import { jwtConstants } from '../constants/constants';
+import { jwtConstants, tokensLivesConstants } from '../constants/constants';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { LoginUserUseCase } from '../application/use-cases/login-user-use-case';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  SecurityDevices,
+  SecurityDevicesSchema,
+} from '../../security-devices/domain/security-devices-entity';
 
+const useCases = [LoginUserUseCase];
 @Module({
   imports: [
     CqrsModule,
@@ -24,14 +31,21 @@ import { APP_GUARD } from '@nestjs/core';
       },
     ]),
     JwtModule.register({
-      global: true,
+      global: false,
       secret: jwtConstants.JWT_SECRET,
-      signOptions: { expiresIn: '10s' },
+      signOptions: { expiresIn: tokensLivesConstants['10sec'] },
     }),
+    MongooseModule.forFeature([
+      {
+        name: SecurityDevices.name,
+        schema: SecurityDevicesSchema,
+      },
+    ]),
   ],
   providers: [
     AuthService,
     LocalStrategy,
+    ...useCases,
     JwtStrategy,
     BasicStrategy,
     {
