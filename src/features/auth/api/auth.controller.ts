@@ -24,6 +24,7 @@ import { BadRequestError } from 'passport-headerapikey';
 import { EmailResendingInputModel } from './models/input/email-resending.model';
 import { ConfirmationCodeInputModel } from './models/input/confirmation-code-input.model';
 import { Response } from 'express';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('auth')
 export class AuthController {
@@ -45,6 +46,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @SkipThrottle()
   @Get('me')
   async getProfile(
     @CurrentUserId() currentUserId: string,
