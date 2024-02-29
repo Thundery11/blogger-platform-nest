@@ -55,6 +55,10 @@ import { FindAllCommentsUseCase } from './features/posts/application/use-cases/f
 import { IsBlogExistConstraint } from './infrastucture/decorators/validate/is-blog-exist-decorator';
 import { UpdateLikeStatusForPostsUseCase } from './features/posts/application/use-cases/update-like-status-for-posts-use-case';
 import { FindPostUseCase } from './features/posts/application/use-cases/find-post-use-case';
+import {
+  SecurityDevices,
+  SecurityDevicesSchema,
+} from './features/security-devices/domain/security-devices-entity';
 
 const useCases = [
   CreateBlogUseCase,
@@ -105,6 +109,10 @@ const useCases = [
       {
         name: LastLikedDbModel.name,
         schema: LastLikedDbSchema,
+      },
+      {
+        name: SecurityDevices.name,
+        schema: SecurityDevicesSchema,
       },
     ]),
     MongooseModule.forRoot(process.env.MONGO_URL!, {

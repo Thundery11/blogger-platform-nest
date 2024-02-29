@@ -6,6 +6,7 @@ import { Posts } from '../posts/domain/posts.entity';
 import { Users } from '../users/domain/users.entity';
 import { Comments } from '../comments/domain/comments.entity';
 import { LastLikedDbModel, LikesDbModel } from '../likes/domain/likes.entity';
+import { SecurityDevices } from '../security-devices/domain/security-devices-entity';
 
 @Controller('testing/all-data')
 export class TestingAllDataController {
@@ -17,6 +18,8 @@ export class TestingAllDataController {
     @InjectModel(LikesDbModel.name) private likesModel: Model<LikesDbModel>,
     @InjectModel(LastLikedDbModel.name)
     private lastLikedModel: Model<LastLikedDbModel>,
+    @InjectModel(SecurityDevices.name)
+    private securityDevicesModel: Model<SecurityDevices>,
   ) {}
 
   @Delete()
@@ -28,5 +31,6 @@ export class TestingAllDataController {
     await this.commentsModel.deleteMany({});
     await this.lastLikedModel.deleteMany({});
     await this.likesModel.deleteMany({});
+    await this.securityDevicesModel.deleteMany({});
   }
 }
