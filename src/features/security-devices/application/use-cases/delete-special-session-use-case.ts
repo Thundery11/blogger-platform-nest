@@ -1,7 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AuthService } from '../../../auth/application/auth.service';
 import { SecurityDevicesRepository } from '../../infrastructure/security-devices.repository';
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 export class DeleteSpecialSessionCommand {
   constructor(
     public refreshToken: string,
@@ -21,7 +25,11 @@ export class DeleteSpecialSessionUseCase
     const { refreshToken, deviceId } = command;
     const payload = await this.authService.verifyRefreshToken(refreshToken);
     console.log({ payload: payload });
+    if (!payload) {
+      throw new UnauthorizedException();
+    }
     const userId = payload.sub;
+
     const lastActiveDate = new Date(payload.iat * 1000).toISOString();
     const deviceSession =
       await this.securityDevicesRepo.getCurrentSession(deviceId);

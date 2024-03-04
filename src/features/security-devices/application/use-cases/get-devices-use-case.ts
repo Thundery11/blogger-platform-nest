@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AuthService } from '../../../auth/application/auth.service';
 import { SecurityDevicesRepository } from '../../infrastructure/security-devices.repository';
 import { SecurityDevicesOutputModel } from '../../api/models/output/security-devices-output-model';
+import { UnauthorizedException } from '@nestjs/common';
 
 export class GetDevicesCommand {
   constructor(public refreshToken: string) {}
@@ -18,6 +19,9 @@ export class GetDevicesUseCase implements ICommandHandler<GetDevicesCommand> {
     const payload = await this.authService.verifyRefreshToken(
       command.refreshToken,
     );
+    if (!payload) {
+      throw new UnauthorizedException();
+    }
     const userId = payload.sub;
     const devices = await this.securityDevicesRepo.getDevices(userId);
     return devices;

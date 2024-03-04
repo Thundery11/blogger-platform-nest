@@ -1,6 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { AuthService } from '../../../auth/application/auth.service';
 import { SecurityDevicesRepository } from '../../infrastructure/security-devices.repository';
+import { UnauthorizedException } from '@nestjs/common';
 
 export class DeleteAllSessionsExceptCurentCommand {
   constructor(public refreshToken: string) {}
@@ -19,6 +20,9 @@ export class DeleteAllSessionsExceptCurentUseCase
     const payload = await this.authService.verifyRefreshToken(
       command.refreshToken,
     );
+    if (!payload) {
+      throw new UnauthorizedException();
+    }
     const deviceId = payload.deviceId;
     console.log('deviceId: ', deviceId);
     const deletedDevices =
