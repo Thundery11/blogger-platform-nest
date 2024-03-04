@@ -22,8 +22,14 @@ import { SecurityDevicesService } from '../../security-devices/application/secur
 import { RefreshTokenUseCase } from '../application/use-cases/refresh-token-use-case';
 import { SecurityDevicesController } from '../../security-devices/api/security-devices.controller';
 import { GetDevicesUseCase } from '../../security-devices/application/use-cases/get-devices-use-case';
+import { DeleteAllSessionsExceptCurentUseCase } from '../../security-devices/application/use-cases/delete-all-sessions-except-current-use-case';
 
-const useCases = [LoginUserUseCase, RefreshTokenUseCase, GetDevicesUseCase];
+const useCases = [
+  LoginUserUseCase,
+  RefreshTokenUseCase,
+  GetDevicesUseCase,
+  DeleteAllSessionsExceptCurentUseCase,
+];
 @Module({
   imports: [
     CqrsModule,

@@ -23,9 +23,13 @@ export class SecurityDevicesRepository {
     addedDevice.save();
     return addedDevice;
   }
-  async getDevices(userId: string): Promise<SecurityDevicesOutputModel[]> {
+  async getDevices(
+    userId: string,
+  ): Promise<SecurityDevicesOutputModel[] | null> {
     const securityDevices = await this.securityDevicesModel.find({ userId });
-
+    if (!securityDevices) {
+      return null;
+    }
     return allSecurityDevicesMapper(securityDevices);
   }
   async terminateOtherSessions(deviceId: string): Promise<boolean> {

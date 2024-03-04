@@ -121,17 +121,12 @@ export class AuthController {
 
   @Post('/refresh-token')
   @HttpCode(HttpStatus.OK)
-  async refreshToken(@Request() req, @Res() res: Response): Promise<object> {
+  async refreshToken(@Request() req, @Res() res: Response) {
     const refreshToken = req.cookies.refreshToken;
     console.log(refreshToken);
     if (!refreshToken) {
       throw new UnauthorizedException();
     }
-    // console.log(req.user);
-    // const user = req.user;
-    // if (!user) {
-    //   throw new UnauthorizedException();
-    // }
     const tokens = await this.commandBus.execute(
       new RefreshTokenCommand(refreshToken),
     );
