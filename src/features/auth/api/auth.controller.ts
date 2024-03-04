@@ -7,6 +7,7 @@ import {
   HttpStatus,
   NotFoundException,
   Post,
+  Req,
   Request,
   Res,
   UnauthorizedException,
@@ -29,6 +30,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { LoginUserCommand } from '../application/use-cases/login-user-use-case';
 import { LoginUserWithDeviceDto } from './models/input/login-user-with-device-dto';
 import { RefreshTokenCommand } from '../application/use-cases/refresh-token-use-case';
+import { LogoutCommand } from '../application/use-cases/logout-use-case';
 
 @Controller('auth')
 export class AuthController {
@@ -136,5 +138,18 @@ export class AuthController {
         secure: true,
       })
       .send(tokens.accessToken);
+  }
+  @Post('/logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logout(@Req() req): Promise<boolean> {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+      throw new UnauthorizedException();
+    }
+    console.log({ refreshTokenWhenLogout: refreshToken });
+    const result = await this.commandBus.execute(
+      new LogoutCommand(refreshToken),
+    );
+    return result;
   }
 }

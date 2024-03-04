@@ -24,6 +24,7 @@ import { SecurityDevicesController } from '../../security-devices/api/security-d
 import { GetDevicesUseCase } from '../../security-devices/application/use-cases/get-devices-use-case';
 import { DeleteAllSessionsExceptCurentUseCase } from '../../security-devices/application/use-cases/delete-all-sessions-except-current-use-case';
 import { DeleteSpecialSessionUseCase } from '../../security-devices/application/use-cases/delete-special-session-use-case';
+import { LogoutUseCase } from '../application/use-cases/logout-use-case';
 
 const useCases = [
   LoginUserUseCase,
@@ -31,6 +32,7 @@ const useCases = [
   GetDevicesUseCase,
   DeleteAllSessionsExceptCurentUseCase,
   DeleteSpecialSessionUseCase,
+  LogoutUseCase,
 ];
 @Module({
   imports: [
