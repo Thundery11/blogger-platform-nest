@@ -55,7 +55,11 @@ export class AuthService {
     const result = await this.jwtService.verifyAsync(refreshToken, {
       secret: jwtConstants.REFRESH_TOKEN_SECRET,
     });
-    console.log(result);
+    console.log('verefiedRefreshToken: ', result);
+    if (!result) {
+      throw new UnauthorizedException();
+    }
+
     return result;
   }
   async confirmEmail(code: string): Promise<boolean> {

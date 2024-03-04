@@ -136,7 +136,7 @@ export class AuthController {
       new RefreshTokenCommand(refreshToken),
     );
     return res
-      .cookie('refreshToken', tokens.refreshToken, {
+      .cookie('refreshToken', tokens.newRefreshToken, {
         httpOnly: true,
         secure: true,
       })

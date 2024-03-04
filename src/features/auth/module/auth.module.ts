@@ -20,8 +20,10 @@ import {
 import { SecurityDevicesRepository } from '../../security-devices/infrastructure/security-devices.repository';
 import { SecurityDevicesService } from '../../security-devices/application/security-devices.service';
 import { RefreshTokenUseCase } from '../application/use-cases/refresh-token-use-case';
+import { SecurityDevicesController } from '../../security-devices/api/security-devices.controller';
+import { GetDevicesUseCase } from '../../security-devices/application/use-cases/get-devices-use-case';
 
-const useCases = [LoginUserUseCase, RefreshTokenUseCase];
+const useCases = [LoginUserUseCase, RefreshTokenUseCase, GetDevicesUseCase];
 @Module({
   imports: [
     CqrsModule,
@@ -59,7 +61,7 @@ const useCases = [LoginUserUseCase, RefreshTokenUseCase];
       useClass: ThrottlerGuard,
     },
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, SecurityDevicesController],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -26,13 +26,16 @@ export class RefreshTokenUseCase
     const payload = await this.authServise.verifyRefreshToken(
       command.refreshToken,
     );
+    if (!payload) {
+      throw new UnauthorizedException();
+    }
     const user = await this.usersRepository.findUserByIdForRefreshTokens(
       payload.sub,
     );
     if (!user) {
       throw new UnauthorizedException();
     }
-    console.log('USER: ', user);
+
     const isOkLastactiveDate = new Date(payload.iat * 1000).toISOString();
     const isValidRefreshToken =
       await this.securityDevicesServise.isValidRefreshToken(isOkLastactiveDate);
@@ -51,6 +54,7 @@ export class RefreshTokenUseCase
       deviceId,
       lastActiveDate,
     );
+    console.log('newRefreshToken:', newRefreshToken);
     const tokens = { accessToken, newRefreshToken };
     return tokens;
   }

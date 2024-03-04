@@ -5,6 +5,11 @@ import {
   SecurityDevicesDocument,
 } from '../domain/security-devices-entity';
 import { Model } from 'mongoose';
+import {
+  SecurityDevicesOutputModel,
+  allSecurityDevicesMapper,
+  securityDevicesMapper,
+} from '../api/models/output/security-devices-output-model';
 
 @Injectable()
 export class SecurityDevicesRepository {
@@ -17,6 +22,43 @@ export class SecurityDevicesRepository {
     const addedDevice = new this.securityDevicesModel(device);
     addedDevice.save();
     return addedDevice;
+  }
+  async getDevices(userId: string): Promise<SecurityDevicesOutputModel[]> {
+    const securityDevices = await this.securityDevicesModel.find({ userId });
+
+    return allSecurityDevicesMapper(securityDevices);
+  }
+  async terminateOtherSessions(deviceId: string): Promise<boolean> {
+    const result = await this.securityDevicesModel.deleteMany({
+      deviceId: { $ne: deviceId },
+    });
+    return result.deletedCount >= 1;
+  }
+
+  async getCurrentSession(
+    deviceId: string,
+  ): Promise<SecurityDevicesOutputModel | null> {
+    const currentSession = await this.securityDevicesModel.findOne({
+      deviceId: deviceId,
+    });
+    if (!currentSession) {
+      return null;
+    }
+    return securityDevicesMapper(currentSession);
+  }
+
+  async deleteCurrentSession(deviceId: string): Promise<boolean> {
+    const result = await this.securityDevicesModel.deleteOne({
+      deviceId: deviceId,
+    });
+    return result.deletedCount === 1;
+  }
+
+  async deleteRefreshTokenWhenLogout(lastActiveDate: string): Promise<boolean> {
+    const result = await this.securityDevicesModel.deleteOne({
+      lastActiveDate: lastActiveDate,
+    });
+    return result.deletedCount === 1;
   }
 
   async isValidRefreshToken(
