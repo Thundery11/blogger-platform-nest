@@ -83,6 +83,20 @@ export class UsersRepository {
     }
     return userInfoAboutHimselfMapper(user);
   }
+  async findUserByIdForRefreshTokens(
+    currentUserId: string,
+  ): Promise<UsersDocument | null> {
+    const user = await this.usersModel.findById(
+      new Types.ObjectId(currentUserId),
+      {
+        _v: false,
+      },
+    );
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
   async updateConfirmationCode(
     id: string,
     confirmationCode: string,

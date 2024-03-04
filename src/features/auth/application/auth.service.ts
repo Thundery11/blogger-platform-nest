@@ -10,6 +10,7 @@ import { Types } from 'mongoose';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { jwtConstants, tokensLivesConstants } from '../constants/constants';
 import { v4 as uuidv4, v4 } from 'uuid';
+import { UsersDocument } from '../../users/domain/users.entity';
 @Injectable()
 export class AuthService {
   constructor(
@@ -32,8 +33,8 @@ export class AuthService {
     return user;
   }
 
-  async login(user: any) {
-    const payload = { login: user.login, sub: user._id.toString() };
+  async login(user: UsersDocument) {
+    const payload = { login: user.accountData.login, sub: user._id.toString() };
 
     return {
       accessToken: await this.jwtService.signAsync(payload, {
@@ -42,7 +43,7 @@ export class AuthService {
       }),
     };
   }
-  async createRefreshToken(user: any, deviceId: string) {
+  async createRefreshToken(user: UsersDocument, deviceId: string) {
     const payload = { sub: user._id.toString(), deviceId: deviceId };
     return await this.jwtService.signAsync(payload, {
       secret: jwtConstants.REFRESH_TOKEN_SECRET,

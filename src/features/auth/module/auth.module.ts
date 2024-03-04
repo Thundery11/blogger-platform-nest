@@ -19,8 +19,9 @@ import {
 } from '../../security-devices/domain/security-devices-entity';
 import { SecurityDevicesRepository } from '../../security-devices/infrastructure/security-devices.repository';
 import { SecurityDevicesService } from '../../security-devices/application/security-devices.service';
+import { RefreshTokenUseCase } from '../application/use-cases/refresh-token-use-case';
 
-const useCases = [LoginUserUseCase];
+const useCases = [LoginUserUseCase, RefreshTokenUseCase];
 @Module({
   imports: [
     CqrsModule,

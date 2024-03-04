@@ -28,6 +28,7 @@ import { SkipThrottle } from '@nestjs/throttler';
 import { CommandBus } from '@nestjs/cqrs';
 import { LoginUserCommand } from '../application/use-cases/login-user-use-case';
 import { LoginUserWithDeviceDto } from './models/input/login-user-with-device-dto';
+import { RefreshTokenCommand } from '../application/use-cases/refresh-token-use-case';
 
 @Controller('auth')
 export class AuthController {
@@ -116,5 +117,29 @@ export class AuthController {
       });
     }
     return true;
+  }
+
+  @Post('/refresh-token')
+  @HttpCode(HttpStatus.OK)
+  async refreshToken(@Request() req, @Res() res: Response): Promise<object> {
+    const refreshToken = req.cookies.refreshToken;
+    console.log(refreshToken);
+    if (!refreshToken) {
+      throw new UnauthorizedException();
+    }
+    // console.log(req.user);
+    // const user = req.user;
+    // if (!user) {
+    //   throw new UnauthorizedException();
+    // }
+    const tokens = await this.commandBus.execute(
+      new RefreshTokenCommand(refreshToken),
+    );
+    return res
+      .cookie('refreshToken', tokens.refreshToken, {
+        httpOnly: true,
+        secure: true,
+      })
+      .send(tokens.accessToken);
   }
 }

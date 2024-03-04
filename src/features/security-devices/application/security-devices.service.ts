@@ -12,4 +12,21 @@ export class SecurityDevicesService {
   async addDevice(device: SecurityDevices): Promise<SecurityDevicesDocument> {
     return await this.securityDevicesRepository.addDevice(device);
   }
+
+  async isValidRefreshToken(
+    isOkLastactiveDate: string,
+  ): Promise<SecurityDevicesDocument | null> {
+    return await this.securityDevicesRepository.isValidRefreshToken(
+      isOkLastactiveDate,
+    );
+  }
+  async updateLastActiveDate(
+    deviceId: string,
+    lastActiveDate: string,
+  ): Promise<boolean> {
+    return await this.securityDevicesRepository.updateLastActiveDate(
+      deviceId,
+      lastActiveDate,
+    );
+  }
 }

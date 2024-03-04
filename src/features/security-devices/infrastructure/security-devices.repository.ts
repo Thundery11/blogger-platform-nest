@@ -18,4 +18,22 @@ export class SecurityDevicesRepository {
     addedDevice.save();
     return addedDevice;
   }
+
+  async isValidRefreshToken(
+    isOkLastactiveDate: string,
+  ): Promise<SecurityDevicesDocument | null> {
+    return await this.securityDevicesModel.findOne({
+      lastActiveDate: isOkLastactiveDate,
+    });
+  }
+  async updateLastActiveDate(
+    deviceId: string,
+    lastActiveDate: string,
+  ): Promise<boolean> {
+    const result = await this.securityDevicesModel.updateOne(
+      { deviceId },
+      { lastActiveDate },
+    );
+    return result.matchedCount === 1;
+  }
 }
