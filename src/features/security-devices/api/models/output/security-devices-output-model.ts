@@ -25,7 +25,7 @@ export const allSecurityDevicesMapper = (
     ip: device.ip,
     title: device.title,
     lastActiveDate: device.lastActiveDate,
-    deviceId: device.id,
+    deviceId: device.deviceId,
   }));
   return outputModel;
 };
