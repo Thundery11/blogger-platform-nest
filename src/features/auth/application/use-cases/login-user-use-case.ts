@@ -21,6 +21,7 @@ export class LoginUserUseCase implements ICommandHandler<LoginUserCommand> {
       loginUserWithDeviceDto.user,
       deviceId,
     );
+    console.log('newlly created refresh token', refreshToken);
     const accessToken = await this.authService.login(
       loginUserWithDeviceDto.user,
     );

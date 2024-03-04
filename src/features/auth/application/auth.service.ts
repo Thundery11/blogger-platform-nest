@@ -56,9 +56,11 @@ export class AuthService {
       const result = await this.jwtService.verifyAsync(refreshToken, {
         secret: jwtConstants.REFRESH_TOKEN_SECRET,
       });
+      console.log({ REFRESHTOKEN: result });
       if (!result) {
         throw new UnauthorizedException();
       }
+
       return result;
     } catch (e) {
       console.log({ verify_error: e });

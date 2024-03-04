@@ -141,12 +141,11 @@ export class AuthController {
   }
   @Post('/logout')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async logout(@Req() req): Promise<boolean> {
+  async logout(@Request() req): Promise<boolean> {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {
       throw new UnauthorizedException();
     }
-    console.log({ refreshTokenWhenLogout: refreshToken });
     const result = await this.commandBus.execute(
       new LogoutCommand(refreshToken),
     );

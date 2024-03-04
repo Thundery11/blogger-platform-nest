@@ -1,17 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { SecurityDevicesService } from '../../../security-devices/application/security-devices.service';
 import { AuthService } from '../auth.service';
-import { UsersDocument } from '../../../users/domain/users.entity';
 import { UnauthorizedException } from '@nestjs/common';
-import { TokensOutputModel } from '../../api/models/output/tokens-output.model';
-import { UsersService } from '../../../users/application/users.service';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
 
 export class RefreshTokenCommand {
-  constructor(
-    // public user: UsersDocument,
-    public refreshToken: string,
-  ) {}
+  constructor(public refreshToken: string) {}
 }
 @CommandHandler(RefreshTokenCommand)
 export class RefreshTokenUseCase
