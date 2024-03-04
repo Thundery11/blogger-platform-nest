@@ -41,14 +41,14 @@ export class SecurityDevicesRepository {
 
   async getCurrentSession(
     deviceId: string,
-  ): Promise<SecurityDevicesOutputModel | null> {
+  ): Promise<SecurityDevicesDocument | null> {
     const currentSession = await this.securityDevicesModel.findOne({
       deviceId: deviceId,
     });
     if (!currentSession) {
       return null;
     }
-    return securityDevicesMapper(currentSession);
+    return currentSession;
   }
 
   async deleteCurrentSession(deviceId: string): Promise<boolean> {

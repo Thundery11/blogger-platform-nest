@@ -52,15 +52,17 @@ export class AuthService {
   }
 
   async verifyRefreshToken(refreshToken: string) {
-    const result = await this.jwtService.verifyAsync(refreshToken, {
-      secret: jwtConstants.REFRESH_TOKEN_SECRET,
-    });
-    console.log('verefiedRefreshToken: ', result);
-    if (!result) {
-      throw new UnauthorizedException();
+    try {
+      const result = await this.jwtService.verifyAsync(refreshToken, {
+        secret: jwtConstants.REFRESH_TOKEN_SECRET,
+      });
+      if (!result) {
+        throw new UnauthorizedException();
+      }
+      return result;
+    } catch (e) {
+      console.log({ verify_error: e });
     }
-
-    return result;
   }
   async confirmEmail(code: string): Promise<boolean> {
     const user = await this.usersRepository.findUserByConfirmationCode(code);

@@ -23,12 +23,14 @@ import { RefreshTokenUseCase } from '../application/use-cases/refresh-token-use-
 import { SecurityDevicesController } from '../../security-devices/api/security-devices.controller';
 import { GetDevicesUseCase } from '../../security-devices/application/use-cases/get-devices-use-case';
 import { DeleteAllSessionsExceptCurentUseCase } from '../../security-devices/application/use-cases/delete-all-sessions-except-current-use-case';
+import { DeleteSpecialSessionUseCase } from '../../security-devices/application/use-cases/delete-special-session-use-case';
 
 const useCases = [
   LoginUserUseCase,
   RefreshTokenUseCase,
   GetDevicesUseCase,
   DeleteAllSessionsExceptCurentUseCase,
+  DeleteSpecialSessionUseCase,
 ];
 @Module({
   imports: [
