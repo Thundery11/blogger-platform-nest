@@ -51,13 +51,13 @@ export class RefreshTokenUseCase
       deviceId,
       lastActiveDate,
     );
-    const deletedToken =
-      await this.securityDevicesRepository.deleteRefreshTokenWhenLogout(
-        isOkLastactiveDate,
-      );
-    if (!deletedToken) {
-      throw new UnauthorizedException();
-    }
+    // const deletedToken =
+    //   await this.securityDevicesRepository.deleteRefreshTokenWhenLogout(
+    //     isOkLastactiveDate,
+    //   );
+    // if (!deletedToken) {
+    //   throw new UnauthorizedException();
+    // }
     console.log('newRefreshToken:', newRefreshToken);
     const tokens = { accessToken, newRefreshToken };
     return tokens;
