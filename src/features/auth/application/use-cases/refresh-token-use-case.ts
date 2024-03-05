@@ -3,6 +3,7 @@ import { SecurityDevicesService } from '../../../security-devices/application/se
 import { AuthService } from '../auth.service';
 import { UnauthorizedException } from '@nestjs/common';
 import { UsersRepository } from '../../../users/infrastructure/users.repository';
+import { SecurityDevicesRepository } from '../../../security-devices/infrastructure/security-devices.repository';
 
 export class RefreshTokenCommand {
   constructor(public refreshToken: string) {}
@@ -15,6 +16,7 @@ export class RefreshTokenUseCase
     private authServise: AuthService,
     private securityDevicesServise: SecurityDevicesService,
     private usersRepository: UsersRepository,
+    private securityDevicesRepository: SecurityDevicesRepository,
   ) {}
   async execute(command: RefreshTokenCommand): Promise<object> {
     const payload = await this.authServise.verifyRefreshToken(
@@ -49,6 +51,13 @@ export class RefreshTokenUseCase
       deviceId,
       lastActiveDate,
     );
+    const deletedToken =
+      await this.securityDevicesRepository.deleteRefreshTokenWhenLogout(
+        isOkLastactiveDate,
+      );
+    if (!deletedToken) {
+      throw new UnauthorizedException();
+    }
     console.log('newRefreshToken:', newRefreshToken);
     const tokens = { accessToken, newRefreshToken };
     return tokens;

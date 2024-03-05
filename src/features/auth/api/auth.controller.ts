@@ -125,7 +125,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async refreshToken(@Request() req, @Res() res: Response) {
     const refreshToken = req.cookies.refreshToken;
-    console.log('refreshToken ', refreshToken);
     if (!refreshToken) {
       throw new UnauthorizedException();
     }
