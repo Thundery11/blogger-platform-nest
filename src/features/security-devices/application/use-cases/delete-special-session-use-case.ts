@@ -44,6 +44,11 @@ export class DeleteSpecialSessionUseCase
       deviceId,
       lastActiveDate,
     );
-    return await this.securityDevicesRepo.deleteCurrentSession(deviceId);
+    const deletedSession =
+      await this.securityDevicesRepo.deleteCurrentSession(deviceId);
+    if (!deletedSession) {
+      throw new UnauthorizedException();
+    }
+    return deletedSession;
   }
 }
