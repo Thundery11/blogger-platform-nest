@@ -36,6 +36,7 @@ export class RefreshTokenUseCase
     if (!isValidRefreshToken) {
       throw new UnauthorizedException();
     }
+    console.log({ isValidRefreshToken: isValidRefreshToken });
     const accessToken = await this.authServise.login(user);
     const newRefreshToken = await this.authServise.createRefreshToken(
       user,

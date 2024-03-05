@@ -62,7 +62,7 @@ export class SecurityDevicesRepository {
     const result = await this.securityDevicesModel.deleteOne({
       lastActiveDate: lastActiveDate,
     });
-    return result.deletedCount === 1;
+    return result.deletedCount ? true : false;
   }
 
   async isValidRefreshToken(

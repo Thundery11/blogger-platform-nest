@@ -23,8 +23,14 @@ export class LogoutUseCase implements ICommandHandler<LogoutCommand> {
     }
 
     const lastActiveDate = new Date(payload.iat * 1000).toISOString();
-    return await this.securityDevicesRepo.deleteRefreshTokenWhenLogout(
-      lastActiveDate,
-    );
+    const deletedToken =
+      await this.securityDevicesRepo.deleteRefreshTokenWhenLogout(
+        lastActiveDate,
+      );
+    if (!deletedToken) {
+      throw new UnauthorizedException();
+    }
+    console.log({ deletedToken: deletedToken });
+    return deletedToken;
   }
 }
