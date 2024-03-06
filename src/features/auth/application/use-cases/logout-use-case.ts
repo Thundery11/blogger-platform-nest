@@ -17,7 +17,7 @@ export class LogoutUseCase implements ICommandHandler<LogoutCommand> {
     const payload = await this.authService.verifyRefreshToken(
       command.refreshToken,
     );
-    console.log({ payloadWhenLogout: payload });
+    console.log({ refreshtokenWhenLOGOUT: command.refreshToken });
     if (!payload) {
       throw new UnauthorizedException();
     }

@@ -22,6 +22,12 @@ export class GetDevicesUseCase implements ICommandHandler<GetDevicesCommand> {
     if (!payload) {
       throw new UnauthorizedException();
     }
+    const lastActiveDate = new Date(payload.iat * 1000).toISOString();
+    const isValidRefreshToken =
+      await this.securityDevicesRepo.isValidRefreshToken(lastActiveDate);
+    if (!isValidRefreshToken) {
+      throw new UnauthorizedException();
+    }
     const userId = payload.sub;
     const devices = await this.securityDevicesRepo.getDevices(userId);
     return devices;
