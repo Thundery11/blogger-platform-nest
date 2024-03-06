@@ -60,7 +60,7 @@ export class SecurityDevicesRepository {
 
   async deleteRefreshTokenWhenLogout(deviceId: string): Promise<boolean> {
     const result = await this.securityDevicesModel.deleteOne({
-      deviceId: deviceId,
+      deviceId,
     });
     return result.deletedCount ? true : false;
   }

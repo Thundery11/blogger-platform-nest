@@ -9,7 +9,7 @@ export const basicConstants = {
 
 export const tokensLivesConstants = {
   '10sec': '10s',
-  '20sec': '200s',
+  '20sec': '20s',
   '1hour': '1h',
   '2hours': '2h',
 };
