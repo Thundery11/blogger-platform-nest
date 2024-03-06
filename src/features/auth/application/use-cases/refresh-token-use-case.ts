@@ -31,7 +31,6 @@ export class RefreshTokenUseCase
       throw new UnauthorizedException();
     }
     const deviceId1 = payload.deviceId;
-    console.log({ oldRefreshtoken: command.refreshToken });
     const isOkLastactiveDate = new Date(payload.iat * 1000).toISOString();
     const isValidRefreshToken =
       await this.securityDevicesServise.isValidRefreshTokenWithDeviceId(
@@ -42,16 +41,12 @@ export class RefreshTokenUseCase
     if (!isValidRefreshToken) {
       throw new UnauthorizedException();
     }
-    console.log({ isValidRefreshToken: isValidRefreshToken });
     const accessToken = await this.authServise.login(user);
     const newRefreshToken = await this.authServise.createRefreshToken(
       user,
       payload.deviceId,
     );
     const result = await this.authServise.verifyRefreshToken(newRefreshToken);
-    if (!result) {
-      throw new UnauthorizedException();
-    }
     const lastActiveDate = new Date(result.iat * 1000).toISOString();
     const deviceId = result.deviceId;
     const updateLastActiveDate =
@@ -59,12 +54,6 @@ export class RefreshTokenUseCase
         deviceId,
         lastActiveDate,
       );
-    if (!updateLastActiveDate) {
-      throw new UnauthorizedException();
-    }
-    console.log({ updateLastActiveDate: updateLastActiveDate });
-
-    console.log({ newRefreshToken: newRefreshToken });
     const tokens = { accessToken, newRefreshToken };
     return tokens;
   }

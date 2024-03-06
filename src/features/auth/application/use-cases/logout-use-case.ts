@@ -17,7 +17,6 @@ export class LogoutUseCase implements ICommandHandler<LogoutCommand> {
     const payload = await this.authService.verifyRefreshToken(
       command.refreshToken,
     );
-    console.log({ refreshtokenWhenLOGOUT: command.refreshToken });
     if (!payload) {
       throw new UnauthorizedException();
     }
@@ -28,17 +27,12 @@ export class LogoutUseCase implements ICommandHandler<LogoutCommand> {
     if (!isValidRefreshToken) {
       throw new UnauthorizedException();
     }
-    const isUpdatedTOken = await this.securityDevicesRepo.updateLastActiveDate(
-      deviceId,
-      lastActiveDate,
-    );
-    console.log({ UPDATEDTOKEN: isUpdatedTOken });
+
     const deletedToken =
       await this.securityDevicesRepo.deleteRefreshTokenWhenLogout(deviceId);
     if (!deletedToken) {
       throw new UnauthorizedException();
     }
-    console.log({ deletedToken: deletedToken });
     return deletedToken;
   }
 }

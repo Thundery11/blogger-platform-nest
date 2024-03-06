@@ -24,7 +24,6 @@ export class DeleteAllSessionsExceptCurentUseCase
       throw new UnauthorizedException();
     }
     const deviceId = payload.deviceId;
-    console.log('deviceId: ', deviceId);
     const deletedDevices =
       await this.securityDevicesRepo.terminateOtherSessions(deviceId);
     return deletedDevices;

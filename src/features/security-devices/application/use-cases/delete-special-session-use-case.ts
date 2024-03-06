@@ -26,7 +26,6 @@ export class DeleteSpecialSessionUseCase
   async execute(command: DeleteSpecialSessionCommand): Promise<boolean> {
     const { refreshToken, deviceId } = command;
     const payload = await this.authService.verifyRefreshToken(refreshToken);
-    console.log({ payload: payload });
     if (!payload) {
       throw new UnauthorizedException();
     }
@@ -45,7 +44,6 @@ export class DeleteSpecialSessionUseCase
     if (!deviceSession) {
       throw new NotFoundException();
     }
-    console.log({ currentSession: deviceSession });
     if (userId !== deviceSession.userId) {
       throw new ForbiddenException();
     }
@@ -54,7 +52,6 @@ export class DeleteSpecialSessionUseCase
       deviceId,
       lastActiveDate,
     );
-    console.log({ isUpdatedTOken: isUpdatedTOken });
     const deletedSession =
       await this.securityDevicesRepo.deleteCurrentSession(deviceId);
     if (!deletedSession) {
