@@ -6,6 +6,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { SecurityDevicesService } from '../security-devices.service';
 export class DeleteSpecialSessionCommand {
   constructor(
     public refreshToken: string,
@@ -20,6 +21,7 @@ export class DeleteSpecialSessionUseCase
   constructor(
     private authService: AuthService,
     private securityDevicesRepo: SecurityDevicesRepository,
+    private securityDevicesServise: SecurityDevicesService,
   ) {}
   async execute(command: DeleteSpecialSessionCommand): Promise<boolean> {
     const { refreshToken, deviceId } = command;
@@ -31,6 +33,13 @@ export class DeleteSpecialSessionUseCase
     const userId = payload.sub;
 
     const lastActiveDate = new Date(payload.iat * 1000).toISOString();
+
+    const isValidRefreshToken =
+      await this.securityDevicesServise.isValidRefreshToken(lastActiveDate);
+
+    if (!isValidRefreshToken) {
+      throw new UnauthorizedException();
+    }
     const deviceSession =
       await this.securityDevicesRepo.getCurrentSession(deviceId);
     if (!deviceSession) {
@@ -40,6 +49,7 @@ export class DeleteSpecialSessionUseCase
     if (userId !== deviceSession.userId) {
       throw new ForbiddenException();
     }
+
     await this.securityDevicesRepo.updateLastActiveDate(
       deviceId,
       lastActiveDate,
