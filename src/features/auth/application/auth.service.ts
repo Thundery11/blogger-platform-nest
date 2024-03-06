@@ -53,7 +53,7 @@ export class AuthService {
 
   async verifyRefreshToken(refreshToken: string) {
     try {
-      const result = await this.jwtService.verifyAsync(refreshToken, {
+      const result = await this.jwtService.verify(refreshToken, {
         secret: jwtConstants.REFRESH_TOKEN_SECRET,
       });
       console.log({ REFRESHTOKEN: result });
