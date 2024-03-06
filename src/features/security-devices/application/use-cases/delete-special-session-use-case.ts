@@ -50,10 +50,10 @@ export class DeleteSpecialSessionUseCase
       throw new ForbiddenException();
     }
 
-    await this.securityDevicesRepo.updateLastActiveDate(
-      deviceId,
-      lastActiveDate,
-    );
+    // isUpdated  await this.securityDevicesRepo.updateLastActiveDate(
+    //     deviceId,
+    //     lastActiveDate,
+    //   );
     const deletedSession =
       await this.securityDevicesRepo.deleteCurrentSession(deviceId);
     if (!deletedSession) {
