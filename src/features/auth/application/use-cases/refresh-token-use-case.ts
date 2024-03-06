@@ -16,7 +16,6 @@ export class RefreshTokenUseCase
     private authServise: AuthService,
     private securityDevicesServise: SecurityDevicesService,
     private usersRepository: UsersRepository,
-    private securityDevicesRepository: SecurityDevicesRepository,
   ) {}
   async execute(command: RefreshTokenCommand): Promise<object> {
     const payload = await this.authServise.verifyRefreshToken(
@@ -31,10 +30,11 @@ export class RefreshTokenUseCase
     if (!user) {
       throw new UnauthorizedException();
     }
-
+    console.log({ oldRefreshtoken: command.refreshToken });
     const isOkLastactiveDate = new Date(payload.iat * 1000).toISOString();
     const isValidRefreshToken =
       await this.securityDevicesServise.isValidRefreshToken(isOkLastactiveDate);
+
     if (!isValidRefreshToken) {
       throw new UnauthorizedException();
     }
@@ -47,18 +47,14 @@ export class RefreshTokenUseCase
     const result = await this.authServise.verifyRefreshToken(newRefreshToken);
     const lastActiveDate = new Date(result.iat * 1000).toISOString();
     const deviceId = result.deviceId;
-    await this.securityDevicesServise.updateLastActiveDate(
-      deviceId,
-      lastActiveDate,
-    );
-    // const deletedToken =
-    //   await this.securityDevicesRepository.deleteRefreshTokenWhenLogout(
-    //     isOkLastactiveDate,
-    //   );
-    // if (!deletedToken) {
-    //   throw new UnauthorizedException();
-    // }
-    console.log('newRefreshToken:', newRefreshToken);
+    const updateLastActiveDate =
+      await this.securityDevicesServise.updateLastActiveDate(
+        deviceId,
+        lastActiveDate,
+      );
+    console.log({ updateLastActiveDate: updateLastActiveDate });
+
+    console.log({ newRefreshToken: newRefreshToken });
     const tokens = { accessToken, newRefreshToken };
     return tokens;
   }

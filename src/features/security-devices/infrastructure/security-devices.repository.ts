@@ -58,9 +58,9 @@ export class SecurityDevicesRepository {
     return result.deletedCount ? true : false;
   }
 
-  async deleteRefreshTokenWhenLogout(lastActiveDate: string): Promise<boolean> {
+  async deleteRefreshTokenWhenLogout(deviceId: string): Promise<boolean> {
     const result = await this.securityDevicesModel.deleteOne({
-      lastActiveDate: lastActiveDate,
+      deviceId: deviceId,
     });
     return result.deletedCount ? true : false;
   }
