@@ -21,14 +21,18 @@ export class LogoutUseCase implements ICommandHandler<LogoutCommand> {
     if (!payload) {
       throw new UnauthorizedException();
     }
-
+    const deviceId = payload.deviceId;
     const lastActiveDate = new Date(payload.iat * 1000).toISOString();
     const isValidRefreshToken =
       await this.securityDevicesRepo.isValidRefreshToken(lastActiveDate);
     if (!isValidRefreshToken) {
       throw new UnauthorizedException();
     }
-    const deviceId = payload.deviceId;
+    const isUpdatedTOken = await this.securityDevicesRepo.updateLastActiveDate(
+      deviceId,
+      lastActiveDate,
+    );
+    console.log({ UPDATEDTOKEN: isUpdatedTOken });
     const deletedToken =
       await this.securityDevicesRepo.deleteRefreshTokenWhenLogout(deviceId);
     if (!deletedToken) {

@@ -50,10 +50,11 @@ export class DeleteSpecialSessionUseCase
       throw new ForbiddenException();
     }
 
-    // isUpdated  await this.securityDevicesRepo.updateLastActiveDate(
-    //     deviceId,
-    //     lastActiveDate,
-    //   );
+    const isUpdatedTOken = await this.securityDevicesRepo.updateLastActiveDate(
+      deviceId,
+      lastActiveDate,
+    );
+    console.log({ isUpdatedTOken: isUpdatedTOken });
     const deletedSession =
       await this.securityDevicesRepo.deleteCurrentSession(deviceId);
     if (!deletedSession) {
