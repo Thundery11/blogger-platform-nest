@@ -20,6 +20,15 @@ export class SecurityDevicesService {
       isOkLastactiveDate,
     );
   }
+  async isValidRefreshTokenWithDeviceId(
+    isOkLastactiveDate: string,
+    deviceId1: string,
+  ): Promise<SecurityDevicesDocument | null> {
+    return await this.securityDevicesRepository.isValidRefreshTokenwithDevice(
+      isOkLastactiveDate,
+      deviceId1,
+    );
+  }
   async updateLastActiveDate(
     deviceId: string,
     lastActiveDate: string,

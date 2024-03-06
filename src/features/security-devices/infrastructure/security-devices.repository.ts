@@ -72,6 +72,19 @@ export class SecurityDevicesRepository {
       lastActiveDate: isOkLastactiveDate,
     });
   }
+  async isValidRefreshTokenwithDevice(
+    isOkLastactiveDate: string,
+    deviceId1: string,
+  ): Promise<SecurityDevicesDocument | null> {
+    return await this.securityDevicesModel.findOne({
+      $and: [
+        {
+          lastActiveDate: isOkLastactiveDate,
+        },
+        { deviceId: deviceId1 },
+      ],
+    });
+  }
   async updateLastActiveDate(
     deviceId: string,
     lastActiveDate: string,

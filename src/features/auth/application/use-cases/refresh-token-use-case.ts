@@ -30,10 +30,14 @@ export class RefreshTokenUseCase
     if (!user) {
       throw new UnauthorizedException();
     }
+    const deviceId1 = payload.deviceId;
     console.log({ oldRefreshtoken: command.refreshToken });
     const isOkLastactiveDate = new Date(payload.iat * 1000).toISOString();
     const isValidRefreshToken =
-      await this.securityDevicesServise.isValidRefreshToken(isOkLastactiveDate);
+      await this.securityDevicesServise.isValidRefreshTokenWithDeviceId(
+        isOkLastactiveDate,
+        deviceId1,
+      );
 
     if (!isValidRefreshToken) {
       throw new UnauthorizedException();
